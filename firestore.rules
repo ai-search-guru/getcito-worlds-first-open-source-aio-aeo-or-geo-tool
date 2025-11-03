@@ -1,0 +1,45 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+    // DEVELOPMENT RULES - PERMISSIVE FOR DEBUGGING
+    // These rules allow both client and server access
+    
+    // Allow authenticated users to read/write their own data
+    match /users/{userId} {
+      allow read, write: if request.auth != null && request.auth.uid == userId;
+    }
+    
+    // Allow authenticated users to read/write their own brand data
+    match /v8userbrands/{brandId} {
+      allow read, write: if request.auth != null && 
+        (request.auth.uid == resource.data.userId || request.auth.uid == brandId.split('_')[0]);
+    }
+    
+    // Allow authenticated users to read/write their own detailed query results
+    match /v8detailed_query_results/{resultId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+    
+    // Allow authenticated users to read/write their own brand analytics
+    match /v8_user_brand_analytics/{analyticsId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+    
+    // Allow authenticated users to read/write their own lifetime analytics
+    match /v8_lifetime_brand_analytics/{analyticsId} {
+      allow read, write: if request.auth != null && request.auth.uid == resource.data.userId;
+    }
+    
+    // Allow all authenticated users to read/write everything (for development)
+    // This ensures Firebase Admin SDK can access all data
+    match /{document=**} {
+      allow read, write: if request.auth != null;
+    }
+    
+    // FALLBACK: Allow all operations for development (this should catch Admin SDK requests)
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+} 
