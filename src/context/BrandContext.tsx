@@ -3,6 +3,50 @@ import React, { createContext, useContext, useEffect, useState, ReactNode } from
 import { useUserBrands } from '@/hooks/useUserBrands';
 import { UserBrand } from '@/firebase/firestore/getUserBrands';
 
+// Helper functions to safely access localStorage
+function safeLocalStorageGet(key: string): string | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage) {
+      const getItem = localStorage.getItem;
+      if (typeof getItem === 'function') {
+        return getItem.call(localStorage, key);
+      }
+    }
+  } catch (error) {
+    // Silently fail
+  }
+  return null;
+}
+
+function safeLocalStorageSet(key: string, value: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage) {
+      const setItem = localStorage.setItem;
+      if (typeof setItem === 'function') {
+        setItem.call(localStorage, key, value);
+      }
+    }
+  } catch (error) {
+    // Silently fail
+  }
+}
+
+function safeLocalStorageRemove(key: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage) {
+      const removeItem = localStorage.removeItem;
+      if (typeof removeItem === 'function') {
+        removeItem.call(localStorage, key);
+      }
+    }
+  } catch (error) {
+    // Silently fail
+  }
+}
+
 interface BrandContextType {
   selectedBrand: UserBrand | null;
   selectedBrandId: string | null;
@@ -42,7 +86,7 @@ interface BrandContextProviderProps {
 export function BrandContextProvider({ children }: BrandContextProviderProps): React.ReactElement {
   const { brands, loading, error, refetch } = useUserBrands();
   const [selectedBrandId, setSelectedBrandIdState] = useState<string | null>(null);
-  const [isClient, setIsClient] = useState(false);
+  const [isClient, setIsClient] = useState(typeof window !== 'undefined');
 
   // Debug logging for brands data
   useEffect(() => {
@@ -64,7 +108,7 @@ export function BrandContextProvider({ children }: BrandContextProviderProps): R
   // Load selected brand from localStorage on mount
   useEffect(() => {
     if (isClient) {
-      const stored = localStorage.getItem('selectedBrandId');
+      const stored = safeLocalStorageGet('selectedBrandId');
       console.log('💾 Loading from localStorage:', { stored, isClient });
       if (stored) {
         setSelectedBrandIdState(stored);
@@ -84,7 +128,7 @@ export function BrandContextProvider({ children }: BrandContextProviderProps): R
       });
       setSelectedBrandIdState(firstBrandId);
       if (isClient) {
-        localStorage.setItem('selectedBrandId', firstBrandId);
+        safeLocalStorageSet('selectedBrandId', firstBrandId);
       }
     }
   }, [brands, selectedBrandId, isClient]);
@@ -101,8 +145,12 @@ export function BrandContextProvider({ children }: BrandContextProviderProps): R
         // Selected brand no longer exists, select first available
         const firstBrandId = brands[0].id;
         setSelectedBrandIdState(firstBrandId);
-        if (isClient) {
-          localStorage.setItem('selectedBrandId', firstBrandId);
+        if (isClient && typeof window !== 'undefined' && typeof localStorage !== 'undefined' && typeof localStorage.setItem === 'function') {
+          try {
+            localStorage.setItem('selectedBrandId', firstBrandId);
+          } catch (error) {
+            console.warn('Failed to write to localStorage:', error);
+          }
         }
       } else {
         console.log('✅ Brand validation passed:', {
@@ -121,7 +169,7 @@ export function BrandContextProvider({ children }: BrandContextProviderProps): R
     });
     setSelectedBrandIdState(brandId);
     if (isClient) {
-      localStorage.setItem('selectedBrandId', brandId);
+      safeLocalStorageSet('selectedBrandId', brandId);
     }
   };
 
@@ -129,7 +177,7 @@ export function BrandContextProvider({ children }: BrandContextProviderProps): R
     console.log('🧹 Clearing brand context');
     setSelectedBrandIdState(null);
     if (isClient) {
-      localStorage.removeItem('selectedBrandId');
+      safeLocalStorageRemove('selectedBrandId');
     }
   };
 

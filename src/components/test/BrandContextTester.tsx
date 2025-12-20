@@ -94,7 +94,10 @@ export default function BrandContextTester(): React.ReactElement {
     });
 
     // Test 6: localStorage Persistence
-    const storedBrandId = localStorage.getItem('selectedBrandId');
+    let storedBrandId: string | null = null;
+    if (typeof window !== 'undefined') {
+      storedBrandId = localStorage.getItem('selectedBrandId');
+    }
     newTests.push({
       id: 'persistence',
       name: 'localStorage Persistence',

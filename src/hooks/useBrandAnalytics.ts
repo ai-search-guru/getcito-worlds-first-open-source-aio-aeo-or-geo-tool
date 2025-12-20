@@ -71,11 +71,41 @@ export function useLatestBrandAnalytics(brandId: string | undefined) {
         return sessionAnalytics;
       }
     },
-    enabled: !!brandId,
+    enabled: !!brandId && typeof window !== 'undefined', // Only enable on client side
     staleTime: 3 * 60 * 1000, // Consider data fresh for 3 minutes
     gcTime: 5 * 60 * 1000, // Keep in cache for 5 minutes
     refetchOnWindowFocus: false,
   });
+}
+
+// Helper to safely access localStorage
+function safeLocalStorageGet(key: string): string | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage) {
+      const getItem = localStorage.getItem;
+      if (typeof getItem === 'function') {
+        return getItem.call(localStorage, key);
+      }
+    }
+  } catch (error) {
+    // Silently fail
+  }
+  return null;
+}
+
+function safeLocalStorageSet(key: string, value: string): void {
+  if (typeof window === 'undefined') return;
+  try {
+    if (typeof localStorage !== 'undefined' && localStorage) {
+      const setItem = localStorage.setItem;
+      if (typeof setItem === 'function') {
+        setItem.call(localStorage, key, value);
+      }
+    }
+  } catch (error) {
+    // Silently fail
+  }
 }
 
 // Hook for getting lifetime brand analytics (all historical data) - optimized with React Query
@@ -84,6 +114,7 @@ export function useLifetimeBrandAnalytics(brandId: string | undefined) {
     queryKey: ['lifetimeBrandAnalytics', brandId],
     queryFn: async () => {
       if (!brandId) return null;
+      if (typeof window === 'undefined') return null; // Early return for SSR
 
       const { result, error: fetchError } = await calculateLifetimeBrandAnalytics(brandId);
       
@@ -95,7 +126,7 @@ export function useLifetimeBrandAnalytics(brandId: string | undefined) {
         // Only save analytics periodically to avoid write stream exhaustion
         // Check if we need to save (save every 5 minutes max)
         const now = Date.now();
-        const lastSave = localStorage.getItem(`lastAnalyticsSave_${brandId}`);
+        const lastSave = safeLocalStorageGet(`lastAnalyticsSave_${brandId}`);
         const shouldSave = !lastSave || (now - parseInt(lastSave)) > 5 * 60 * 1000; // 5 minutes
         
         if (shouldSave) {
@@ -103,7 +134,7 @@ export function useLifetimeBrandAnalytics(brandId: string | undefined) {
           try {
             const { saveLifetimeAnalytics } = await import('@/firebase/firestore/brandAnalytics');
             saveLifetimeAnalytics(result).then(() => {
-              localStorage.setItem(`lastAnalyticsSave_${brandId}`, now.toString());
+              safeLocalStorageSet(`lastAnalyticsSave_${brandId}`, now.toString());
             }).catch(error => {
               console.warn('⚠️ Failed to save lifetime analytics:', error);
             });
@@ -117,7 +148,7 @@ export function useLifetimeBrandAnalytics(brandId: string | undefined) {
       
       return result || null;
     },
-    enabled: !!brandId,
+    enabled: !!brandId && typeof window !== 'undefined', // Only enable on client side
     staleTime: 5 * 60 * 1000, // Consider data fresh for 5 minutes (lifetime data changes less frequently)
     gcTime: 10 * 60 * 1000, // Keep in cache for 10 minutes
     refetchOnWindowFocus: false,

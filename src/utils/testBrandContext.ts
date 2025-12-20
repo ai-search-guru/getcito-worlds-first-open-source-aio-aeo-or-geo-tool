@@ -49,6 +49,14 @@ export function testBrandContext(): void {
   // Test 2: Check localStorage functionality
   const test2 = (): TestResult => {
     try {
+      if (typeof window === 'undefined') {
+        return {
+          testName: 'localStorage Functionality',
+          passed: false,
+          message: 'localStorage not available (server-side)'
+        };
+      }
+      
       const testKey = 'brandContextTest';
       const testValue = 'test123';
       
@@ -109,6 +117,14 @@ export function testBrandContext(): void {
   // Test 4: Check for brand selection persistence
   const test4 = (): TestResult => {
     try {
+      if (typeof window === 'undefined') {
+        return {
+          testName: 'Brand Selection Persistence',
+          passed: false,
+          message: 'localStorage not available (server-side)'
+        };
+      }
+      
       const selectedBrandId = localStorage.getItem('selectedBrandId');
       
       return {
