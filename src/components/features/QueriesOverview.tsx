@@ -157,10 +157,6 @@ export default function QueriesOverview({
     return queryResults.find(result => result.query === query);
   };
 
-  // Compute if we should auto-start processing
-  const queriesWithoutResults = queries.filter(q => !findQueryResult(q.query));
-  const shouldAutoStart = queriesWithoutResults.length >= 4 && !isProcessingActive;
-
   // Automatically trigger Process Queries if more than 5 queries have no results
   // useEffect(() => {
   //   if (!brand || !showProcessButton) return;
@@ -356,11 +352,10 @@ export default function QueriesOverview({
             )}
             
             {showProcessButton && (
-              <ProcessQueriesButton 
+              <ProcessQueriesButton
                 brandId={brand.id}
                 variant="ghost"
                 size="sm"
-                autoStart={shouldAutoStart}
                 onStart={() => {
                   // Set all queries as potentially processing when processing starts
                   setIsProcessingActive(true);
