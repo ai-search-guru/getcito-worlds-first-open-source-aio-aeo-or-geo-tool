@@ -1,0 +1,78 @@
+{
+  "$schema": "https://turborepo.dev/schema.json",
+  "globalEnv": [
+    "DATABASE_URL",
+    "APP_URL",
+    "BETTER_AUTH_SECRET",
+    "AUTH0_DOMAIN",
+    "AUTH0_CLIENT_ID",
+    "AUTH0_CLIENT_SECRET",
+    "AUTH0_AUDIENCE",
+    "AUTH0_SCOPE",
+    "AUTH0_MGMT_API_DOMAIN",
+    "UPSTASH_REDIS_REST_URL",
+    "UPSTASH_REDIS_REST_TOKEN",
+    "UPSTASH_REDIS_ENDPOINT",
+    "DATAFORSEO_LOGIN",
+    "DATAFORSEO_PASSWORD",
+    "OPENAI_API_KEY",
+    "ANTHROPIC_API_KEY",
+    "MISTRAL_API_KEY",
+    "SCRAPE_TARGETS",
+    "OLOSTEP_API_KEY",
+    "BRIGHTDATA_API_TOKEN",
+    "OXYLABS_USERNAME",
+    "OXYLABS_PASSWORD",
+    "OPENROUTER_API_KEY",
+    "DEPLOYMENT_MODE",
+    "ADMIN_AUTH0_SUB",
+    "ADMIN_API_KEYS",
+    "DEFAULT_BRAND_DOMAINS",
+    "ENVIRONMENT",
+    "VITE_DEPLOYMENT_MODE",
+    "VITE_APP_NAME",
+    "VITE_APP_ICON",
+    "VITE_APP_URL",
+    "VITE_APP_PARENT_NAME",
+    "VITE_APP_PARENT_URL",
+    "VITE_OPTIMIZATION_URL_TEMPLATE",
+    "VITE_PLAUSIBLE_DOMAIN",
+    "VITE_CLARITY_PROJECT_ID",
+    "VITE_ONBOARDING_REDIRECT_URL_TEMPLATE",
+    "VITE_AUTH0_DOMAIN",
+    "VITE_AUTH0_CLIENT_ID",
+    "BLOB_READ_WRITE_TOKEN",
+    "DBOS_SYSTEM_DATABASE_URL",
+    "SENTRY_DSN",
+    "SENTRY_ORG",
+    "SENTRY_PROJECT",
+    "SENTRY_AUTH_TOKEN",
+    "VITE_SENTRY_DSN",
+    "VITE_POSTHOG_KEY",
+    "VITE_CHART_COLORS",
+    "DISABLE_TELEMETRY"
+  ],
+  "tasks": {
+    "build": {
+      "dependsOn": ["^build", "check-types"],
+      "outputs": [".output/**", ".vercel/output/**", "dist/**"]
+    },
+    "@workspace/worker#build": {
+      "dependsOn": ["^build"],
+      "outputs": []
+    },
+    "check-types": {
+      "dependsOn": ["^check-types"]
+    },
+    "lint": {
+      "dependsOn": ["^lint"]
+    },
+    "test": {
+      "dependsOn": ["^build"]
+    },
+    "dev": {
+      "persistent": true,
+      "cache": false
+    }
+  }
+}

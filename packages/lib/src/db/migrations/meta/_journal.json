@@ -1,0 +1,76 @@
+{
+  "version": "7",
+  "dialect": "postgresql",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "7",
+      "when": 1770853000310,
+      "tag": "0000_hot_excalibur",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "7",
+      "when": 1771495206934,
+      "tag": "0001_sturdy_ares",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1773081311430,
+      "tag": "0002_legal_ultimatum",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1773081457906,
+      "tag": "0003_phase3-constraints-and-indices",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1773100369290,
+      "tag": "0004_nebulous_gunslinger",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1773125217919,
+      "tag": "0005_known_warhawk",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1773200000000,
+      "tag": "0006_multi_domain_aliases",
+      "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1775800000000,
+      "tag": "0007_report_progress",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1776000000000,
+      "tag": "0008_provider_engines",
+      "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "7",
+      "when": 1780782746840,
+      "tag": "0009_brand_opportunities",
+      "breakpoints": true
+    }
+  ]
+}

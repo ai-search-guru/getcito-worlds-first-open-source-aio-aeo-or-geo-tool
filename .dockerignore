@@ -1,0 +1,88 @@
+# Dependencies
+node_modules
+**/node_modules
+.pnpm-store
+
+# Build outputs
+.next
+**/.next
+.output
+**/.output
+out
+**/out
+dist
+**/dist
+build
+**/build
+
+# Turborepo cache
+.turbo
+**/.turbo
+
+# Git
+.git
+**/.git
+.gitignore
+**/.gitignore
+
+# IDE
+.idea
+**/.idea
+.vscode
+**/.vscode
+.cursor
+**/.cursor
+*.swp
+**/*.swp
+*.swo
+**/*.swo
+
+# Environment files (use Docker env vars instead)
+.env
+**/.env
+.env.*
+**/.env.*
+!.env.example
+!**/.env.example
+
+# Test files
+coverage
+**/coverage
+*.test.ts
+**/*.test.ts
+*.test.tsx
+**/*.test.tsx
+*.spec.ts
+**/*.spec.ts
+*.spec.tsx
+**/*.spec.tsx
+__tests__
+**/__tests__
+
+# Documentation
+docs
+*.md
+**/*.md
+!README.md
+!**/README.md
+
+# Docker (don't copy init scripts into build)
+docker/init-scripts
+
+# Directories not needed in Docker builds
+e2e
+.getcito
+**/.getcito
+apps/cli
+
+# pnpm config (use-node-version breaks Alpine/MUSL Docker builds)
+.npmrc
+
+# Misc
+.DS_Store
+**/.DS_Store
+Thumbs.db
+**/Thumbs.db
+*.log
+**/*.log
+e2e/artifacts

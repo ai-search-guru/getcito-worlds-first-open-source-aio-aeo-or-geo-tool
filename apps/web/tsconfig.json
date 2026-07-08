@@ -1,0 +1,28 @@
+{
+	"include": ["**/*.ts", "**/*.tsx", "**/*.json"],
+	"exclude": ["src/stories/**"],
+	"compilerOptions": {
+		"target": "ES2022",
+		"jsx": "react-jsx",
+		"module": "ESNext",
+		"lib": ["ES2022", "DOM", "DOM.Iterable"],
+		"types": ["vite/client"],
+
+		/* Bundler mode */
+		"resolveJsonModule": true,
+		"moduleResolution": "bundler",
+		"allowImportingTsExtensions": true,
+		"verbatimModuleSyntax": false,
+		"noEmit": true,
+
+		/* Linting */
+		"skipLibCheck": true,
+		"strict": true,
+		"noFallthroughCasesInSwitch": true,
+		"noUncheckedSideEffectImports": true,
+		"paths": {
+			"@/*": ["./src/*"],
+			"@workspace/ui/*": ["../../packages/ui/src/*"]
+		}
+	}
+}

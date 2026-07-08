@@ -1,0 +1,1651 @@
+{
+	"openapi": "3.0.3",
+	"info": {
+		"title": "API",
+		"description": "API for managing prompts and generating AI Share of Voice reports.",
+		"version": "1.0.0",
+		"contact": {
+			"name": "API Support"
+		}
+	},
+	"servers": [
+		{
+			"url": "/api/v1",
+			"description": "API"
+		}
+	],
+	"security": [
+		{
+			"BearerAuth": []
+		}
+	],
+	"components": {
+		"securitySchemes": {
+			"BearerAuth": {
+				"type": "http",
+				"scheme": "bearer",
+				"description": "Bearer API token for access"
+			}
+		},
+		"schemas": {
+			"Prompt": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"format": "uuid",
+						"description": "Unique identifier for the prompt"
+					},
+					"brandId": {
+						"type": "string",
+						"description": "Brand identifier this prompt belongs to"
+					},
+					"value": {
+						"type": "string",
+						"description": "The actual prompt text"
+					},
+					"enabled": {
+						"type": "boolean",
+						"description": "Whether the prompt is currently enabled"
+					},
+					"tags": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"description": "User-defined tags for categorizing this prompt"
+					},
+					"systemTags": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"description": "Auto-computed system tags (e.g., 'branded', 'unbranded'). Read-only."
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time",
+						"description": "Timestamp when the prompt was created"
+					},
+					"updatedAt": {
+						"type": "string",
+						"format": "date-time",
+						"description": "Timestamp when the prompt was last updated"
+					}
+				},
+				"required": ["id", "brandId", "value", "enabled", "tags", "systemTags", "createdAt", "updatedAt"]
+			},
+			"CreatePromptRequest": {
+				"type": "object",
+				"properties": {
+					"brandId": {
+						"type": "string",
+						"description": "Brand identifier this prompt belongs to"
+					},
+					"value": {
+						"type": "string",
+						"description": "The prompt text",
+						"minLength": 1
+					},
+					"tags": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"description": "User-defined tags for categorizing this prompt"
+					}
+				},
+				"required": ["brandId", "value"]
+			},
+			"UpdatePromptRequest": {
+				"type": "object",
+				"minProperties": 1,
+				"properties": {
+					"value": {
+						"type": "string",
+						"description": "The prompt text",
+						"minLength": 1
+					},
+					"enabled": {
+						"type": "boolean",
+						"description": "Whether the prompt is enabled"
+					},
+					"tags": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"description": "User-defined tags for categorizing this prompt"
+					}
+				}
+			},
+			"Error": {
+				"type": "object",
+				"properties": {
+					"error": {
+						"type": "string",
+						"description": "Error type"
+					},
+					"message": {
+						"type": "string",
+						"description": "Detailed error message"
+					}
+				},
+				"required": ["error"]
+			},
+			"SuccessMessage": {
+				"type": "object",
+				"properties": {
+					"message": {
+						"type": "string",
+						"description": "Success message"
+					},
+					"data": {
+						"type": "object",
+						"description": "Additional response data"
+					}
+				},
+				"required": ["message"]
+			},
+			"CreateReportRequest": {
+				"type": "object",
+				"properties": {
+					"brandName": {
+						"type": "string",
+						"description": "The brand name to analyze",
+						"minLength": 1
+					},
+					"brandWebsite": {
+						"type": "string",
+						"description": "The brand's website URL",
+						"minLength": 1
+					},
+					"manualPrompts": {
+						"type": "array",
+						"items": {
+							"type": "string"
+						},
+						"description": "Optional list of custom prompts to include in the report"
+					}
+				},
+				"required": ["brandName", "brandWebsite"]
+			},
+			"ReportSummary": {
+				"type": "object",
+				"properties": {
+					"id": {
+						"type": "string",
+						"format": "uuid",
+						"description": "Unique identifier for the report"
+					},
+					"brandName": {
+						"type": "string",
+						"description": "Brand name analyzed"
+					},
+					"brandWebsite": {
+						"type": "string",
+						"description": "Brand website URL"
+					},
+					"status": {
+						"type": "string",
+						"enum": ["pending", "processing", "completed", "failed"],
+						"description": "Current report status"
+					},
+					"createdAt": {
+						"type": "string",
+						"format": "date-time",
+						"description": "Timestamp when the report was created"
+					},
+					"completedAt": {
+						"type": "string",
+						"format": "date-time",
+						"nullable": true,
+						"description": "Timestamp when the report completed"
+					}
+				},
+				"required": ["id", "brandName", "brandWebsite", "status", "createdAt"]
+			},
+			"ReportPromptSnapshot": {
+				"type": "object",
+				"description": "Per-prompt snapshot of raw mention data from a report. Consumers compute SoV and other derived metrics.",
+				"properties": {
+					"promptValue": {
+						"type": "string",
+						"description": "The prompt text that was evaluated"
+					},
+					"totalRuns": {
+						"type": "integer",
+						"description": "Number of evaluation runs for this prompt"
+					},
+					"mentions": {
+						"$ref": "#/components/schemas/MentionsSummary"
+					}
+				},
+				"required": ["promptValue", "totalRuns", "mentions"]
+			},
+			"MentionsSummary": {
+				"type": "object",
+				"description": "Aggregated mention counts for a prompt across its evaluation runs.",
+				"properties": {
+					"mentionsTotal": {
+						"type": "integer",
+						"description": "Total brand + competitor mentions across all runs"
+					},
+					"brandMentionsTotal": {
+						"type": "integer",
+						"description": "Number of runs where the brand was mentioned"
+					},
+					"competitorMentionsTotal": {
+						"type": "integer",
+						"description": "Total count of individual competitor mentions across all runs (a single run mentioning 3 competitors counts as 3)"
+					},
+					"mentionsTopK": {
+						"type": "array",
+						"items": {
+							"$ref": "#/components/schemas/MentionEntry"
+						},
+						"description": "Top-K competitor entities ranked by mention count"
+					}
+				},
+				"required": ["mentionsTotal", "brandMentionsTotal", "competitorMentionsTotal", "mentionsTopK"]
+			},
+			"MentionEntry": {
+				"type": "object",
+				"properties": {
+					"entity": {
+						"type": "string",
+						"description": "Competitor entity name"
+					},
+					"count": {
+						"type": "integer",
+						"description": "Number of runs where this entity was mentioned"
+					}
+				},
+				"required": ["entity", "count"]
+			},
+			"CitedUrlEntry": {
+				"type": "object",
+				"properties": {
+					"url": {
+						"type": "string",
+						"description": "The cited URL"
+					},
+					"title": {
+						"type": "string",
+						"nullable": true,
+						"description": "Page title if available"
+					},
+					"count": {
+						"type": "integer",
+						"description": "Number of times this URL was cited"
+					}
+				},
+				"required": ["url", "title", "count"]
+			},
+			"AnalyzeBrandRequest": {
+				"type": "object",
+				"properties": {
+					"website": {
+						"type": "string",
+						"description": "Brand's website URL or hostname. Must parse to a valid domain.",
+						"minLength": 1
+					},
+					"brandName": {
+						"type": "string",
+						"description": "Optional brand name hint. If omitted, inferred from the domain."
+					},
+					"maxCompetitors": {
+						"type": "integer",
+						"description": "Maximum number of competitor suggestions. 0 disables competitor generation entirely.",
+						"minimum": 0,
+						"maximum": 100,
+						"default": 20
+					},
+					"maxPrompts": {
+						"type": "integer",
+						"description": "Maximum number of suggested prompts. 0 disables prompt generation entirely.",
+						"minimum": 0,
+						"maximum": 100,
+						"default": 30
+					}
+				},
+				"required": ["website"]
+			},
+			"OnboardingSuggestion": {
+				"type": "object",
+				"properties": {
+					"brandName": { "type": "string" },
+					"website": { "type": "string", "description": "Cleaned hostname" },
+					"additionalDomains": { "type": "array", "items": { "type": "string" } },
+					"aliases": { "type": "array", "items": { "type": "string" } },
+					"competitors": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": { "type": "string" },
+								"domains": { "type": "array", "items": { "type": "string" } },
+								"aliases": { "type": "array", "items": { "type": "string" } }
+							},
+							"required": ["name", "domains", "aliases"]
+						}
+					},
+					"suggestedPrompts": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"prompt": { "type": "string" },
+								"tags": { "type": "array", "items": { "type": "string" } }
+							},
+							"required": ["prompt", "tags"]
+						}
+					}
+				},
+				"required": [
+					"brandName",
+					"website",
+					"additionalDomains",
+					"aliases",
+					"competitors",
+					"suggestedPrompts"
+				]
+			},
+			"CreateBrandRequest": {
+				"type": "object",
+				"description": "Create a brand. Skips onboarding. The first entry in `domains` is treated as the brand's primary website; the rest are stored as additional domains.",
+				"properties": {
+					"id": { "type": "string", "minLength": 1 },
+					"name": { "type": "string", "minLength": 1 },
+					"domains": {
+						"type": "array",
+						"items": { "type": "string" },
+						"minItems": 1,
+						"description": "Brand domains. The first entry is the primary website; remaining entries are additional domains."
+					},
+					"aliases": { "type": "array", "items": { "type": "string" } },
+					"competitors": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"name": { "type": "string", "minLength": 1 },
+								"domains": { "type": "array", "items": { "type": "string" } },
+								"aliases": { "type": "array", "items": { "type": "string" } }
+							},
+							"required": ["name"]
+						}
+					},
+					"prompts": {
+						"type": "array",
+						"items": {
+							"type": "object",
+							"properties": {
+								"value": { "type": "string", "minLength": 1 },
+								"tags": { "type": "array", "items": { "type": "string" } },
+								"enabled": { "type": "boolean", "default": true }
+							},
+							"required": ["value"]
+						}
+					}
+				},
+				"required": ["id", "name", "domains"]
+			},
+			"UpdateBrandRequest": {
+				"type": "object",
+				"description": "Update brand-level fields. At least one field must be provided. Provided arrays replace the stored values verbatim. When `domains` is provided, the first entry becomes the primary website and the rest become additional domains. Prompts and competitors are managed via /prompts and /competitors.",
+				"minProperties": 1,
+				"properties": {
+					"brandName": { "type": "string", "minLength": 1 },
+					"domains": {
+						"type": "array",
+						"items": { "type": "string" },
+						"minItems": 1,
+						"description": "Brand domains. The first entry is the primary website; remaining entries are additional domains."
+					},
+					"aliases": { "type": "array", "items": { "type": "string" } },
+					"enabled": { "type": "boolean" }
+				}
+			},
+			"Brand": {
+				"type": "object",
+				"properties": {
+					"id": { "type": "string", "description": "User-supplied brand identifier (e.g. \"acme\")" },
+					"name": { "type": "string" },
+					"domains": {
+						"type": "array",
+						"items": { "type": "string" },
+						"description": "Brand domains. The first entry is the primary website; remaining entries are additional domains."
+					},
+					"aliases": { "type": "array", "items": { "type": "string" } },
+					"enabled": { "type": "boolean" },
+					"onboarded": { "type": "boolean" },
+					"createdAt": { "type": "string", "format": "date-time" },
+					"updatedAt": { "type": "string", "format": "date-time" }
+				},
+				"required": ["id", "name", "domains", "aliases", "enabled", "onboarded", "createdAt", "updatedAt"]
+			},
+			"BrandsList": {
+				"type": "object",
+				"properties": {
+					"brands": { "type": "array", "items": { "$ref": "#/components/schemas/Brand" } },
+					"pagination": {
+						"type": "object",
+						"properties": {
+							"page": { "type": "integer" },
+							"limit": { "type": "integer" },
+							"total": { "type": "integer" },
+							"totalPages": { "type": "integer" }
+						},
+						"required": ["page", "limit", "total", "totalPages"]
+					}
+				},
+				"required": ["brands", "pagination"]
+			},
+			"Competitor": {
+				"type": "object",
+				"properties": {
+					"id": { "type": "string", "format": "uuid" },
+					"brandId": { "type": "string" },
+					"name": { "type": "string" },
+					"domains": { "type": "array", "items": { "type": "string" } },
+					"aliases": { "type": "array", "items": { "type": "string" } },
+					"createdAt": { "type": "string", "format": "date-time" },
+					"updatedAt": { "type": "string", "format": "date-time" }
+				},
+				"required": ["id", "brandId", "name", "domains", "aliases", "createdAt", "updatedAt"]
+			},
+			"CompetitorsList": {
+				"type": "object",
+				"properties": {
+					"competitors": { "type": "array", "items": { "$ref": "#/components/schemas/Competitor" } },
+					"pagination": {
+						"type": "object",
+						"properties": {
+							"page": { "type": "integer" },
+							"limit": { "type": "integer" },
+							"total": { "type": "integer" },
+							"totalPages": { "type": "integer" }
+						},
+						"required": ["page", "limit", "total", "totalPages"]
+					}
+				},
+				"required": ["competitors", "pagination"]
+			},
+			"CreateCompetitorRequest": {
+				"type": "object",
+				"description": "Add a competitor to a brand.",
+				"properties": {
+					"brandId": { "type": "string", "minLength": 1 },
+					"name": { "type": "string", "minLength": 1 },
+					"domains": { "type": "array", "items": { "type": "string" } },
+					"aliases": { "type": "array", "items": { "type": "string" } }
+				},
+				"required": ["brandId", "name"]
+			},
+			"UpdateCompetitorRequest": {
+				"type": "object",
+				"description": "Update a competitor. At least one field must be provided. Provided arrays replace the stored values verbatim.",
+				"minProperties": 1,
+				"properties": {
+					"name": { "type": "string", "minLength": 1 },
+					"domains": { "type": "array", "items": { "type": "string" } },
+					"aliases": { "type": "array", "items": { "type": "string" } }
+				}
+			},
+			"PromptSnapshot": {
+				"type": "object",
+				"properties": {
+					"brandId": {
+						"type": "string",
+						"description": "Brand identifier this prompt belongs to"
+					},
+					"promptId": {
+						"type": "string",
+						"format": "uuid",
+						"description": "Unique identifier for the prompt"
+					},
+					"promptValue": {
+						"type": "string",
+						"description": "The prompt text"
+					},
+					"startDate": {
+						"type": "string",
+						"format": "date",
+						"description": "Start of the queried date range (YYYY-MM-DD)"
+					},
+					"endDate": {
+						"type": "string",
+						"format": "date",
+						"description": "End of the queried date range (YYYY-MM-DD)"
+					},
+					"mentions": {
+						"$ref": "#/components/schemas/MentionsSummary"
+					},
+					"citations": {
+						"type": "object",
+						"properties": {
+							"citationsTotal": {
+								"type": "integer",
+								"description": "Total number of citations across all runs"
+							},
+							"brandCitationsTotal": {
+								"type": "integer",
+								"description": "Number of citations to brand-owned domains"
+							},
+							"competitorCitationsTotal": {
+								"type": "integer",
+								"description": "Number of citations to competitor-owned domains"
+							},
+							"citedUrlsTopK": {
+								"type": "array",
+								"items": {
+									"$ref": "#/components/schemas/CitedUrlEntry"
+								},
+								"description": "Top-K cited URLs ranked by frequency"
+							}
+						},
+						"required": ["citationsTotal", "brandCitationsTotal", "competitorCitationsTotal", "citedUrlsTopK"]
+					}
+				},
+				"required": ["brandId", "promptId", "promptValue", "startDate", "endDate", "mentions", "citations"]
+			}
+		},
+		"responses": {
+			"UnauthorizedError": {
+				"description": "Authentication required",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Error"
+						}
+					}
+				}
+			},
+			"NotFoundError": {
+				"description": "Resource not found",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Error"
+						}
+					}
+				}
+			},
+			"ValidationError": {
+				"description": "Invalid request data",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Error"
+						}
+					}
+				}
+			},
+			"InternalServerError": {
+				"description": "Internal server error",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Error"
+						}
+					}
+				}
+			},
+			"ConflictError": {
+				"description": "Resource already exists",
+				"content": {
+					"application/json": {
+						"schema": {
+							"$ref": "#/components/schemas/Error"
+						}
+					}
+				}
+			}
+		}
+	},
+	"paths": {
+		"/tools/analyze": {
+			"post": {
+				"summary": "Analyze a website",
+				"description": "Run brand analysis without persisting anything. Returns suggested additional domains, aliases, competitors, and prompts.",
+				"operationId": "analyzeBrand",
+				"tags": ["Tools"],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/AnalyzeBrandRequest" }
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Brand analysis suggestion",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/OnboardingSuggestion" }
+							}
+						}
+					},
+					"400": { "$ref": "#/components/responses/ValidationError" },
+					"401": { "$ref": "#/components/responses/UnauthorizedError" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			}
+		},
+		"/brands": {
+			"get": {
+				"summary": "List brands",
+				"operationId": "listBrands",
+				"tags": ["Brands"],
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"required": false,
+						"schema": { "type": "integer", "minimum": 1, "default": 1 }
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 20 }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Paginated list of brands",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/BrandsList" }
+							}
+						}
+					},
+					"401": { "$ref": "#/components/responses/UnauthorizedError" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			},
+			"post": {
+				"summary": "Create a brand",
+				"operationId": "createBrand",
+				"tags": ["Brands"],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/CreateBrandRequest" }
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Brand created",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Brand" }
+							}
+						}
+					},
+					"400": { "$ref": "#/components/responses/ValidationError" },
+					"401": { "$ref": "#/components/responses/UnauthorizedError" },
+					"409": { "$ref": "#/components/responses/ConflictError" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			}
+		},
+		"/brands/{brandId}": {
+			"get": {
+				"summary": "Get a brand",
+				"operationId": "getBrand",
+				"tags": ["Brands"],
+				"parameters": [
+					{
+						"name": "brandId",
+						"in": "path",
+						"required": true,
+						"description": "Brand identifier",
+						"schema": { "type": "string", "minLength": 1 }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Brand",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Brand" }
+							}
+						}
+					},
+					"401": { "$ref": "#/components/responses/UnauthorizedError" },
+					"404": { "$ref": "#/components/responses/NotFoundError" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			},
+			"patch": {
+				"summary": "Update a brand",
+				"operationId": "updateBrand",
+				"tags": ["Brands"],
+				"parameters": [
+					{
+						"name": "brandId",
+						"in": "path",
+						"required": true,
+						"description": "Brand identifier",
+						"schema": { "type": "string", "minLength": 1 }
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/UpdateBrandRequest" }
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Brand updated",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Brand" }
+							}
+						}
+					},
+					"400": { "$ref": "#/components/responses/ValidationError" },
+					"401": { "$ref": "#/components/responses/UnauthorizedError" },
+					"404": { "$ref": "#/components/responses/NotFoundError" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			}
+		},
+		"/competitors": {
+			"get": {
+				"summary": "List competitors",
+				"operationId": "listCompetitors",
+				"tags": ["Competitors"],
+				"parameters": [
+					{
+						"name": "brandId",
+						"in": "query",
+						"required": false,
+						"schema": { "type": "string" }
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"required": false,
+						"schema": { "type": "integer", "minimum": 1, "default": 1 }
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"required": false,
+						"schema": { "type": "integer", "minimum": 1, "maximum": 100, "default": 20 }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Paginated list of competitors",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/CompetitorsList" }
+							}
+						}
+					},
+					"401": { "$ref": "#/components/responses/UnauthorizedError" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			},
+			"post": {
+				"summary": "Add a competitor",
+				"operationId": "createCompetitor",
+				"tags": ["Competitors"],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/CreateCompetitorRequest" }
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Competitor created",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Competitor" }
+							}
+						}
+					},
+					"400": { "$ref": "#/components/responses/ValidationError" },
+					"401": { "$ref": "#/components/responses/UnauthorizedError" },
+					"409": { "$ref": "#/components/responses/ConflictError" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			}
+		},
+		"/competitors/{competitorId}": {
+			"get": {
+				"summary": "Get a competitor",
+				"operationId": "getCompetitor",
+				"tags": ["Competitors"],
+				"parameters": [
+					{
+						"name": "competitorId",
+						"in": "path",
+						"required": true,
+						"description": "Competitor identifier (UUID)",
+						"schema": { "type": "string", "format": "uuid" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Competitor",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Competitor" }
+							}
+						}
+					},
+					"400": { "$ref": "#/components/responses/ValidationError" },
+					"401": { "$ref": "#/components/responses/UnauthorizedError" },
+					"404": { "$ref": "#/components/responses/NotFoundError" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			},
+			"patch": {
+				"summary": "Update a competitor",
+				"operationId": "updateCompetitor",
+				"tags": ["Competitors"],
+				"parameters": [
+					{
+						"name": "competitorId",
+						"in": "path",
+						"required": true,
+						"description": "Competitor identifier (UUID)",
+						"schema": { "type": "string", "format": "uuid" }
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": { "$ref": "#/components/schemas/UpdateCompetitorRequest" }
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Competitor updated",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Competitor" }
+							}
+						}
+					},
+					"400": { "$ref": "#/components/responses/ValidationError" },
+					"401": { "$ref": "#/components/responses/UnauthorizedError" },
+					"404": { "$ref": "#/components/responses/NotFoundError" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			},
+			"delete": {
+				"summary": "Delete a competitor",
+				"operationId": "deleteCompetitor",
+				"tags": ["Competitors"],
+				"parameters": [
+					{
+						"name": "competitorId",
+						"in": "path",
+						"required": true,
+						"description": "Competitor identifier (UUID)",
+						"schema": { "type": "string", "format": "uuid" }
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Competitor deleted (returns the deleted competitor)",
+						"content": {
+							"application/json": {
+								"schema": { "$ref": "#/components/schemas/Competitor" }
+							}
+						}
+					},
+					"400": { "$ref": "#/components/responses/ValidationError" },
+					"401": { "$ref": "#/components/responses/UnauthorizedError" },
+					"404": { "$ref": "#/components/responses/NotFoundError" },
+					"500": { "$ref": "#/components/responses/InternalServerError" }
+				}
+			}
+		},
+		"/prompts": {
+			"get": {
+				"summary": "List all prompts",
+				"description": "Retrieve a paginated list of all prompts across all brands",
+				"operationId": "listPrompts",
+				"tags": ["Prompts"],
+				"parameters": [
+					{
+						"name": "brandId",
+						"in": "query",
+						"description": "Filter prompts by brand ID",
+						"required": false,
+						"schema": {
+							"type": "string"
+						}
+					},
+					{
+						"name": "page",
+						"in": "query",
+						"description": "Page number for pagination (1-based)",
+						"required": false,
+						"schema": {
+							"type": "integer",
+							"minimum": 1,
+							"default": 1
+						}
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"description": "Number of items per page",
+						"required": false,
+						"schema": {
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 100,
+							"default": 20
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "List of prompts",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"prompts": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/Prompt"
+											}
+										},
+										"pagination": {
+											"type": "object",
+											"properties": {
+												"page": {
+													"type": "integer"
+												},
+												"limit": {
+													"type": "integer"
+												},
+												"total": {
+													"type": "integer"
+												},
+												"totalPages": {
+													"type": "integer"
+												}
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"500": {
+						"$ref": "#/components/responses/InternalServerError"
+					}
+				}
+			},
+			"post": {
+				"summary": "Create a new prompt",
+				"description": "Create a new prompt for a brand. This will automatically schedule the prompt for execution.",
+				"operationId": "createPrompt",
+				"tags": ["Prompts"],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreatePromptRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Prompt created successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Prompt"
+								}
+							}
+						}
+					},
+					"400": {
+						"$ref": "#/components/responses/ValidationError"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"500": {
+						"$ref": "#/components/responses/InternalServerError"
+					}
+				}
+			}
+		},
+		"/prompts/{promptId}/snapshot": {
+			"get": {
+				"summary": "Get prompt snapshot",
+				"description": "Get an aggregated snapshot of mention and citation analytics for a specific prompt over a date range. Use this to identify competitive gaps, track brand visibility trends, and discover top cited URLs.",
+				"operationId": "getPromptSnapshot",
+				"tags": ["Snapshots"],
+				"parameters": [
+					{
+						"name": "promptId",
+						"in": "path",
+						"required": true,
+						"description": "The ID of the prompt",
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					},
+					{
+						"name": "startDate",
+						"in": "query",
+						"required": true,
+						"description": "Start of date range (YYYY-MM-DD)",
+						"schema": {
+							"type": "string",
+							"format": "date"
+						},
+						"example": "2026-01-08"
+					},
+					{
+						"name": "endDate",
+						"in": "query",
+						"required": true,
+						"description": "End of date range (YYYY-MM-DD)",
+						"schema": {
+							"type": "string",
+							"format": "date"
+						},
+						"example": "2026-01-15"
+					},
+					{
+						"name": "kMentions",
+						"in": "query",
+						"required": false,
+						"description": "Number of top competitor entities to return in mentionsTopK",
+						"schema": {
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 50,
+							"default": 5
+						}
+					},
+					{
+						"name": "kCitations",
+						"in": "query",
+						"required": false,
+						"description": "Number of top cited URLs to return in citedUrlsTopK",
+						"schema": {
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 50,
+							"default": 10
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Prompt snapshot with mention and citation analytics",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/PromptSnapshot"
+								},
+								"example": {
+									"brandId": "brand_nike",
+									"promptId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+									"promptValue": "best running shoes for marathon training",
+									"startDate": "2026-01-08",
+									"endDate": "2026-01-15",
+									"mentions": {
+										"mentionsTotal": 210,
+										"brandMentionsTotal": 42,
+										"competitorMentionsTotal": 130,
+										"mentionsTopK": [
+											{ "entity": "Adidas", "count": 58 },
+											{ "entity": "New Balance", "count": 45 },
+											{ "entity": "ASICS", "count": 27 }
+										]
+									},
+									"citations": {
+										"citationsTotal": 1240,
+										"brandCitationsTotal": 85,
+										"competitorCitationsTotal": 620,
+										"citedUrlsTopK": [
+											{
+												"url": "https://www.runnersworld.com/gear/best-running-shoes/",
+												"title": "Best Running Shoes 2026",
+												"count": 72
+											},
+											{
+												"url": "https://www.nike.com/running/marathon",
+												"title": "Nike Marathon Collection",
+												"count": 34
+											}
+										]
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"$ref": "#/components/responses/ValidationError"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/InternalServerError"
+					}
+				}
+			}
+		},
+		"/prompts/{promptId}": {
+			"get": {
+				"summary": "Get a prompt",
+				"description": "Retrieve a specific prompt by ID",
+				"operationId": "getPrompt",
+				"tags": ["Prompts"],
+				"parameters": [
+					{
+						"name": "promptId",
+						"in": "path",
+						"required": true,
+						"description": "The ID of the prompt",
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Prompt details",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Prompt"
+								}
+							}
+						}
+					},
+					"400": {
+						"$ref": "#/components/responses/ValidationError"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/InternalServerError"
+					}
+				}
+			},
+			"patch": {
+				"summary": "Update a prompt",
+				"description": "Update a prompt's properties. Only provided fields will be updated. Toggling `enabled` schedules or unschedules the recurring run job.",
+				"operationId": "updatePrompt",
+				"tags": ["Prompts"],
+				"parameters": [
+					{
+						"name": "promptId",
+						"in": "path",
+						"required": true,
+						"description": "The ID of the prompt to update",
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/UpdatePromptRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"200": {
+						"description": "Prompt updated successfully",
+						"content": {
+							"application/json": {
+								"schema": {
+									"$ref": "#/components/schemas/Prompt"
+								}
+							}
+						}
+					},
+					"400": {
+						"$ref": "#/components/responses/ValidationError"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/InternalServerError"
+					}
+				}
+			},
+			"delete": {
+				"summary": "Delete a prompt",
+				"description": "Permanently delete a prompt and cancel all related scheduled jobs. This will also cascade delete all associated prompt runs.",
+				"operationId": "deletePrompt",
+				"tags": ["Prompts"],
+				"parameters": [
+					{
+						"name": "promptId",
+						"in": "path",
+						"required": true,
+						"description": "The ID of the prompt to delete",
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Prompt deleted (returns the deleted prompt)",
+						"content": {
+							"application/json": {
+								"schema": {
+									"allOf": [
+										{ "$ref": "#/components/schemas/Prompt" },
+										{
+											"type": "object",
+											"properties": {
+												"deletedRunsCount": {
+													"type": "integer",
+													"description": "Number of related prompt_runs rows deleted by the cascade."
+												}
+											},
+											"required": ["deletedRunsCount"]
+										}
+									]
+								}
+							}
+						}
+					},
+					"400": {
+						"$ref": "#/components/responses/ValidationError"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/InternalServerError"
+					}
+				}
+			}
+		},
+		"/reports": {
+			"post": {
+				"summary": "Create a report",
+				"description": "Create a new AI Share of Voice report and queue it for generation. The report will evaluate the brand across multiple AI engines (ChatGPT, Claude, Google AI) using generated and optional custom prompts.",
+				"operationId": "createReport",
+				"tags": ["Reports"],
+				"requestBody": {
+					"required": true,
+					"content": {
+						"application/json": {
+							"schema": {
+								"$ref": "#/components/schemas/CreateReportRequest"
+							}
+						}
+					}
+				},
+				"responses": {
+					"201": {
+						"description": "Report created and queued for generation",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"reportId": {
+											"type": "string",
+											"format": "uuid",
+											"description": "Unique identifier for the created report"
+										},
+										"status": {
+											"type": "string",
+											"enum": ["pending"],
+											"description": "Initial report status"
+										},
+										"brandName": {
+											"type": "string"
+										},
+										"brandWebsite": {
+											"type": "string"
+										},
+										"createdAt": {
+											"type": "string",
+											"format": "date-time"
+										}
+									},
+									"required": ["reportId", "status", "brandName", "brandWebsite", "createdAt"]
+								}
+							}
+						}
+					},
+					"400": {
+						"$ref": "#/components/responses/ValidationError"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"500": {
+						"$ref": "#/components/responses/InternalServerError"
+					}
+				}
+			},
+			"get": {
+				"summary": "List reports",
+				"description": "Retrieve a paginated list of all reports, ordered by creation date (newest first).",
+				"operationId": "listReports",
+				"tags": ["Reports"],
+				"parameters": [
+					{
+						"name": "page",
+						"in": "query",
+						"description": "Page number for pagination (1-based)",
+						"required": false,
+						"schema": {
+							"type": "integer",
+							"minimum": 1,
+							"default": 1
+						}
+					},
+					{
+						"name": "limit",
+						"in": "query",
+						"description": "Number of items per page",
+						"required": false,
+						"schema": {
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 100,
+							"default": 20
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Paginated list of reports",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"reports": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/ReportSummary"
+											}
+										},
+										"pagination": {
+											"type": "object",
+											"properties": {
+												"page": { "type": "integer" },
+												"limit": { "type": "integer" },
+												"total": { "type": "integer" },
+												"totalPages": { "type": "integer" }
+											}
+										}
+									}
+								}
+							}
+						}
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"500": {
+						"$ref": "#/components/responses/InternalServerError"
+					}
+				}
+			}
+		},
+		"/reports/{reportId}": {
+			"get": {
+				"summary": "Get report status and data",
+				"description": "Poll a report's status. When completed, returns per-prompt snapshot data with raw mention counts. Consumers are responsible for computing SoV and other derived metrics from the raw data.",
+				"operationId": "getReport",
+				"tags": ["Reports"],
+				"parameters": [
+					{
+						"name": "reportId",
+						"in": "path",
+						"required": true,
+						"description": "The ID of the report",
+						"schema": {
+							"type": "string",
+							"format": "uuid"
+						}
+					},
+					{
+						"name": "kMentions",
+						"in": "query",
+						"required": false,
+						"description": "Number of top competitor entities to return in each prompt's mentionsTopK",
+						"schema": {
+							"type": "integer",
+							"minimum": 1,
+							"maximum": 50,
+							"default": 5
+						}
+					}
+				],
+				"responses": {
+					"200": {
+						"description": "Report status and data. When status is 'completed', includes per-prompt snapshot data with raw mention counts.",
+						"content": {
+							"application/json": {
+								"schema": {
+									"type": "object",
+									"properties": {
+										"reportId": {
+											"type": "string",
+											"format": "uuid"
+										},
+										"status": {
+											"type": "string",
+											"enum": ["pending", "processing", "completed", "failed"]
+										},
+										"progress": {
+											"type": "integer",
+											"description": "Generation progress percentage (0-100). Available while processing."
+										},
+										"brandName": {
+											"type": "string"
+										},
+										"brandWebsite": {
+											"type": "string"
+										},
+										"createdAt": {
+											"type": "string",
+											"format": "date-time"
+										},
+										"completedAt": {
+											"type": "string",
+											"format": "date-time",
+											"nullable": true
+										},
+										"prompts": {
+											"type": "array",
+											"items": {
+												"$ref": "#/components/schemas/ReportPromptSnapshot"
+											},
+											"description": "Per-prompt snapshot data. Only present when status is 'completed'."
+										},
+										"unstable": {
+											"type": "object",
+											"description": "Derived stats (SoV, visibility, etc.). Format may change between versions. Only present when status is 'completed'.",
+											"properties": {
+												"sov": {
+													"type": "number",
+													"nullable": true,
+													"minimum": 0,
+													"maximum": 1,
+													"description": "Overall share of voice (0-1): brand_mentions / (brand_mentions + competitor_mentions). Null when no mentions at all."
+												},
+												"visibility": {
+													"type": "number",
+													"minimum": 0,
+													"maximum": 1,
+													"description": "Brand visibility (0-1): brand_mentions / total_prompt_runs (how often the brand appears at all across all prompt runs)"
+												},
+												"totalPrompts": {
+													"type": "integer",
+													"description": "Total number of prompts evaluated"
+												},
+												"totalPromptRuns": {
+													"type": "integer",
+													"description": "Total number of prompt runs across all prompts (each prompt is executed multiple times across different AI engines)"
+												},
+												"promptsWithBrandMentions": {
+													"type": "integer",
+													"description": "Number of prompts where the brand was mentioned in at least one prompt run"
+												},
+												"promptRunsWithBrandMentions": {
+													"type": "integer",
+													"description": "Number of individual prompt runs where the brand was mentioned"
+												},
+												"competitors": {
+													"type": "array",
+													"items": {
+														"type": "object",
+														"properties": {
+															"name": { "type": "string", "description": "Competitor name" },
+															"sov": { "type": "number", "minimum": 0, "maximum": 1, "description": "Share of voice (0-1): this competitor's mentions / total mentions (brand + all competitors)" },
+															"visibility": { "type": "number", "minimum": 0, "maximum": 1, "description": "Visibility (0-1): prompt runs mentioning this competitor / total prompt runs" },
+															"promptsWithMentions": { "type": "integer", "description": "Number of prompts where this competitor was mentioned in at least one run" },
+															"promptRunsWithMentions": { "type": "integer", "description": "Number of individual prompt runs where this competitor was mentioned" }
+														},
+														"required": ["name", "sov", "visibility", "promptsWithMentions", "promptRunsWithMentions"]
+													},
+													"description": "Per-competitor SoV breakdown, sorted by SoV descending"
+												}
+											}
+										}
+									},
+									"required": ["reportId", "status", "brandName", "brandWebsite", "createdAt"]
+								},
+								"example": {
+									"reportId": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+									"status": "completed",
+									"brandName": "Acme Corp",
+									"brandWebsite": "acme.com",
+									"createdAt": "2026-04-08T10:00:00Z",
+									"completedAt": "2026-04-08T10:05:00Z",
+									"prompts": [
+										{
+											"promptValue": "best project management tools",
+											"totalRuns": 4,
+											"mentions": {
+												"mentionsTotal": 7,
+												"brandMentionsTotal": 3,
+												"competitorMentionsTotal": 4,
+												"mentionsTopK": [
+													{ "entity": "Competitor A", "count": 2 },
+													{ "entity": "Competitor B", "count": 2 }
+												]
+											}
+										}
+									],
+									"unstable": {
+										"sov": 0.42,
+										"visibility": 0.6,
+										"totalPrompts": 70,
+										"totalPromptRuns": 280,
+										"promptsWithBrandMentions": 28,
+										"promptRunsWithBrandMentions": 168,
+										"competitors": [
+											{ "name": "Competitor A", "sov": 0.35, "visibility": 0.35, "promptsWithMentions": 45, "promptRunsWithMentions": 98 },
+											{ "name": "Competitor B", "sov": 0.15, "visibility": 0.15, "promptsWithMentions": 20, "promptRunsWithMentions": 42 }
+										]
+									}
+								}
+							}
+						}
+					},
+					"400": {
+						"$ref": "#/components/responses/ValidationError"
+					},
+					"401": {
+						"$ref": "#/components/responses/UnauthorizedError"
+					},
+					"404": {
+						"$ref": "#/components/responses/NotFoundError"
+					},
+					"500": {
+						"$ref": "#/components/responses/InternalServerError"
+					}
+				}
+			}
+		}
+	},
+	"tags": [
+		{
+			"name": "Brands",
+			"description": "Manage brand records"
+		},
+		{
+			"name": "Tools",
+			"description": "One-shot helpers (e.g. brand analysis) that don't persist anything"
+		},
+		{
+			"name": "Prompts",
+			"description": "Manage brand prompts"
+		},
+		{
+			"name": "Competitors",
+			"description": "Manage brand competitors"
+		},
+		{
+			"name": "Snapshots",
+			"description": "Aggregated analytics snapshots for prompts"
+		},
+		{
+			"name": "Reports",
+			"description": "Generate and retrieve AI Share of Voice reports"
+		}
+	]
+}
