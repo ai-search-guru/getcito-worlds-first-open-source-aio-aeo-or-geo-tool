@@ -1,0 +1,55 @@
+---
+title: Do llms.txt files matter for AEO?
+description: The llms.txt convention is often misunderstood due to minor nuances in how it's used by AI search. Learn how agentic search actually uses Markdown text.
+date: "2026-05-30"
+author: jared
+tags:
+  - aeo
+  - llms-txt
+---
+
+<YouTube id="4-9kJG6CL6U" title="Do llms.txt files matter for AEO?" />
+
+The intention of [llms.txt](https://llmstxt.org/) files is to provide a guide to the site's contents in LLM-friendly plain text (typically markdown).
+
+However, there are some common misunderstandings about these files and how they are used. For example, Google's recent [AI SEO guide](https://developers.google.com/search/docs/fundamentals/ai-optimization-guide) mentions that you don't need an llms.txt file, while Google Chrome's Agentic Browsing audit actually [checks for an llms.txt](https://developer.chrome.com/docs/lighthouse/agentic-browsing/llms-txt). The server logs for many websites show no hits on llms.txt files at all.
+
+Even if you look at the websites for AEO platforms, llms.txt adoption is inconsistent:
+
+- [Profound](https://www.tryprofound.com/) → [llms.txt](https://www.tryprofound.com/llms.txt) (homepage summary, few links)
+- [AirOps](https://www.airops.com/) → ❌
+- [Peec](https://peec.ai/) → ❌
+- [Athena](https://athenahq.ai/) → [llms.txt](https://athenahq.ai/llms.txt) (short description, many links)
+- [Getcito](https://www.Getcitohq.com/) → [llms.txt](https://www.Getcitohq.com/llms.txt) (short description, many links, asks for [GitHub stars](https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool))
+
+So what's with the inconsistency?
+
+First, let's look at the ways AI search might end up encountering an llms.txt file.
+
+## 1. LLM training (nope)
+
+Most up-to-date LLMs are "aware" that llms.txt files exist (you can test this by asking a model without web search enabled what llms.txt files are), but the models are not typically trained to specifically treat them as entrypoints into websites or to actually look at them.
+
+## 2. System prompts (nope)
+
+[Leaked system prompts](https://github.com/asgeirtj/system_prompts_leaks) show a lot of guidance for performing web searches, but llms.txt is mentioned zero times for Claude / ChatGPT.
+
+## 3. Agentic harness (nope)
+
+Most tools like Claude Code or Codex do not contain instructions to look at llms.txt. You can look at the leaked Claude Code source code and leaked system prompts for these types of tools. Typically they include guidance and tooling around performing web searches for a sequence of searches, but they usually do not mention llms.txt at all.
+
+## 4. AGENTS.md / skills / etc. (sometimes)
+
+Some re-used skills and AGENTS files actually do mention llms.txt. It's not particularly common, but it is possible.
+
+## 5. Following links to llms.txt (most common)
+
+The most likely case that leads to an AI agent loading your llms.txt file is loading a page on a site that links to the file. The agent knows it's an agent, sees a link to a file that it was trained to know is specifically helpful for agents, and then follows the link to llms.txt.
+
+---
+
+Should you add llms.txt files? I'd generally say yes, since the downside is very low. However, the more important thing is to make sure your website is easy for LLMs to consume. Offering a plaintext version to agents browsing your site is possible via some CMSes and frameworks like [Fumadocs](https://www.fumadocs.dev/docs/integrations/llms). And if you do add an llms.txt file, make sure to link to it!
+
+So it turns out that this space is pretty nuanced. Google Search can reasonably say that it doesn't use llms.txt, and Chrome can reasonably say it's recommended for agentic browsing. And an AEO like Peec can reasonably serve pages like [docs.peec.ai/intro-to-peec-ai.md](https://docs.peec.ai/intro-to-peec-ai.md) to agents without an llms.txt.
+
+For Getcito, we do both: [Getcitohq.com/llms.txt](https://www.Getcitohq.com/llms.txt) and [a markdown version of every docs page](https://www.Getcitohq.com/docs/getting-started.md) (with links on every docs page to the markdown version).

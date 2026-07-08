@@ -1,0 +1,34 @@
+{
+  "$schema": "https://unpkg.com/knip@5/schema.json",
+  "ignoreWorkspaces": ["packages/ui"],
+  "workspaces": {
+    ".": {
+      "entry": ["turbo.json"],
+      "ignoreBinaries": ["playwright"]
+    },
+    "apps/web": {
+      "entry": ["src/routes/**/*.{ts,tsx}!", "src/server.ts", "scripts/*.ts"],
+      "project": ["src/**/*.{ts,tsx}", "scripts/**/*.ts"],
+      "ignore": ["src/stories/_mocks/**"],
+      "ignoreDependencies": [
+        "tailwindcss",
+        "tw-animate-css",
+        "@tailwindcss/typography",
+        "@takumi-rs/wasm",
+        "@fontsource/geist-sans"
+      ]
+    },
+    "apps/www": {
+      "entry": ["src/server.ts", "scripts/**"],
+      "ignore": [".source/**", "source.generated.ts"],
+      "ignoreDependencies": ["@takumi-rs/wasm", "shiki"]
+    },
+    "apps/worker": {
+      "entry": ["scripts/test-provider.ts"]
+    },
+    "e2e": {
+      "entry": ["*.ts"],
+      "project": ["**/*.ts"]
+    }
+  }
+}

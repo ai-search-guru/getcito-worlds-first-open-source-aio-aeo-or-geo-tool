@@ -1,0 +1,34 @@
+{
+  "lastUpdated": "2026-06-18",
+  "note": "Curated list of upcoming highlights surfaced from the project board. Refresh via the `update-changelog` Claude skill.",
+  "highlights": [
+    {
+      "title": "Getcito Cloud",
+      "description": "A fully hosted version of Getcito — sign up and start tracking your AI visibility in minutes, with no infrastructure to manage.",
+      "tag": "In progress",
+      "issue": 342,
+      "url": "https://github.com/getcitohq/getcito/issues/342"
+    },
+    {
+      "title": "Citation sentiment tracking",
+      "description": "Detect whether mentions of your brand in AI responses skew positive, neutral, or negative.",
+      "tag": "Planned",
+      "issue": 15,
+      "url": "https://github.com/getcitohq/getcito/issues/15"
+    },
+    {
+      "title": "Content simulator",
+      "description": "Preview how AI responses will change before you publish — model the impact of new pages on your citations.",
+      "tag": "Exploring",
+      "issue": 37,
+      "url": "https://github.com/getcitohq/getcito/issues/37"
+    },
+    {
+      "title": "ChatGPT ads tracking",
+      "description": "Monitor brand visibility in ChatGPT's sponsored placements as ads roll out across AI search.",
+      "tag": "Planned",
+      "issue": 168,
+      "url": "https://github.com/getcitohq/getcito/issues/168"
+    }
+  ]
+}

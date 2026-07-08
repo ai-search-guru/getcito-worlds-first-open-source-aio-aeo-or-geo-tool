@@ -1,0 +1,13 @@
+{
+	"title": "Developer Guide",
+	"pages": [
+		"index",
+		"development-setup",
+		"commands",
+		"architecture",
+		"configuration",
+		"telemetry",
+		"ai-policy",
+		"releases"
+	]
+}

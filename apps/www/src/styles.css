@@ -1,0 +1,156 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "fumadocs-ui/css/neutral.css";
+@import "fumadocs-ui/css/preset.css";
+@import "fumadocs-openapi/css/preset.css";
+
+@source "../src";
+@source "../../../packages/ui/src";
+
+@plugin "@tailwindcss/typography";
+
+@custom-variant dark (&:is(.dark *));
+
+@theme inline {
+	--color-background: var(--background);
+	--color-foreground: var(--foreground);
+	--font-sans: var(--font-geist-sans);
+	--font-mono: var(--font-geist-mono);
+	--color-card: var(--card);
+	--color-card-foreground: var(--card-foreground);
+	--color-popover: var(--popover);
+	--color-popover-foreground: var(--popover-foreground);
+	--color-primary: var(--primary);
+	--color-primary-foreground: var(--primary-foreground);
+	--color-secondary: var(--secondary);
+	--color-secondary-foreground: var(--secondary-foreground);
+	--color-muted: var(--muted);
+	--color-muted-foreground: var(--muted-foreground);
+	--color-accent: var(--accent);
+	--color-accent-foreground: var(--accent-foreground);
+	--color-destructive: var(--destructive);
+	--color-border: var(--border);
+	--color-input: var(--input);
+	--color-ring: var(--ring);
+	--radius-sm: calc(var(--radius) - 4px);
+	--radius-md: calc(var(--radius) - 2px);
+	--radius-lg: var(--radius);
+	--radius-xl: calc(var(--radius) + 4px);
+}
+
+@font-face {
+	font-family: "Titan One";
+	font-style: normal;
+	font-weight: 400;
+	src: url("@fontsource/titan-one/files/titan-one-latin-400-normal.woff2")
+		format("woff2");
+	font-display: swap;
+}
+
+/*
+ * Geist Sans / Mono ship only the 400-weight static file. The declared
+ * font-weight: 100 900 range tells the browser to use this single face
+ * for any requested weight WITHOUT synthesizing bold — so font-medium,
+ * font-semibold, etc. all render at the 400 file's visual weight. This
+ * is intentional: it keeps the lighter, uniform look across headings
+ * and avoids shipping additional weight files.
+ */
+@font-face {
+	font-family: "Geist Sans";
+	font-style: normal;
+	font-weight: 100 900;
+	src: url("@fontsource/geist-sans/files/geist-sans-latin-400-normal.woff2")
+		format("woff2");
+	font-display: swap;
+}
+
+@font-face {
+	font-family: "Geist Mono";
+	font-style: normal;
+	font-weight: 100 900;
+	src: url("@fontsource/geist-mono/files/geist-mono-latin-400-normal.woff2")
+		format("woff2");
+	font-display: swap;
+}
+
+:root {
+	--fd-nav-height: 4rem;
+	--font-geist-sans: "Geist Sans", ui-sans-serif, system-ui, sans-serif;
+	--font-geist-mono: "Geist Mono", ui-monospace, monospace;
+	--font-titan-one: "Titan One", cursive;
+
+	--radius: 0.625rem;
+	--background: oklch(1 0 0);
+	--foreground: oklch(0.141 0.005 285.823);
+	--card: oklch(1 0 0);
+	--card-foreground: oklch(0.141 0.005 285.823);
+	--popover: oklch(1 0 0);
+	--popover-foreground: oklch(0.141 0.005 285.823);
+	--primary: oklch(0.546 0.245 262.881);
+	--primary-foreground: oklch(0.985 0 0);
+	--secondary: oklch(0.967 0.001 286.375);
+	--secondary-foreground: oklch(0.21 0.006 285.885);
+	--muted: oklch(0.967 0.001 286.375);
+	--muted-foreground: oklch(0.552 0.016 285.938);
+	--accent: oklch(0.967 0.001 286.375);
+	--accent-foreground: oklch(0.21 0.006 285.885);
+	--destructive: oklch(0.577 0.245 27.325);
+	--border: oklch(0.92 0.004 286.32);
+	--input: oklch(0.92 0.004 286.32);
+	--ring: oklch(0.546 0.245 262.881);
+}
+
+@utility font-titan-one {
+	font-family: var(--font-titan-one);
+}
+
+@utility font-heading {
+	font-weight: 600;
+	letter-spacing: -0.025em;
+}
+
+@layer base {
+	* {
+		@apply border-border outline-ring/50;
+	}
+	body {
+		@apply bg-background text-foreground font-sans antialiased;
+	}
+	button:not(:disabled),
+	[role="button"]:not(:disabled) {
+		cursor: pointer;
+	}
+}
+
+.prose code::before,
+.prose code::after {
+	content: none !important;
+}
+
+.prose h1 a,
+.prose h2 a,
+.prose h3 a,
+.prose h4 a,
+.prose h5 a,
+.prose h6 a {
+	text-decoration: none !important;
+}
+
+.prose h1 a:hover,
+.prose h2 a:hover,
+.prose h3 a:hover,
+.prose h4 a:hover,
+.prose h5 a:hover,
+.prose h6 a:hover {
+	text-decoration: underline !important;
+}
+
+.prose thead th {
+	font-weight: 700;
+}
+
+.prose thead th:first-child,
+.prose tbody td:first-child,
+.prose tfoot td:first-child {
+	padding-inline-start: 0.571429em;
+}

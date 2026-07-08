@@ -1,0 +1,102 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1100 360" font-family="'Geist Sans', -apple-system, BlinkMacSystemFont, 'Inter', 'Segoe UI', Roboto, system-ui, sans-serif">
+  <defs>
+    <marker id="arr" viewBox="0 0 14 10" refX="14" refY="5"
+            markerUnits="userSpaceOnUse" markerWidth="14" markerHeight="10" orient="auto">
+      <path d="M0 0 L14 5 L0 10 z" fill="#a1a1aa"/>
+    </marker>
+
+    <filter id="shCard" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="1" stdDeviation="2" flood-opacity="0.06"/>
+    </filter>
+  </defs>
+
+  <rect width="1100" height="360" rx="16" fill="#fafaf9" stroke="#e4e4e7" stroke-width="1"/>
+
+  <!-- GETCITO subgraph -->
+  <rect x="220" y="20" width="440" height="320" rx="14" fill="#ffffff"
+        stroke="#e4e4e7" stroke-width="1" filter="url(#shCard)"/>
+  <text x="240" y="48" fill="#71717a" font-size="11" font-weight="600" letter-spacing="3.5">GETCITO</text>
+
+  <!-- LLM APIs group -->
+  <rect x="720" y="30" width="360" height="140" rx="14" fill="#ffffff"
+        stroke="#e4e4e7" stroke-width="1" filter="url(#shCard)"/>
+  <text x="740" y="58" fill="#71717a" font-size="11" font-weight="600" letter-spacing="3.5">LLM APIs</text>
+
+  <!-- LLM Scrapers group -->
+  <rect x="720" y="190" width="360" height="140" rx="14" fill="#ffffff"
+        stroke="#e4e4e7" stroke-width="1" filter="url(#shCard)"/>
+  <text x="740" y="218" fill="#71717a" font-size="11" font-weight="600" letter-spacing="3.5">LLM SCRAPERS</text>
+
+  <!-- Connectors -->
+  <!-- User → Web Server -->
+  <line x1="150" y1="100" x2="236" y2="100" stroke="#a1a1aa" stroke-width="2"/>
+  <polygon points="250,100 236,95 236,105" fill="#a1a1aa"/>
+  <!-- Postgres ↔ Getcito S-curve -->
+  <path d="M 162 260 C 190 260, 190 195, 204 195" stroke="#a1a1aa" stroke-width="2" fill="none"/>
+  <polygon points="148,260 162,255 162,265" fill="#a1a1aa"/>
+  <polygon points="218,195 204,190 204,200" fill="#a1a1aa"/>
+  <!-- Worker tributary -->
+  <path d="M 632 260 C 668 260, 660 100, 690 100" stroke="#a1a1aa" stroke-width="2" fill="none"/>
+  <!-- Web Server + Worker → LLM APIs -->
+  <line x1="632" y1="100" x2="706" y2="100" stroke="#a1a1aa" stroke-width="2"/>
+  <polygon points="720,100 706,95 706,105" fill="#a1a1aa"/>
+  <!-- Worker → LLM Scrapers -->
+  <line x1="632" y1="260" x2="706" y2="260" stroke="#a1a1aa" stroke-width="2"/>
+  <polygon points="720,260 706,255 706,265" fill="#a1a1aa"/>
+
+  <!-- User -->
+  <rect x="32" y="70" width="116" height="60" rx="10" fill="#18181b"/>
+  <text x="90" y="106" text-anchor="middle" fill="white" font-size="15" font-weight="600">User</text>
+
+  <!-- Postgres (flat cylinder) -->
+  <ellipse cx="90" cy="285" rx="58" ry="11" fill="#0d9488"/>
+  <rect x="32" y="225" width="116" height="60" fill="#0d9488"/>
+  <ellipse cx="90" cy="225" rx="58" ry="11" fill="#14b8a6"/>
+  <text x="90" y="268" text-anchor="middle" fill="white" font-size="15" font-weight="600">Postgres</text>
+
+  <!-- Web Server -->
+  <rect x="250" y="70" width="380" height="60" rx="10" fill="#2563eb"/>
+  <text x="440" y="106" text-anchor="middle" fill="white" font-size="15" font-weight="600">Web Server</text>
+
+  <!-- Worker -->
+  <rect x="250" y="230" width="380" height="60" rx="10" fill="#2563eb"/>
+  <text x="440" y="266" text-anchor="middle" fill="white" font-size="15" font-weight="600">Worker</text>
+
+  <!-- LLM API chips -->
+  <g>
+    <rect x="736" y="80" width="160" height="32" rx="6" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
+    <circle cx="752" cy="96" r="4" fill="#a855f7"/>
+    <text x="764" y="101" fill="#18181b" font-size="13" font-weight="500">OpenRouter</text>
+
+    <rect x="904" y="80" width="160" height="32" rx="6" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
+    <circle cx="920" cy="96" r="4" fill="#f59e0b"/>
+    <text x="932" y="101" fill="#18181b" font-size="13" font-weight="500">Anthropic</text>
+
+    <rect x="736" y="124" width="160" height="32" rx="6" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
+    <circle cx="752" cy="140" r="4" fill="#10b981"/>
+    <text x="764" y="145" fill="#18181b" font-size="13" font-weight="500">OpenAI</text>
+
+    <rect x="904" y="124" width="160" height="32" rx="6" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
+    <circle cx="920" cy="140" r="4" fill="#fa6c00"/>
+    <text x="932" y="145" fill="#18181b" font-size="13" font-weight="500">Mistral</text>
+  </g>
+
+  <!-- LLM Scraper chips -->
+  <g>
+    <rect x="736" y="240" width="160" height="32" rx="6" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
+    <circle cx="752" cy="256" r="4" fill="#10b981"/>
+    <text x="764" y="261" fill="#18181b" font-size="13" font-weight="500">ChatGPT</text>
+
+    <rect x="904" y="240" width="160" height="32" rx="6" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
+    <circle cx="920" cy="256" r="4" fill="#3b82f6"/>
+    <text x="932" y="261" fill="#18181b" font-size="13" font-weight="500">Google AI Mode</text>
+
+    <rect x="736" y="284" width="160" height="32" rx="6" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
+    <circle cx="752" cy="300" r="4" fill="#8b5cf6"/>
+    <text x="764" y="305" fill="#18181b" font-size="13" font-weight="500">Perplexity</text>
+
+    <rect x="904" y="284" width="160" height="32" rx="6" fill="#fafafa" stroke="#e4e4e7" stroke-width="1"/>
+    <circle cx="920" cy="300" r="4" fill="#52525b"/>
+    <text x="932" y="305" fill="#18181b" font-size="13" font-weight="500">Grok</text>
+  </g>
+</svg>

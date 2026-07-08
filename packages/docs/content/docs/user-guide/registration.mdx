@@ -1,0 +1,37 @@
+---
+title: Registration & Login
+description: Create your Getcito account and sign in for the first time.
+---
+
+## Create an Account
+
+With Getcito running locally, open your browser to **http://localhost:1515**.
+
+You'll see the Getcito landing page with a **Sign In** button. Click it to navigate to the login page, then click **Create an account** to register.
+
+{/* TODO: Screenshot of the Getcito landing page */}
+
+Fill in your details:
+
+- **Name** — Your display name
+- **Email** — Your email address
+- **Password** — A secure password
+
+{/* TODO: Screenshot of the registration form */}
+
+Click **Create Account** to complete registration. You'll be signed in automatically and redirected to the app.
+
+## Sign In
+
+On return visits, go to **http://localhost:1515** and click **Sign In**. Enter your email and password to access the dashboard.
+
+{/* TODO: Screenshot of the login form */}
+
+## Deployment Modes and Authentication
+
+The registration flow depends on your [deployment mode](/docs/developer-guide/configuration):
+
+| Mode | Authentication |
+|------|---------------|
+| **Local** (default) | Email and password — the flow described above |
+| **Demo** | Read-only access, no registration needed |

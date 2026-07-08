@@ -1,0 +1,1 @@
+ALTER TABLE "citations" ADD COLUMN "citation_index" smallint NOT NULL;

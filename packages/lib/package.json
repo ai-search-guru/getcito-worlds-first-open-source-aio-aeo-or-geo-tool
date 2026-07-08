@@ -1,0 +1,54 @@
+{
+  "name": "@workspace/lib",
+  "version": "0.2.14",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "vitest run",
+    "compare:onboarding": "tsx scripts/compare-onboarding.ts",
+    "generate:auth-schema": "bash scripts/generate-auth-schema.sh"
+  },
+  "exports": {
+    "./db/db": "./src/db/db.ts",
+    "./db/schema": "./src/db/schema.ts",
+    "./db/auth-sync": "./src/db/auth-sync.ts",
+    "./db/provisioning": "./src/db/provisioning.ts",
+    "./auth/server": "./src/auth/server.ts",
+    "./auth/client": "./src/auth/client.ts",
+    "./auth/permissions": "./src/auth/permissions.ts",
+    "./constants": "./src/constants.ts",
+    "./locations": "./src/locations.ts",
+    "./languages": "./src/languages.ts",
+    "./location-languages": "./src/location-languages.ts",
+    "./text-extraction": "./src/text-extraction.ts",
+    "./dataforseo": "./src/dataforseo.ts",
+    "./onboarding": "./src/onboarding/index.ts",
+    "./tag-utils": "./src/tag-utils.ts",
+    "./website-excerpt": "./src/website-excerpt.ts",
+    "./report-metrics": "./src/report-metrics.ts",
+    "./providers": "./src/providers/index.ts",
+    "./providers/models": "./src/providers/models.ts",
+    "./providers/types": "./src/providers/types.ts"
+  },
+  "dependencies": {
+    "@ai-sdk/anthropic": "^3.0.84",
+    "@ai-sdk/openai": "^3.0.71",
+    "@anthropic-ai/sdk": "^0.104.1",
+    "@better-auth/sso": "^1.6.18",
+    "@brightdata/sdk": "^1.1.0",
+    "@workspace/config": "workspace:*",
+    "ai": "^6.0.205",
+    "better-auth": "^1.6.18",
+    "dataforseo-client": "^2.0.25",
+    "drizzle-orm": "^0.45.2",
+    "olostep": "^1.1.0",
+    "pg": "^8.21.0",
+    "zod": "^4.4.3"
+  },
+  "devDependencies": {
+    "@types/pg": "^8.20.0",
+    "drizzle-kit": "^0.31.10",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
+  }
+}

@@ -1,0 +1,95 @@
+---
+title: Architecture
+description: How the Getcito monorepo is structured and how the pieces fit together.
+---
+
+## Monorepo Structure
+
+Getcito is a pnpm monorepo managed by Turborepo. The codebase is split into **apps** (deployable) and **packages** (shared libraries).
+
+```
+.
+├── apps/
+│   ├── web/          # Main dashboard (TanStack Start)
+│   ├── worker/       # Background job runner (pg-boss)
+│   ├── cli/          # getcito-cli npm package
+│   └── www/          # Marketing site (this site)
+│
+├── packages/
+│   ├── ui/           # Shared UI components (shadcn/ui)
+│   ├── lib/          # Shared business logic, DB schema, AI providers
+│   ├── config/       # Deployment configuration types
+│   ├── deployment/   # Deployment mode resolution
+│   ├── demo/         # Demo mode implementation
+│   ├── local/        # Local development mode
+│   ├── whitelabel/   # White-label mode
+│   ├── og/           # Shared OG image generation
+│   └── api-spec/     # OpenAPI specification
+│
+├── docker/           # Dockerfile (multi-stage)
+├── e2e/              # End-to-end tests
+├── biome.json        # Linting and formatting
+├── turbo.json        # Task pipeline configuration
+└── pnpm-workspace.yaml
+```
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|-----------|
+| **Language** | TypeScript 5.x |
+| **Framework** | TanStack Start (App Router, SSR) |
+| **Styling** | Tailwind CSS v4 |
+| **Components** | shadcn/ui (new-york style) |
+| **Data Fetching** | SWR |
+| **Database** | PostgreSQL with Drizzle ORM |
+| **Job Queue** | pg-boss (Postgres-based) |
+| **Testing** | Vitest |
+| **Linting** | Biome |
+| **Monorepo** | Turborepo + pnpm workspaces |
+
+## How the Apps Connect
+
+For the runtime topology (web, worker, Postgres, LLM providers), see the
+[System Architecture diagram](/docs/getting-started#system-architecture).
+
+What matters for development:
+
+- The **Web App** serves the dashboard UI and the REST API (`/api/v1`).
+- The **Worker** processes background jobs — querying AI models, running evaluations.
+- Both import shared code from `packages/lib` (database schema, AI provider config) and `packages/config` (deployment types).
+- The **CLI** generates Docker Compose configurations and manages the deployment lifecycle.
+
+## Deployment Modes
+
+Each deployment mode is implemented as a separate package in `packages/`:
+
+| Package | Mode | Description |
+|---------|------|-------------|
+| `packages/local` | `local` | Single-org, email/password auth |
+| `packages/demo` | `demo` | Read-only demonstration |
+| `packages/whitelabel` | `whitelabel` | Multi-org with Auth0 SSO |
+
+The `packages/deployment` package resolves the active mode at runtime based on `DEPLOYMENT_MODE` and provides the correct implementation.
+
+## Database
+
+The database schema is defined with Drizzle ORM in `packages/lib/src/db/`. Key tables include:
+
+- **brands** — Brand profiles with name, website, domains, aliases
+- **prompts** — Tracking prompts associated with brands
+- **evaluations** — Results from querying AI models
+- **citations** — URLs cited by AI models in their responses
+
+Migrations are generated with `drizzle-kit generate` and applied with `drizzle-kit migrate`.
+
+## Provider Abstraction
+
+All AI scraping flows through a single `Provider` interface in `packages/lib/src/providers/`. The runtime wiring:
+
+1. `SCRAPE_TARGETS` (env var) holds comma-separated `model:provider[:version][:online]` entries.
+2. `parseScrapeTargets()` turns the string into `ModelConfig[]`.
+3. `getProvider(providerId).run(model, prompt, { webSearch, version })` dispatches to a concrete `registry/` implementation and returns a normalized `ScrapeResult` (`textContent`, `rawOutput`, `webQueries`, `citations`, `modelVersion`).
+
+User-facing setup is documented in [Providers](/docs/user-guide/providers).
+

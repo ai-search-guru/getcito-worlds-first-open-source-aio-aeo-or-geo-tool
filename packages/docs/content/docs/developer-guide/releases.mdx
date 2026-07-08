@@ -1,0 +1,66 @@
+---
+title: Versioning & Releases
+description: How Getcito handles versioning, changesets, and the release process.
+---
+
+## Changesets
+
+Getcito uses [Changesets](https://github.com/changesets/changesets) for version management. All packages in the monorepo use fixed versioning — they stay on the same version number.
+
+### Adding a Changeset
+
+Every PR that changes user-facing behavior should include a changeset:
+
+```bash
+pnpm changeset
+```
+
+This interactive command asks:
+1. Which packages are affected
+2. Whether the change is a major, minor, or patch
+3. A short description of what changed
+
+A markdown file is created in the `.changeset/` directory. Commit this file with your PR.
+
+### What Needs a Changeset
+
+- Bug fixes → `patch`
+- New features → `minor`
+- Breaking changes → `major`
+- Documentation-only changes → usually don't need a changeset
+- Internal refactors that don't change behavior → usually don't need a changeset
+
+## Release Process (Maintainers)
+
+When ready to release a new version:
+
+1. **Apply changesets and bump versions** locally:
+   ```bash
+   pnpm version-packages
+   ```
+   This consumes all pending changeset files, updates `package.json` versions across the monorepo, and generates `CHANGELOG.md` entries.
+
+2. **Review and commit** the version changes:
+   ```bash
+   git add .
+   git commit -m "chore: release v$(node -p "require('./apps/cli/package.json').version")"
+   git push
+   ```
+
+3. **Trigger the release workflow** from GitHub Actions:
+   - Go to **Actions → Release → Run workflow**
+   - This creates a GitHub release and publishes to Docker Hub and npm
+
+## What Gets Published
+
+| Artifact | Registry | Description |
+|----------|----------|-------------|
+| `getcito-cli` | npm | The Getcito CLI package |
+| `ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool-web` | Docker Hub | Web app Docker image |
+| `ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool-worker` | Docker Hub | Worker Docker image |
+| `ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool-db-migrate` | Docker Hub | One-shot drizzle migrations image |
+
+## Versioning Strategy
+
+All packages share the same version number. When any package changes, all versions bump together. This keeps things simple and avoids compatibility issues between packages.
+
