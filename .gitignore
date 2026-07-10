@@ -1,28 +1,16 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
 # dependencies
-node_modules
-
-# turbo
-.turbo
+/node_modules
 /.pnp
-.pnp.*
-.yarn/*
-!.yarn/patches
-!.yarn/plugins
-!.yarn/releases
-!.yarn/versions
+.pnp.js
 
 # testing
 /coverage
 
 # next.js
-.next/
-out/
-
-# tanstack start
-.output/
-.tanstack/
+/.next/
+/out/
 
 # production
 /build
@@ -35,21 +23,9 @@ out/
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
-.pnpm-debug.log*
-debug-storybook.log
-storybook-static/
 
-# env files (can opt-in for committing if needed)
-.env*
-
-# playwright
-playwright-report/
-test-results/
-blob-report/
-
-# e2e generated config (created by `getcito init --dev --defaults`)
-e2e/.getcito/
-e2e/.auth/
+# local env files
+.env*.local
 
 # vercel
 .vercel
@@ -57,35 +33,4 @@ e2e/.auth/
 # typescript
 *.tsbuildinfo
 next-env.d.ts
-
-# brand kit (generated assets)
-getcito-brand-kit.zip
-og-default.png
-
-# to remove
-prompt_runs.ndjson.gz
-prompt_runs_rows.csv
-prompt_runs.meta.json
-
-# docker
-getcito.yaml
-e2e/artifacts
-
-# retroactive cleanup
-# Anchored to the repo root: an unanchored `features/` also matches source
-# directories like apps/www/src/routes/ai-visibility-tools/features/.
-/features/
-.agents/
-.cursor/
-apps/www/dist/
-apps/web/storybook-static/
-
-.claude/settings.local.json
-.claude/worktrees/
-.readonlydb
-
-# Rebranding
-REBRANDING_PLAN.md
-
-# CLI is being ignored for now until it is published
-apps/cli/
+.env
