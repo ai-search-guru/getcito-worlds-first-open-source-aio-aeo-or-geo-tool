@@ -1,0 +1,93 @@
+---
+title: Development Setup
+description: Set up a local development environment for contributing to Getcito.
+---
+
+## Prerequisites
+
+- **Node.js** 24.x
+- **pnpm** 10.x+ (required — npm and yarn are not supported)
+- **PostgreSQL** 15+ (or use Docker)
+- **Docker** (for running the full stack locally)
+
+## Clone and Install
+
+```bash
+git clone https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool.git
+cd Getcito
+pnpm install
+```
+
+## Configure Environment
+
+Copy the example environment file and fill in your values:
+
+```bash
+cp .env.example .env
+```
+
+At minimum, you need:
+
+| Variable | Description |
+|----------|-------------|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `BETTER_AUTH_SECRET` | Any random string for session encryption |
+
+Add AI provider API keys if you want to test visibility tracking:
+
+| Variable | Description |
+|----------|-------------|
+| `OPENAI_API_KEY` | For ChatGPT tracking |
+| `ANTHROPIC_API_KEY` | For Claude tracking |
+
+## Database Setup
+
+Run Drizzle migrations to create the schema:
+
+```bash
+cd apps/web
+pnpm drizzle-kit migrate
+```
+
+## Start Development Servers
+
+Run all development servers in parallel:
+
+```bash
+pnpm dev
+```
+
+This starts:
+- **Web app** at `http://localhost:3000`
+- **Worker** process for background jobs
+
+Or run only the web app:
+
+```bash
+pnpm --filter @workspace/web dev
+```
+
+## Development with Docker
+
+For a setup closer to production, use the CLI in dev mode:
+
+```bash
+# Build from local source instead of pulling images
+Getcito init --dev
+
+# Rebuild after code changes
+Getcito compose build
+Getcito compose up -d
+```
+
+The Docker build uses a multi-stage `docker/Dockerfile` with separate targets for `web` and `worker`.
+
+## Component Stories
+
+Getcito uses Ladle for component development in isolation:
+
+```bash
+pnpm --filter @workspace/web ladle
+```
+
+Stories live in `apps/web/src/stories/` and cover the app sidebar, prompt charts, and other components across deployment modes.
