@@ -13,7 +13,7 @@
 	},
 	"dependencies": {
 		"@workspace/ui": "workspace:*",
-		"lucide-react": "^1.18.0"
+		"lucide-react": "^1.23.0"
 	},
 	"peerDependencies": {
 		"@tanstack/react-router": ">=1.0.0",

@@ -33,22 +33,22 @@
   "dependencies": {
     "@ai-sdk/anthropic": "^3.0.84",
     "@ai-sdk/openai": "^3.0.71",
-    "@anthropic-ai/sdk": "^0.104.1",
-    "@better-auth/sso": "^1.6.18",
+    "@anthropic-ai/sdk": "^0.110.0",
+    "@better-auth/sso": "^1.6.23",
     "@brightdata/sdk": "^1.1.0",
     "@workspace/config": "workspace:*",
     "ai": "^6.0.205",
-    "better-auth": "^1.6.18",
+    "better-auth": "^1.6.23",
     "dataforseo-client": "^2.0.25",
     "drizzle-orm": "^0.45.2",
-    "olostep": "^1.1.0",
-    "pg": "^8.21.0",
+    "olostep": "^1.2.2",
+    "pg": "^8.22.0",
     "zod": "^4.4.3"
   },
   "devDependencies": {
     "@types/pg": "^8.20.0",
     "drizzle-kit": "^0.31.10",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.8"
+    "vitest": "^4.1.10"
   }
 }
