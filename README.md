@@ -1,6 +1,6 @@
 <p align="center">
   <a href="https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool">
-    <img src="apps/www/public/brand/logos/getcito-logo-dark-xl.png" alt="Getcito" width="300">
+    <img src="apps/www/public/brand/logos/getcito-logo-xl.png" alt="Getcito" width="300">
   </a>
 </p>
 
