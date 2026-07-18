@@ -1,99 +1,156 @@
-# Contributing to AI Monitor Free AIO AEO Geo Tool
+# Contributing to Getcito
 
-Thank you for considering contributing to this project and welcome contributions from the community to help improve our project! This document provides guidelines for contributing and interacting with our project.
+## Welcome
 
-Please take a moment to review this document to ensure a smooth and effective collaboration.
+Thank you for your interest in contributing to Getcito! We welcome developers, designers, and enthusiasts to help us build a better open-source AEO and GEO platform. Whether you are fixing a bug, writing documentation, or proposing new features, your contributions are highly valued.
 
-## Table of Contents
-
-- [Ways to Contribute](#ways-to-contribute)
-- [Code Contribution](#code-contribution)
-- [Bug Reports](#bug-reports)
-- [Feature Requests](#feature-requests)
-- [Issue and Pull Request Guidelines](#issue-and-pull-request-guidelines)
-- [Coding Guidelines](#coding-guidelines)
-- [Commit Message Guidelines](#commit-message-guidelines)
-- [License](#license)
+For minor fixes, feel free to open a pull request directly. For larger architectural changes or major features, please open an issue first so we can discuss the approach before you begin coding.
 
 ## Ways to Contribute
 
-There are several ways you can contribute to the project:
+There are many ways you can contribute to the project, including but not limited to:
+- **Bug reports**: Identify and report issues in our issue tracker.
+- **Feature requests**: Propose new functionalities or enhancements.
+- **Documentation improvements**: Fix typos, clarify guides, or write tutorials.
+- **Code contributions**: Fix bugs or implement new features.
+- **Performance improvements**: Optimize database queries, reduce bundle sizes, or speed up processing.
+- **Security improvements**: Identify vulnerabilities and responsibly disclose them.
+- **Tests**: Expand our unit (Vitest) and E2E (Playwright) test coverage.
+- **Refactoring**: Clean up code and improve architecture.
+- **Examples**: Build out use cases or provide sample configurations.
+- **UI/UX improvements**: Improve dashboard accessibility, design, and usability.
 
-- Reporting bugs or issues
-- Suggesting new features or enhancements
-- Writing code improvements or bug fixes
-- Improving documentation
-- Participating in discussions and helping others
+## Development Setup
 
-This project value every contribution, no matter how big or small!
+Getcito is a Turborepo monorepo using `pnpm` and Node.js 24. 
 
-## Code Contribution
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool.git
+   cd getcito-worlds-first-open-source-aio-aeo-or-geo-tool
+   ```
 
-If you want to contribute code, follow these steps:
+2. **Configure environment**
+   Create a `.env.local` file by copying the template. Fill in your necessary API keys and set `DEPLOYMENT_MODE=local`.
+   ```bash
+   cp .env.example .env.local
+   cp .env.local .env
+   cp apps/web/.env.local apps/web/.env
+   ```
 
-1. Fork the repository to your own GitHub account.
-2. Create a new branch from the `main` branch for your changes.
-3. Make your modifications and improvements in your branch.
-5. Test your changes to ensure they work as expected.
-6. Commit your changes with a clear and descriptive commit message.
-7. Push your changes to your forked repository.
-8. Submit a pull request (PR) to the `main` branch of the original repository.
-9. Wait for feedback and address any review comments if needed.
-10. Once your changes are approved, they will be merged into the main project.
+3. **Install dependencies**
+   Ensure you have Node.js 24 installed. We recommend using `nvm`.
+   ```bash
+   nvm use 24
+   corepack enable pnpm
+   pnpm install
+   ```
 
-## Bug Reports
+4. **Start the development server**
+   Use Turborepo to start all development servers concurrently.
+   ```bash
+   pnpm dev
+   ```
 
-If you encounter a bug or issue in the project, please follow these steps to report it:
+5. **Run tests**
+   ```bash
+   pnpm test       # Run unit tests
+   pnpm test:e2e   # Run end-to-end tests
+   ```
 
-1. Check if the issue has already been reported by searching the project's issue tracker.
-2. If the issue hasn't been reported yet, open a new issue and provide a descriptive title and a clear description of the problem.
-3. Include steps to reproduce the issue if possible, along with any error messages or relevant information.
-4. Add labels or tags to categorize the issue (e.g., bug, enhancement, help wanted, etc.).
-5. Be responsive to any additional questions or requests for clarification from project maintainers.
+6. **Build the project**
+   ```bash
+   pnpm build
+   ```
 
-## Feature Requests
+## Branch Naming Convention
 
-If you have any ideas or suggestions for new features or enhancements, this project encourages you to share. Follow these steps to submit a feature request:
+Please use descriptive branch names based on the following prefixes:
+- `feature/` - For new features
+- `fix/` - For bug fixes
+- `docs/` - For documentation updates
+- `refactor/` - For code restructuring without behavior changes
+- `test/` - For adding or updating tests
+- `chore/` - For maintenance tasks, dependency updates, etc.
+- `hotfix/` - For urgent production fixes
 
-1. Check if the feature has already been requested by searching the project's issue tracker.
-2. If the feature hasn't been requested yet, open a new issue and provide a descriptive title and a clear description of the feature.
-3. Include any relevant details or examples to help illustrate the feature's purpose and functionality.
-4. Add labels or tags to categorize the feature request (e.g., enhancement, feature, etc.).
+## Commit Message Convention
 
-## Issue and Pull Request Guidelines
+We strictly follow Conventional Commits for our commit messages. This helps us auto-generate changelogs and release notes.
 
-When creating issues or pull requests, please ensure the following:
+**Examples:**
+- `feat: add Google AI Mode scraping provider`
+- `fix: resolve hydration error on prompt dashboard`
+- `docs: update deployment prerequisites`
+- `style: format trailing commas`
+- `refactor: extract chart components to ui package`
+- `perf: optimize postgres prompt querying`
+- `test: add playwright cases for auth flow`
+- `build: update dockerfile node version`
+- `ci: migrate to new GitHub action runner`
+- `chore: bump dependencies in workspace`
 
-- Use clear and descriptive titles.
-- Provide detailed and concise descriptions.
-- Include any necessary steps or examples to reproduce the problem or demonstrate the solution.
-- Be respectful and considerate when interacting with others.
-- Follow the project's coding and formatting guidelines.
+## Pull Request Process
 
-## Coding Guidelines
+1. **Fork the repository** to your own GitHub account.
+2. **Create a branch** using our branch naming conventions.
+3. **Keep commits clean** and logical using Conventional Commits.
+4. **Run linting and formatting** locally using Biome:
+   ```bash
+   pnpm lint
+   pnpm format
+   ```
+5. **Run tests** (`pnpm test`) to ensure you haven't broken existing functionality.
+6. **Update documentation** if your changes impact the setup, CLI, or UI.
+7. **Submit a Pull Request** against the `main` branch. 
+   *(Note: For your first PR, sign the CLA by adding your username to `.github/contributors.txt`)*
+8. **Address review comments** promptly and push updates to the same branch.
 
-To maintain a consistent codebase, please follow the project's coding guidelines. These guidelines may include:
+## Coding Standards
 
-- Code formatting conventions (e.g., indentation, line length, etc.).
-- Naming conventions for variables, functions, and classes.
-- Documentation standards (e.g., comments, docstrings, etc.).
-- Testing guidelines (e.g., unit tests, integration tests, etc.).
+- **Formatting & Linting**: We use [Biome](https://biomejs.dev/). Do not use Prettier or ESLint. Run `pnpm format` before committing.
+- **Naming Conventions**: Use `camelCase` for variables and functions, `PascalCase` for React components and Types/Interfaces, and `kebab-case` for file names.
+- **Folder Structure**: Follow the Turborepo standard. UI components go in `packages/ui`, database logic in `packages/lib`, and route pages in `apps/web/src/routes`.
+- **Testing Expectations**: New features must include Vitest unit tests. Critical UI paths must be covered by Playwright E2E tests.
+- **Documentation Expectations**: If you introduce a new environment variable, it must be added to `packages/config/src/env-registry.ts` and documented in the `README.md`.
 
-Refer to the project's documentation or codebase for specific coding guidelines.
+## Reporting Issues
 
-## Commit Message Guidelines
+When reporting an issue, please include:
+- A clear, descriptive title.
+- Steps to reproduce the bug.
+- Expected vs. actual behavior.
+- Context (OS, Browser, Node.js version, deployment mode).
+- Screenshots or logs if applicable.
 
-When committing changes to the project, please follow these guidelines for commit messages:
+## Code Review Expectations
 
-- Use clear and descriptive messages that summarize the changes.
-- Start the message with a verb in the present tense (e.g., "Fix bug," "Add feature," "Update documentation," etc.).
-- Keep the message concise and to the point.
-- If needed, provide additional details or context in the commit body.
+- **Review Process**: PRs will be reviewed by at least one core maintainer. We aim to review PRs within a few business days.
+- **Required Approvals**: 1 maintainer approval is required before merging. All CI checks (lint, test, typecheck) must pass.
+- **Quality Expectations**: Code must be typed (no `any`), well-documented, formatted, and strictly scoped to the PR's stated objective.
 
-## License
+## Community Guidelines
 
-By contributing to this project, you agree that your contributions will be licensed under the [License](LICENSE) of the project.
+We expect all contributors to maintain a respectful, inclusive, and collaborative environment. Be kind, provide constructive feedback, and assume positive intent. By participating in this project, you agree to abide by our [Code of Conduct](CODE_OF_CONDUCT.md).
 
----
+## Project Maintainers
 
-We appreciate your interest and contributions to [Your Project Name]. Thank you for your support!
+This project is actively maintained by:
+
+### AI Search Guru
+
+GitHub:
+https://github.com/ai-search-guru
+
+### Sachiiinnn
+
+GitHub:
+https://github.com/sachiiinnn
+
+They are the primary maintainers responsible for:
+- Reviewing pull requests
+- Managing releases
+- Maintaining project quality
+- Reviewing architectural decisions
+- Maintaining documentation
+- Guiding the project roadmap

@@ -1,0 +1,333 @@
+---
+title: "Citation Volatility: How Much Do the Sources AI Cites Change Over Time?"
+description: "We tracked a set of prompts to answer this question. Domains AI cites churn more than you'd think, and how much depends on what you ask."
+date: "2026-06-03"
+author: ai
+metaTitle: "Citation Volatility in AI Search: A 42-Day Study"
+tags:
+  - aeo
+  - ai-citations
+  - ai-search
+  - chatgpt
+definedTerms:
+  - term: Citation volatility
+    definition: "Citation volatility measures how much the set of web domains an AI answer engine cites for a given prompt changes from one day to the next. It is the average Jaccard distance between the sets of domains cited on consecutive days: 0 means the same sources every day, 1 means an entirely new set each day."
+  - term: Citation stability score
+    definition: "The inverse of citation volatility (1 minus the volatility score). A higher citation stability score means an AI engine cites a more consistent set of sources for a prompt over time."
+  - term: Grounding
+    definition: "In AI search, grounding is when an engine runs a live web search and cites external sources in its answer, rather than answering from its training data alone."
+howTo:
+  name: "How to measure citation volatility for your brand"
+  description: "Track how much the sources AI engines cite for your key prompts change over time, so you can tell a real trend from day-to-day noise."
+  steps:
+    - name: Choose prompts to track
+      text: "Select the questions your customers actually ask an AI assistant, mixing broad recommendations like 'best running shoes for flat feet' with narrow, branded comparisons like 'Jordan 1 vs Adidas Forum'."
+    - name: Run them daily on each engine
+      text: "Send each prompt to the AI engines you care about, such as ChatGPT and Google AI Mode, on a fixed daily schedule with web search enabled, and capture the full answer."
+    - name: Record the domains cited each day
+      text: "For every run, extract the list of web domains the engine cited and store them alongside the date and the engine."
+    - name: Compare each day with the one before
+      text: "For each prompt and engine, measure how much the set of cited domains changed from the previous day using Jaccard distance: 1 minus the shared domains divided by the combined domains."
+    - name: Weight by citation volume and average
+      text: "Average those daily distances over at least three to four weeks, and also compute a volume-weighted version that accounts for how often each domain is cited, so a churning long tail does not hide a stable core."
+    - name: Gate on enough data
+      text: "Ignore scores built on only a handful of days. Require around 20 day-to-day comparisons before trusting a number, or a single quiet stretch will read as wild volatility."
+faq:
+  - question: What is citation volatility?
+    answer: "Citation volatility measures how much the set of web domains an AI answer engine cites for a given prompt changes from one day to the next. It is calculated as the average Jaccard distance between the sets of domains cited on consecutive days, where 0 means the engine cites the same sources every day and 1 means a completely different set each day."
+  - question: Why do the sources AI cites change from day to day?
+    answer: "Most AI answers are generated from a fresh web search on every run. For broad questions there is a large pool of near-equivalent sources (review roundups, retailer pages, forum threads), and small shifts in search ranking change which subset surfaces that day. New content is also published constantly in popular categories, so the candidate pool itself keeps turning over."
+  - question: Does ChatGPT cite sources for every question?
+    answer: "No. ChatGPT mainly grounds (runs a live web search and cites sources) for shopping and recommendation questions, and answers conceptual or opinion questions from its training data with few or no citations. In our 42-day study it cited sources on only 6 of 42 days for 'the most iconic sneakers of all time', while Google AI Mode cited sources every single day."
+  - question: Is Google AI Mode more stable than ChatGPT?
+    answer: "It depends how you measure it. Google AI Mode's raw set of cited domains actually churns slightly more than ChatGPT's, because it cites more domains per day. But it concentrates the majority of its citations on a small, stable core of sources, so its volume-weighted volatility is lower. ChatGPT cites a smaller set of domains but rotates even its most-cited sources more often."
+  - question: How do I measure citation volatility for my brand?
+    answer: "Track your key prompts daily across the AI engines you care about, record which domains each engine cites, and measure how much that set changes from one day to the next using Jaccard distance. Average over several weeks and weight by citation volume. Open-source AI visibility tools like Getcito compute this automatically."
+---
+
+**Get cited in an AI answer once and it is tempting to call it a win. Run the same prompt tomorrow and the sources can change completely.** We tracked 28 shopping prompts about athletic shoes across ChatGPT and Google AI Mode, every day for six weeks, and recorded every domain each engine cited. The pattern was consistent: the list of cited sources is far less stable than a single check would suggest. On most prompts, the set of cited domains turned over by more than half from one day to the next. We call this **citation volatility**, and how much of it you see depends almost entirely on what the user asked.
+
+**Key takeaways**
+
+- Across 28 prompts tracked daily for 42 days, the set of domains AI cited turned over by roughly 60–70% from one day to the next, on average. A one-time citation check tells you very little.
+- Underneath that churn sits a stable core. Weight each domain by how often it is cited and volatility drops sharply: on Google AI Mode a small set of domains earned about 56% of citations every day, even as the long tail reshuffled.
+- The two engines behave differently. Google AI Mode keeps a fixed cast of leading sources and churns the extras; ChatGPT cites a smaller set but rotates even its top sources, which makes it the more contestable surface.
+- ChatGPT only searches the web when you are shopping. For "the most iconic sneakers of all time" it answered from memory and cited almost nothing, while Google AI Mode grounded every prompt, every day.
+- How much citations churn depends on the question. Narrow, branded comparisons like "Jordan 1 vs Adidas Forum" were the most stable; broad, open-ended recommendations like "most comfortable running shoes" churned the most, because they draw on a much larger pool of interchangeable sources.
+- Even for a category-defining brand like Nike, AI rarely answers with one name. Across these prompts it cited rivals constantly: Under Armour appeared in 81% of answers, Adidas in 59%, and New Balance in 57%.
+
+This is a study of how AI [citations](/blog/ai-citations) move, run on a public consumer brand so the numbers are relatable and nobody's competitive position is on display. Every method below works the same on your own brand.
+
+## What citation volatility is
+
+Picture the same question asked of the same AI engine on five days in a row. Each day it runs a web search and cites a handful of sources. Some domains show up every single day. Others appear once and never again.
+
+<figure>
+<svg viewBox="0 0 720 350" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Five daily columns of cited domains. A core of three domains appears in every column, while two tail domains rotate each day.">
+  <g fontFamily="ui-sans-serif, system-ui, sans-serif">
+    <line x1="40" y1="58" x2="644" y2="58" stroke="currentColor" strokeWidth="1" strokeDasharray="3 5" opacity="0.18" />
+    <line x1="40" y1="92" x2="644" y2="92" stroke="currentColor" strokeWidth="1" strokeDasharray="3 5" opacity="0.18" />
+    <line x1="40" y1="126" x2="644" y2="126" stroke="currentColor" strokeWidth="1" strokeDasharray="3 5" opacity="0.18" />
+    <text x="90" y="26" textAnchor="middle" fontSize="13" fill="currentColor" opacity="0.6">Day 1</text>
+    <text x="216" y="26" textAnchor="middle" fontSize="13" fill="currentColor" opacity="0.6">Day 2</text>
+    <text x="342" y="26" textAnchor="middle" fontSize="13" fill="currentColor" opacity="0.6">Day 3</text>
+    <text x="468" y="26" textAnchor="middle" fontSize="13" fill="currentColor" opacity="0.6">Day 4</text>
+    <text x="594" y="26" textAnchor="middle" fontSize="13" fill="currentColor" opacity="0.6">Day 5</text>
+    <g fill="#10a37f">
+      <rect x="40" y="44" width="100" height="28" rx="6" /><rect x="166" y="44" width="100" height="28" rx="6" /><rect x="292" y="44" width="100" height="28" rx="6" /><rect x="418" y="44" width="100" height="28" rx="6" /><rect x="544" y="44" width="100" height="28" rx="6" />
+      <rect x="40" y="78" width="100" height="28" rx="6" /><rect x="166" y="78" width="100" height="28" rx="6" /><rect x="292" y="78" width="100" height="28" rx="6" /><rect x="418" y="78" width="100" height="28" rx="6" /><rect x="544" y="78" width="100" height="28" rx="6" />
+      <rect x="40" y="112" width="100" height="28" rx="6" /><rect x="166" y="112" width="100" height="28" rx="6" /><rect x="292" y="112" width="100" height="28" rx="6" /><rect x="418" y="112" width="100" height="28" rx="6" /><rect x="544" y="112" width="100" height="28" rx="6" />
+    </g>
+    <g fontSize="11" fill="#ffffff" textAnchor="middle">
+      <text x="90" y="62">runrepeat</text><text x="216" y="62">runrepeat</text><text x="342" y="62">runrepeat</text><text x="468" y="62">runrepeat</text><text x="594" y="62">runrepeat</text>
+      <text x="90" y="96">reddit</text><text x="216" y="96">reddit</text><text x="342" y="96">reddit</text><text x="468" y="96">reddit</text><text x="594" y="96">reddit</text>
+      <text x="90" y="130">wirecutter</text><text x="216" y="130">wirecutter</text><text x="342" y="130">wirecutter</text><text x="468" y="130">wirecutter</text><text x="594" y="130">wirecutter</text>
+    </g>
+    <g fill="none" stroke="currentColor" strokeWidth="1" opacity="0.3">
+      <rect x="40" y="160" width="100" height="28" rx="6" /><rect x="166" y="160" width="100" height="28" rx="6" /><rect x="292" y="160" width="100" height="28" rx="6" /><rect x="418" y="160" width="100" height="28" rx="6" /><rect x="544" y="160" width="100" height="28" rx="6" />
+      <rect x="40" y="194" width="100" height="28" rx="6" /><rect x="166" y="194" width="100" height="28" rx="6" /><rect x="292" y="194" width="100" height="28" rx="6" /><rect x="418" y="194" width="100" height="28" rx="6" /><rect x="544" y="194" width="100" height="28" rx="6" />
+    </g>
+    <g fontSize="10.5" fill="currentColor" opacity="0.7" textAnchor="middle">
+      <text x="90" y="178">fleetfeet</text><text x="216" y="178">sneakernews</text><text x="342" y="178">soleretriever</text><text x="468" y="178">gearjunkie</text><text x="594" y="178">footwearnews</text>
+      <text x="90" y="212">believeinrun</text><text x="216" y="212">outdoorgear</text><text x="342" y="212">runnersworld</text><text x="468" y="212">roadtrailrun</text><text x="594" y="212">stridelab</text>
+    </g>
+    <text x="668" y="86" fontSize="11.5" fill="#10a37f" fontWeight="600">core</text>
+    <text x="668" y="100" fontSize="10" fill="currentColor" opacity="0.6">every day</text>
+    <text x="668" y="184" fontSize="11.5" fill="currentColor" opacity="0.75" fontWeight="600">tail</text>
+    <text x="668" y="198" fontSize="10" fill="currentColor" opacity="0.6">rotates</text>
+    <g fontSize="11.5" fill="currentColor">
+      <rect x="200" y="312" width="14" height="14" rx="3" fill="#10a37f" /><text x="222" y="323" opacity="0.8">core: cited almost every day</text>
+      <rect x="430" y="312" width="14" height="14" rx="3" fill="none" stroke="currentColor" opacity="0.4" /><text x="452" y="323" opacity="0.8">tail: different domains each day</text>
+    </g>
+  </g>
+</svg>
+<figcaption>Citation volatility is the day-to-day turnover in the set of cited domains. A small core appears every day; a churning tail rotates through. The illustrative domains above stand in for any prompt's citation set.</figcaption>
+</figure>
+
+Citation volatility puts a number on that turnover. Each day, take the set of domains cited for a prompt and compare it to the previous day's set. If they are identical, the distance is 0. If they share nothing, it is 1. Average that across every pair of consecutive days and you have the prompt's volatility score. (Mathematically it is the [Jaccard](https://en.wikipedia.org/wiki/Jaccard_index) distance, 1 minus the shared domains over the combined domains.)
+
+Run this across our 28 prompts and the scores landed mostly between 0.55 and 0.83 on Google AI Mode. A score of 0.69, the Google average, means barely a third of the domains in play on any two consecutive days were common to both. The sources behind a given AI answer are in near-constant motion.
+
+## It depends on what you ask
+
+The single biggest predictor of how much a prompt churns is the question itself. Narrow questions with an obvious frame of reference stay relatively stable. Broad, open-ended ones churn hard.
+
+<figure>
+<svg viewBox="0 0 720 470" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Citation volatility for 15 prompts on Google AI Mode, sorted from most to least volatile. Broad recommendation prompts score highest; head-to-head comparisons score lowest.">
+  <g fontFamily="ui-sans-serif, system-ui, sans-serif">
+    <line x1="369" y1="58" x2="369" y2="446" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <line x1="476" y1="58" x2="476" y2="446" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <line x1="583" y1="58" x2="583" y2="446" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <line x1="690" y1="58" x2="690" y2="446" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <text x="369" y="462" textAnchor="middle" fontSize="10" fill="currentColor" opacity="0.5">0.25</text>
+    <text x="476" y="462" textAnchor="middle" fontSize="10" fill="currentColor" opacity="0.5">0.50</text>
+    <text x="583" y="462" textAnchor="middle" fontSize="10" fill="currentColor" opacity="0.5">0.75</text>
+    <text x="690" y="462" textAnchor="middle" fontSize="10" fill="currentColor" opacity="0.5">1.0</text>
+    <line x1="557" y1="58" x2="557" y2="440" stroke="currentColor" strokeWidth="1" strokeDasharray="4 4" opacity="0.3" />
+    <text x="557" y="52" textAnchor="middle" fontSize="10.5" fill="currentColor" opacity="0.6">avg 0.69</text>
+    <g fontSize="11.5" fill="currentColor" textAnchor="end">
+      <text x="250" y="74">Durable toddler shoes</text>
+      <text x="250" y="100">Most comfortable shoes</text>
+      <text x="250" y="126">Alternatives to Nike</text>
+      <text x="250" y="152">Retro basketball, casual</text>
+      <text x="250" y="178">Most iconic sneakers</text>
+      <text x="250" y="204">Best for flat feet</text>
+      <text x="250" y="230">Trail shoes, wet terrain</text>
+      <text x="250" y="256">Beginner running shoes</text>
+      <text x="250" y="282">Most sustainable brands</text>
+      <text x="250" y="308">Daily trainer shoes</text>
+      <text x="250" y="334">Marathon racing, 2026</text>
+      <text x="250" y="360">Nike vs Adidas</text>
+      <text x="250" y="386">Vaporfly vs Adios Pro</text>
+      <text x="250" y="412">Jordan 1 vs Adidas Forum</text>
+      <text x="250" y="438">Best basketball, 2026</text>
+    </g>
+    <g stroke="currentColor" strokeWidth="1" opacity="0.08">
+      <line x1="262" y1="70" x2="690" y2="70" /><line x1="262" y1="96" x2="690" y2="96" /><line x1="262" y1="122" x2="690" y2="122" /><line x1="262" y1="148" x2="690" y2="148" /><line x1="262" y1="174" x2="690" y2="174" /><line x1="262" y1="200" x2="690" y2="200" /><line x1="262" y1="226" x2="690" y2="226" /><line x1="262" y1="252" x2="690" y2="252" /><line x1="262" y1="278" x2="690" y2="278" /><line x1="262" y1="304" x2="690" y2="304" /><line x1="262" y1="330" x2="690" y2="330" /><line x1="262" y1="356" x2="690" y2="356" /><line x1="262" y1="382" x2="690" y2="382" /><line x1="262" y1="408" x2="690" y2="408" /><line x1="262" y1="434" x2="690" y2="434" />
+    </g>
+    <g fill="#f59e0b">
+      <circle cx="616" cy="70" r="5.5" /><circle cx="611" cy="96" r="5.5" /><circle cx="604" cy="122" r="5.5" /><circle cx="603" cy="148" r="5.5" /><circle cx="588" cy="200" r="5.5" /><circle cx="579" cy="226" r="5.5" /><circle cx="577" cy="252" r="5.5" /><circle cx="572" cy="278" r="5.5" /><circle cx="562" cy="304" r="5.5" /><circle cx="530" cy="330" r="5.5" />
+    </g>
+    <g fill="#6366f1">
+      <circle cx="595" cy="174" r="5.5" /><circle cx="525" cy="356" r="5.5" /><circle cx="524" cy="382" r="5.5" /><circle cx="500" cy="408" r="5.5" /><circle cx="498" cy="434" r="5.5" />
+    </g>
+    <g fontSize="10.5" fill="currentColor" opacity="0.65">
+      <text x="628" y="74">0.83</text><text x="623" y="100">0.82</text><text x="616" y="126">0.80</text><text x="615" y="152">0.80</text><text x="607" y="178">0.78</text><text x="600" y="204">0.76</text><text x="591" y="230">0.74</text><text x="589" y="256">0.74</text><text x="584" y="282">0.73</text><text x="574" y="308">0.70</text><text x="542" y="334">0.63</text><text x="537" y="360">0.62</text><text x="536" y="386">0.61</text><text x="512" y="412">0.56</text><text x="510" y="438">0.55</text>
+    </g>
+    <g fontSize="11.5" fill="currentColor">
+      <rect x="262" y="34" width="14" height="14" rx="3" fill="#f59e0b" /><text x="284" y="45" opacity="0.8">broad recommendation</text>
+      <rect x="470" y="34" width="14" height="14" rx="3" fill="#6366f1" /><text x="492" y="45" opacity="0.8">head-to-head or definitional</text>
+    </g>
+  </g>
+</svg>
+<figcaption>Citation volatility by prompt on Google AI Mode, 42 days. Open-ended recommendation prompts churn the most; narrow comparisons and definitional questions are the most stable.</figcaption>
+</figure>
+
+The mechanism is pool size. A question like "Jordan 1 vs Adidas Forum" has an obvious, finite set of relevant pages, so Google AI Mode drew on about 85 distinct domains across the whole six weeks and kept returning to the same ones (volatility 0.56). "Alternatives to Nike for high-performance running" sat on top of 445 distinct domains, a deep, interchangeable pool of best-of roundups and retailer pages, and a different slice surfaced each day (volatility 0.80). The broader the question, the larger the candidate pool, and the more the cited subset rotates.
+
+This is the finding that travels. Absolute scores shift by category, but the ordering holds regardless of the brand: narrow, branded questions stay stable, while broad, open-ended ones churn. If you are tracking [prompt-level visibility](/blog/ai-prompt-tracking), expect your broadest, highest-intent prompts to be the noisiest.
+
+## A churning list, a stable core
+
+Here is the part that a raw set-distance number hides. A prompt can swap out most of its cited domains every day and still cite the same two or three leaders every single time. The churn is real, but it is concentrated in the long tail.
+
+To separate the two, weight each domain by how often it is actually cited, then measure volatility on those weighted sets. The membership-based score and the volume-weighted score tell different stories, and the gap between them is the size of the stable core.
+
+<figure>
+<svg viewBox="0 0 720 360" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Average citation volatility by engine. Google AI Mode has higher raw set volatility but lower volume-weighted volatility than ChatGPT.">
+  <g fontFamily="ui-sans-serif, system-ui, sans-serif">
+    <line x1="120" y1="300" x2="690" y2="300" stroke="currentColor" strokeWidth="1" opacity="0.35" />
+    <line x1="120" y1="235" x2="690" y2="235" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <line x1="120" y1="170" x2="690" y2="170" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <line x1="120" y1="105" x2="690" y2="105" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <g fontSize="10" fill="currentColor" opacity="0.5" textAnchor="end">
+      <text x="110" y="304">0</text><text x="110" y="239">0.25</text><text x="110" y="174">0.50</text><text x="110" y="109">0.75</text>
+    </g>
+    <rect x="170" y="138.8" width="70" height="161.2" rx="4" fill="#10a37f" fillOpacity="0.28" stroke="#10a37f" strokeWidth="1.5" />
+    <rect x="256" y="164.8" width="70" height="135.2" rx="4" fill="#10a37f" stroke="#10a37f" strokeWidth="1.5" />
+    <rect x="460" y="120.6" width="70" height="179.4" rx="4" fill="#4285f4" fillOpacity="0.28" stroke="#4285f4" strokeWidth="1.5" />
+    <rect x="546" y="196" width="70" height="104" rx="4" fill="#4285f4" stroke="#4285f4" strokeWidth="1.5" />
+    <g fontSize="13" fill="currentColor" textAnchor="middle" fontWeight="600">
+      <text x="205" y="130">0.62</text><text x="291" y="156">0.52</text><text x="495" y="112">0.69</text><text x="581" y="188">0.40</text>
+    </g>
+    <g fontSize="10.5" fill="currentColor" opacity="0.6" textAnchor="middle">
+      <text x="205" y="316">set</text><text x="291" y="316">weighted</text><text x="495" y="316">set</text><text x="581" y="316">weighted</text>
+    </g>
+    <g fontSize="13.5" fill="currentColor" textAnchor="middle">
+      <text x="248" y="340" fill="#10a37f" fontWeight="600">ChatGPT</text><text x="538" y="340" fill="#4285f4" fontWeight="600">Google AI Mode</text>
+    </g>
+    <line x1="205" y1="138.8" x2="495" y2="120.6" stroke="currentColor" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.4" />
+    <line x1="291" y1="164.8" x2="581" y2="196" stroke="currentColor" strokeWidth="1.5" strokeDasharray="5 4" opacity="0.4" />
+    <text x="500" y="116" fontSize="10.5" fill="currentColor" opacity="0.6">raw set churn</text>
+    <text x="586" y="210" fontSize="10.5" fill="currentColor" opacity="0.6">weighted churn</text>
+  </g>
+</svg>
+<figcaption>Average citation volatility across 27 prompts (one prompt where ChatGPT rarely searched is excluded). Google AI Mode's raw set of domains churns more, but it pins most citations on a small core, so its volume-weighted volatility is lower. ChatGPT cites fewer domains yet rotates even its leaders.</figcaption>
+</figure>
+
+This chart holds the most useful finding in the whole study, and it is a little counterintuitive. Google AI Mode has the *higher* raw set volatility (0.69 vs ChatGPT's 0.62) because it casts a wider net, citing about 24 domains per day to ChatGPT's 17. But its volume-weighted volatility is *lower* (0.40 vs 0.52). The reason is concentration: on Google AI Mode, the domains cited on at least 80% of days accounted for about 56% of all citations. On ChatGPT, that stable core captured only about 23%.
+
+So the two engines work differently. Google AI Mode keeps a fixed cast of headline sources and rotates the supporting extras. ChatGPT spreads its citations more evenly across a smaller cast and rotates even the leads. For anyone doing [answer engine optimization](/blog/answer-engine-optimization), that distinction sets the strategy: breaking into Google AI Mode's core is hard but durable, while ChatGPT's lead roles turn over often, so there is more room to break in and more risk of dropping out.
+
+The practical takeaway is to never trust the set-membership number alone. A prompt that looks wildly volatile may have a rock-solid core with a noisy tail. Weight by citation volume before you read anything into the score.
+
+## ChatGPT only searches when you are shopping
+
+The two engines diverge in a more basic way too: whether they search the web at all. Google AI Mode is a search product, so it grounds nearly every answer. ChatGPT decides per question, and the decision tracks intent.
+
+<figure>
+<svg viewBox="0 0 720 340" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Days with citations out of 42 for seven prompts. Google AI Mode cited on all 42 days for every prompt; ChatGPT cited far less for definitional and comparison prompts.">
+  <g fontFamily="ui-sans-serif, system-ui, sans-serif">
+    <line x1="250" y1="64" x2="250" y2="300" stroke="currentColor" strokeWidth="1" opacity="0.12" />
+    <line x1="355" y1="64" x2="355" y2="300" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <line x1="460" y1="64" x2="460" y2="300" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <line x1="565" y1="64" x2="565" y2="300" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <line x1="690" y1="64" x2="690" y2="300" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <g fontSize="10" fill="currentColor" opacity="0.5" textAnchor="middle">
+      <text x="250" y="316">0</text><text x="355" y="316">10</text><text x="460" y="316">20</text><text x="565" y="316">30</text><text x="690" y="316">42</text>
+    </g>
+    <text x="470" y="333" textAnchor="middle" fontSize="10.5" fill="currentColor" opacity="0.55">days with citations (of 42)</text>
+    <g fontSize="11.5" fill="currentColor" textAnchor="end">
+      <text x="238" y="88">Most iconic sneakers</text>
+      <text x="238" y="122">Jordan 1 vs Adidas Forum</text>
+      <text x="238" y="156">Retro basketball</text>
+      <text x="238" y="190">Vaporfly vs Adios Pro</text>
+      <text x="238" y="224">Nike vs Adidas</text>
+      <text x="238" y="258">Kids' athletic shoes</text>
+      <text x="238" y="292">Best basketball, 2026</text>
+    </g>
+    <g stroke="currentColor" strokeWidth="2.5" opacity="0.25">
+      <line x1="312.9" y1="84" x2="690" y2="84" /><line x1="522.4" y1="118" x2="690" y2="118" /><line x1="595.7" y1="152" x2="690" y2="152" /><line x1="606.2" y1="186" x2="690" y2="186" /><line x1="606.2" y1="220" x2="690" y2="220" /><line x1="616.7" y1="254" x2="690" y2="254" /><line x1="679.5" y1="288" x2="690" y2="288" />
+    </g>
+    <g fill="#4285f4">
+      <circle cx="690" cy="84" r="6" /><circle cx="690" cy="118" r="6" /><circle cx="690" cy="152" r="6" /><circle cx="690" cy="186" r="6" /><circle cx="690" cy="220" r="6" /><circle cx="690" cy="254" r="6" /><circle cx="690" cy="288" r="6" />
+    </g>
+    <g fill="#10a37f">
+      <circle cx="312.9" cy="84" r="6" /><circle cx="522.4" cy="118" r="6" /><circle cx="595.7" cy="152" r="6" /><circle cx="606.2" cy="186" r="6" /><circle cx="606.2" cy="220" r="6" /><circle cx="616.7" cy="254" r="6" /><circle cx="679.5" cy="288" r="6" />
+    </g>
+    <g fontSize="10.5" fill="#10a37f" textAnchor="end" fontWeight="600">
+      <text x="305" y="88">6</text><text x="514" y="122">26</text><text x="588" y="156">33</text><text x="598" y="190">34</text><text x="598" y="224">34</text><text x="609" y="258">35</text><text x="672" y="292">41</text>
+    </g>
+    <text x="332" y="74" fontSize="10.5" fill="currentColor" opacity="0.7">answered from memory</text>
+    <g fontSize="11.5" fill="currentColor">
+      <circle cx="262" cy="40" r="6" fill="#10a37f" /><text x="274" y="44" opacity="0.8">ChatGPT</text>
+      <circle cx="380" cy="40" r="6" fill="#4285f4" /><text x="392" y="44" opacity="0.8">Google AI Mode</text>
+    </g>
+  </g>
+</svg>
+<figcaption>How many of 42 days each engine cited sources. Google AI Mode grounded every prompt every day. ChatGPT grounded reliably for product picks but answered definitional and comparison questions largely from memory, citing on just 6 of 42 days for "most iconic sneakers".</figcaption>
+</figure>
+
+For commercial questions like "best basketball shoes 2026", ChatGPT searched and cited on nearly every day, just like Google. But for "the most iconic sneakers of all time", a question of opinion and history, it answered from its training data and cited sources on only 6 of 42 days. Head-to-head comparisons sat in between: it grounded some days, recalled others.
+
+That changes what you optimize for. Where an engine does not cite, there is no citation slot to win. The lever becomes whether the model already knows your brand from its training data, which you influence through broad [brand mentions](/blog/ai-share-of-voice) rather than a single citable page. Where the engine does cite, fresh, citable content is in play. The first step in any AEO plan is finding out which of your prompts are even grounded, on each engine, before you spend effort on them.
+
+One caution this surfaces: a score built on six citing days is noise, not signal. The 6-day prompts can post extreme volatility numbers purely because there is so little data. Gate every score on a minimum number of observations, around 20 day-to-day comparisons, before you trust it.
+
+## The two engines, side by side
+
+Two surfaces, two different games. The whole contrast in one view:
+
+| | ChatGPT | Google AI Mode |
+|---|---|---|
+| Domains cited per day | ~17 | ~24 |
+| Raw set volatility | 0.62 | 0.69 |
+| Volume-weighted volatility | 0.52 | 0.40 |
+| Citations from a stable core | ~23% | ~56% |
+| When it grounds (searches and cites) | Mainly commercial intent | Almost always |
+| What that means for you | Top sources rotate, so it is easier to break in and easier to fall out | A stable core is hard to crack, but durable once you are in |
+
+## Even Nike does not own the answer to its own category
+
+Volatility describes how the cited sources move. A related question is who gets *mentioned* in the answer, and the data here is humbling even for a giant. Across these 28 prompts, AI almost never answered with Nike alone. It named a long roster of competitors, constantly.
+
+<figure>
+<svg viewBox="0 0 720 410" width="100%" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Share of AI answers mentioning each competitor brand across Nike's prompts. Under Armour leads at 81 percent, followed by Adidas at 59 and New Balance at 57.">
+  <g fontFamily="ui-sans-serif, system-ui, sans-serif">
+    <line x1="280" y1="50" x2="280" y2="380" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <line x1="400" y1="50" x2="400" y2="380" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <line x1="520" y1="50" x2="520" y2="380" stroke="currentColor" strokeWidth="1" opacity="0.1" />
+    <g fontSize="10" fill="currentColor" opacity="0.5" textAnchor="middle">
+      <text x="280" y="396">25%</text><text x="400" y="396">50%</text><text x="520" y="396">75%</text>
+    </g>
+    <g fontSize="12.5" fill="currentColor" textAnchor="end">
+      <text x="146" y="68">Under Armour</text><text x="146" y="96">Adidas</text><text x="146" y="124">New Balance</text><text x="146" y="152">ASICS</text><text x="146" y="180">Hoka</text><text x="146" y="208">Brooks</text><text x="146" y="236">Saucony</text><text x="146" y="264">Puma</text><text x="146" y="292">Altra</text><text x="146" y="320">Reebok</text><text x="146" y="348">Salomon</text><text x="146" y="376">Mizuno</text>
+    </g>
+    <g fill="#6366f1">
+      <rect x="160" y="56" width="390" height="16" rx="3" /><rect x="160" y="84" width="281" height="16" rx="3" /><rect x="160" y="112" width="274" height="16" rx="3" /><rect x="160" y="140" width="208" height="16" rx="3" /><rect x="160" y="168" width="170" height="16" rx="3" /><rect x="160" y="196" width="153" height="16" rx="3" /><rect x="160" y="224" width="130" height="16" rx="3" /><rect x="160" y="252" width="89" height="16" rx="3" /><rect x="160" y="280" width="60" height="16" rx="3" /><rect x="160" y="308" width="59" height="16" rx="3" /><rect x="160" y="336" width="49" height="16" rx="3" /><rect x="160" y="364" width="24" height="16" rx="3" />
+    </g>
+    <g fontSize="11" fill="currentColor" opacity="0.7">
+      <text x="558" y="68">81%</text><text x="449" y="96">59%</text><text x="442" y="124">57%</text><text x="376" y="152">43%</text><text x="338" y="180">36%</text><text x="321" y="208">32%</text><text x="298" y="236">27%</text><text x="257" y="264">19%</text><text x="228" y="292">13%</text><text x="227" y="320">12%</text><text x="217" y="348">10%</text><text x="192" y="376">5%</text>
+    </g>
+  </g>
+</svg>
+<figcaption>Share of all Nike prompt runs in which each competitor was mentioned, across ChatGPT and Google AI Mode. The answer to "best running shoes" is rarely one brand. This is the brand's AI share of voice.</figcaption>
+</figure>
+
+Under Armour turned up in 81% of answers, Adidas in 59%, New Balance in 57%, with ASICS, Hoka, Brooks, and Saucony close behind. Even for the most recognizable name in athletic footwear, AI treats the category as a field, not a default. For a smaller brand the lesson is encouraging: the answer is a roster, and rosters have room. Tracking who shares your answers, your AI [share of voice](/blog/ai-share-of-voice), is as important as tracking your own mentions. The per-engine split was nearly identical here, with Adidas in 57% of ChatGPT answers and 60% of Google's, so when rivals are all comparably sized brands, neither engine favors anyone in particular.
+
+## What this means for your AEO strategy
+
+Pulling the threads together:
+
+- **Track trends, not snapshots.** A single citation check is a coin flip on a volatile prompt. Judge your AI visibility on rolling averages over weeks, and weight by citation volume so a noisy tail does not masquerade as instability.
+- **Go after your broad, contested prompts.** High volatility means no entrenched incumbent owns the citation slots. Those prompts are the most winnable, and the most worth a strong, repeatedly updated resource. Stable prompts with a fixed core are harder to crack but more durable once you are in.
+- **Run a per-engine playbook.** Google AI Mode rewards becoming part of a stable core; ChatGPT's faster rotation rewards fresh content and gives newcomers more openings. The same brand plays two different games.
+- **Know where citations are not the lever.** On prompts an engine answers from memory, optimize for being known, through broad mentions and presence in the model's training data, not for a single citable link. Measure [brand mentions](/blog/ai-competitor-analysis) there, not citations.
+
+## How to measure citation volatility yourself
+
+You do not need our dataset to run this. The method is simple and repeatable:
+
+1. **Choose prompts to track** that your customers actually ask, mixing broad recommendations with narrow, branded comparisons.
+2. **Run them daily on each engine** you care about, with web search enabled, and capture the full answer.
+3. **Record the domains cited each day**, stored with the date and engine.
+4. **Compare each day with the one before** using Jaccard distance: 1 minus the shared domains over the combined domains.
+5. **Weight by citation volume and average** over at least three to four weeks, so a churning tail does not hide a stable core.
+6. **Gate on enough data**, around 20 day-to-day comparisons, before trusting any score.
+
+This is exactly what [Getcito](https://www.Getcito.com/) does automatically. It is an open-source, self-hosted AI visibility platform that runs your prompts across ChatGPT, Claude, Gemini, Perplexity, Google AI Mode, and more, records every cited domain, and computes the metrics in this post so you can watch how your sources, mentions, and [share of voice](/blog/ai-share-of-voice) move over time. Because it is MIT-licensed and you run it yourself, the underlying citation data is yours to query however you like, which is exactly how this study was made.
+
+> **See it on real brands.** We ran this analysis on live brands you can explore for yourself. Browse the tracked prompts, the domains each engine cited, the volatility scores, and the share of voice for every brand we tested at **[demo.Getcito.com](https://demo.Getcito.com)**.
+
+To go deeper on the fundamentals, start with our guide to [answer engine optimization](/blog/answer-engine-optimization), then see [how to track your brand in AI search](/blog/track-brand-ai-search).

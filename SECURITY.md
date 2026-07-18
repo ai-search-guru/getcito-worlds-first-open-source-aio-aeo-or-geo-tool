@@ -1,41 +1,39 @@
 # Security Policy
 
-## Reporting Security Vulnerabilities
+## Supported Versions
 
-Security is taken seriously and appreciation for the efforts of security researchers and the community in helping to maintain a secure ecosystem. If you discover any security vulnerabilities in this project, please responsibly disclose them.
+We apply security fixes only to the **latest released version** of Getcito. If you are running an older version, please upgrade before reporting an issue.
 
-To report a security vulnerability, please send an email to [scottmilliorn@gmail.com](mailto:security@yourproject.com) with the following details:
+## Reporting a Vulnerability
 
-- A clear description of the vulnerability and the potential impact.
-- Steps to reproduce the vulnerability or a proof-of-concept.
-- Any additional information or tools that can help reproduce the issue.
+**Please do not open a public GitHub issue for security vulnerabilities.**
 
-Kindly request that you allow sufficient time to investigate and address the vulnerability before disclosing it to the public or to any third parties.
+We take the security of Getcito seriously. If you discover a vulnerability, we ask that you report it to us confidentially so we can investigate and patch it before it is exploited.
 
-## Security Response Process
+Email [team@getcito.com](mailto:team@getcito.com) with:
+- A description of the issue and its potential impact.
+- Detailed steps to reproduce (proof-of-concept code or scripts are highly appreciated).
+- The version, branch, or commit hash you tested against.
+- Your name or handle if you would like to be credited in the responsible disclosure.
 
-Once a security vulnerability is reported, you will receive a receipt of acknowledgement. Report will be reviewed, investigated, to determine appropriate course of action.
+Please adhere to responsible disclosure expectations and give us a reasonable amount of time to investigate, resolve, and release a fix before publishing any details publicly.
 
-Please maintain an open line of communication throughout the process. Regular updates will be given on the progress of resolving the vulnerability and notify you when it has been fully addressed.
+## Response Timeline
 
-If the vulnerability is confirmed, diligent work will be done to develop and release a fix or mitigation as soon as possible. Additional details or clarifications during this process may be requested.
+- **Initial acknowledgement**: Within 48 hours of receiving your report.
+- **Investigation**: We aim to confirm the vulnerability and assess its severity within 7 days.
+- **Resolution**: A patch will be prioritized and released as soon as possible, depending on the complexity of the fix. We will keep you updated on our progress.
 
-## Disclosure Policy
+## Security Best Practices
 
-We follow a responsible disclosure policy. As a security researcher, you are ask to adhere to the following guidelines:
+When contributing to or deploying Getcito, please follow these security best practices:
+- **Secrets**: Never commit API keys, Auth0 secrets, database passwords, or `.env` files to version control. Use `.env.local` for local overrides.
+- **Environment Variables**: Always validate environment variables at startup. Use `packages/config/src/env-registry.ts` to enforce required variables securely.
+- **Dependencies**: Keep dependencies up to date. Avoid installing unverified third-party npm packages.
+- **Authentication**: All API endpoints under `/api/v1` must strictly enforce Bearer token authentication. 
+- **Docker Security**: Our Docker containers run as a non-root user (`getcito` or `worker`). Do not alter the Dockerfile to run processes as root. Keep your host machine's Docker daemon secure.
 
-- Do not access or modify other users' data without their explicit consent.
-- Do not perform any disruptive or destructive actions.
-- Do not publicly disclose the vulnerability this project has addressed it.
+## Contact
 
-Credit to the individuals or organizations who report valid security vulnerabilities upon request. If you would like to be credited, give notice in your report.
-
-## Scope
-
-Please note that this security policy applies to this project and its associated repositories. Any vulnerabilities found in third-party dependencies should be reported to the respective maintainers or the appropriate vulnerability tracking platform.
-
-## Help Wanted
-
-Appreciation will be shown for your efforts in helping maintain the security of this project. If you have any suggestions or feedback regarding the security practices or this security policy, please feel free to email at [scottmilliorn@gmail.com](mailto:scottmilliorn@google.com).
-
-Thank you for your commitment to keeping this project secure!
+For all security-related inquiries, please contact:
+**Email**: [team@getcito.com](mailto:team@getcito.com)

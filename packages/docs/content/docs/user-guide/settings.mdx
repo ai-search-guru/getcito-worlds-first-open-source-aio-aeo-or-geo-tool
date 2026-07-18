@@ -1,0 +1,67 @@
+---
+title: Settings
+description: Configure your brand, competitors, prompts, and AI model settings.
+---
+
+## Settings Overview
+
+The **Settings** section is accessible from the sidebar. It has four sub-pages for managing your Getcito configuration.
+
+## Brand Settings
+
+Configure your brand identity:
+
+- **Name** — Your brand name as tracked in AI responses
+- **Website** — Primary website URL
+- **Domains** — Additional domains associated with your brand (e.g. blog subdomain, product domains)
+- **Aliases** — Alternative names or spellings that AI models might use
+
+{/* TODO: Screenshot of brand settings */}
+
+## Competitor Settings
+
+Manage the competitors you're tracking:
+
+- Add competitor brand names and their domains
+- View competitor mentions alongside your brand in visibility data
+- Track citation overlap between your brand and competitors
+
+{/* TODO: Screenshot of competitor settings */}
+
+## Prompt Settings
+
+Manage your tracking prompts:
+
+- **Add prompts** — Create new prompts manually or re-run the wizard
+- **Edit prompts** — Modify prompt text and tags
+- **Enable/Disable** — Toggle tracking for individual prompts without deleting them
+- **Delete** — Remove prompts you no longer need
+
+{/* TODO: Screenshot of prompt settings */}
+
+## LLM Settings
+
+Configure which AI models Getcito queries:
+
+- **OpenAI (ChatGPT)** — Requires `OPENAI_API_KEY` in your environment
+- **Anthropic (Claude)** — Requires `ANTHROPIC_API_KEY` in your environment
+- **Google AI Overviews** — Tracks Google's AI-generated summaries
+
+You can enable or disable individual models and adjust query parameters.
+
+{/* TODO: Screenshot of LLM settings */}
+
+## Updating Environment Variables
+
+Some settings (like API keys) are configured via environment variables rather than the UI. To update them:
+
+```bash
+# Edit your .env file in the config directory
+nano ./Getcito/.env
+
+# Restart to pick up changes
+Getcito compose down
+Getcito compose up -d
+```
+
+See the [Configuration](/docs/developer-guide/configuration) page for a complete reference of environment variables.

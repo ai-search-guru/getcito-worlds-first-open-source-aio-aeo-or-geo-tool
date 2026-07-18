@@ -1,0 +1,15 @@
+{
+	"title": "User Guide",
+	"pages": [
+		"index",
+		"providers",
+		"registration",
+		"brand-setup",
+		"prompt-wizard",
+		"dashboard",
+		"visibility",
+		"citations",
+		"settings",
+		"reports"
+	]
+}

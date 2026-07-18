@@ -1,0 +1,20 @@
+{
+  "name": "@workspace/config",
+  "version": "0.2.14",
+  "private": true,
+  "license": "MIT",
+  "scripts": {
+    "test": "vitest run"
+  },
+  "exports": {
+    "./types": "./src/types.ts",
+    "./constants": "./src/constants.ts",
+    "./env": "./src/env.ts",
+    "./scrape-targets": "./src/scrape-targets.ts"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.3",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
+  }
+}
