@@ -20,7 +20,7 @@
 		"@tailwindcss/vite": "^4.3.1",
 		"@takumi-rs/core": "^1.8.5",
 		"@takumi-rs/image-response": "^1.8.5",
-		"@takumi-rs/wasm": "^1.8.5",
+		"@takumi-rs/wasm": "^2.1.2",
 		"@tanstack/react-router": "^1.170.15",
 		"@tanstack/react-start": "^1.168.25",
 		"@upstash/redis": "^1.38.0",
