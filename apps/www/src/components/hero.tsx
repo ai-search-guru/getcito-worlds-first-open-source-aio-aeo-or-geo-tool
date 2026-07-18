@@ -147,7 +147,7 @@ export function Hero() {
 								Get Started
 								<ArrowRight className="size-3.5" />
 							</PrimaryCTA>
-							<GhostCTA href="https://demo.Getcitohq.com" external>
+							<GhostCTA href="https://demo.Getcito.com" external>
 								Live demo
 								<ArrowUpRight className="size-3.5" />
 							</GhostCTA>

@@ -15,13 +15,14 @@ import { TooltipProvider } from "@workspace/ui/components/tooltip";
 import { getAppName, getBrandName, buildTitle } from "@/lib/route-head";
 import { useShareOfVoice } from "@/hooks/use-share-of-voice";
 import { usePromptsSummary } from "@/hooks/use-prompts-summary";
-import { useBrand } from "@/hooks/use-brands";
+import { useBrand, useCompetitors } from "@/hooks/use-brands";
 import { PageHeader, FilterSection } from "@/components/page-header";
 import { FilterBar, getAvailableModels, ALL_MODELS_VALUE } from "@/components/filter-bar";
 import { useListFilters } from "@/hooks/use-list-filters";
 import { ColHead } from "@/components/col-head";
 import { ShareOfVoiceDonut } from "@/components/share-of-voice-donut";
 import { TrendChart } from "@/components/trend-chart";
+import { WebLogo } from "@/components/web-logo";
 
 export const Route = createFileRoute("/_authed/app/$brand/share-of-voice")({
 	head: ({ matches, match }) => {
@@ -59,6 +60,13 @@ function ShareOfVoicePage() {
 	const { model, lookback, tags } = useListFilters();
 
 	const { brand } = useBrand(brandId);
+	const { competitors } = useCompetitors(brandId);
+
+	const getDomain = (name: string) => {
+		if (name === brand?.name) return brand?.website;
+		return competitors?.find((c) => c.name === name)?.domains?.[0];
+	};
+
 	const availableModels = getAvailableModels(brand?.effectiveModels ?? []);
 	const modelParam = model === ALL_MODELS_VALUE ? undefined : model;
 
@@ -165,20 +173,23 @@ function ShareOfVoicePage() {
 								</TableRow>
 							</TableHeader>
 							<TableBody>
-								{data.entries.map((e, i) => (
-									<TableRow key={e.name} className={e.isBrand ? "bg-muted/40" : undefined}>
-										<TableCell className="text-muted-foreground tabular-nums">{i + 1}</TableCell>
-										<TableCell className="font-medium">
-											<span className="inline-flex items-center gap-2">
-												{e.name}
-												{e.isBrand && (
-													<Badge variant="secondary" className="text-xs">
-														You
-													</Badge>
-												)}
-											</span>
-										</TableCell>
-										<TableCell className="text-right tabular-nums">{e.mentions.toLocaleString()}</TableCell>
+								{data.entries.map((e, i) => {
+									const domain = getDomain(e.name);
+									return (
+										<TableRow key={e.name} className={e.isBrand ? "bg-muted/40" : undefined}>
+											<TableCell className="text-muted-foreground tabular-nums">{i + 1}</TableCell>
+											<TableCell className="font-medium">
+												<span className="inline-flex items-center gap-2">
+													{domain && <WebLogo domain={domain} size={20} />}
+													{e.name}
+													{e.isBrand && (
+														<Badge variant="secondary" className="text-xs">
+															You
+														</Badge>
+													)}
+												</span>
+											</TableCell>
+											<TableCell className="text-right tabular-nums">{e.mentions.toLocaleString()}</TableCell>
 										<TableCell>
 											<div className="flex items-center gap-2">
 												<div className="bg-muted h-2 w-full overflow-hidden rounded-full">
@@ -197,7 +208,8 @@ function ShareOfVoicePage() {
 										</TableCell>
 										<TableCell className="text-right tabular-nums text-muted-foreground">{e.prompts}</TableCell>
 									</TableRow>
-								))}
+								);
+								})}
 							</TableBody>
 						</Table>
 					</CardContent>

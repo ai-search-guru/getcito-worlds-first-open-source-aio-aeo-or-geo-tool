@@ -19,7 +19,7 @@ function isGetcitoHref(href: string): boolean {
 	if (href.startsWith("/") || href.startsWith("#")) return true;
 	try {
 		const { hostname } = new URL(href);
-		return hostname === "Getcitohq.com" || hostname.endsWith(".Getcitohq.com");
+		return hostname === "Getcito.com" || hostname.endsWith(".Getcito.com");
 	} catch {
 		// mailto:, tel:, or other non-http(s) hrefs — not an outbound web link.
 		return true;
@@ -28,7 +28,7 @@ function isGetcitoHref(href: string): boolean {
 
 // Links inside post content: outbound links are nofollow and open in a new
 // tab, so blog posts don't pass SEO equity to external sites (e.g. competitors
-// we reference). Internal / Getcitohq-owned links stay followed; noopener keeps
+// we reference). Internal / Getcito-owned links stay followed; noopener keeps
 // the referrer for analytics on owned domains.
 function BlogLink({ href = "", ...props }: ComponentPropsWithoutRef<"a">) {
 	if (isGetcitoHref(href)) {

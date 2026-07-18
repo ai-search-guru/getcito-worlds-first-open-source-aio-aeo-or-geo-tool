@@ -4,7 +4,8 @@
  * Form to manage competitor list with multiple domains and aliases per competitor.
  */
 import { useState, useEffect } from "react";
-import { createFileRoute } from "@tanstack/react-router";
+import { createFileRoute, useRouteContext } from "@tanstack/react-router";
+import type { ClientConfig } from "@workspace/config/types";
 import { useQueryClient } from "@tanstack/react-query";
 import { getAppName, getBrandName, buildTitle } from "@/lib/route-head";
 import { Button } from "@workspace/ui/components/button";
@@ -15,6 +16,7 @@ import { dashboardKeys } from "@/hooks/use-dashboard-summary";
 import { AlertTriangle } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@workspace/ui/components/alert";
 import { CompetitorsEditor, type CompetitorEntry } from "@/components/competitors-editor";
+import { WebLogo } from "@/components/web-logo";
 
 export const Route = createFileRoute("/_authed/app/$brand/settings/competitors")({
 	head: ({ matches, match }) => {
@@ -39,6 +41,8 @@ function CompetitorsSettingsPage() {
 	const [error, setError] = useState("");
 	const [success, setSuccess] = useState("");
 	const [competitors, setCompetitors] = useState<CompetitorEntry[]>([]);
+	const context = useRouteContext({ strict: false }) as { clientConfig?: ClientConfig };
+	const isReadOnly = context.clientConfig?.features.readOnly;
 	useEffect(() => {
 		if (existingCompetitors.length > 0) {
 			setCompetitors(
@@ -108,9 +112,14 @@ function CompetitorsSettingsPage() {
 
 	return (
 		<div className="space-y-6 max-w-2xl">
-			<div>
-				<h1 className="text-3xl font-bold">Competitors</h1>
-				<p className="text-muted-foreground">Manage your competitive landscape for reputation tracking.</p>
+			<div className="flex items-center justify-between">
+				<div className="flex items-center gap-4">
+					<WebLogo domain={brand.website} size={48} />
+					<div>
+						<h1 className="text-3xl font-bold tracking-tight">Competitors</h1>
+						<p className="text-muted-foreground">Manage your tracked competitors.</p>
+					</div>
+				</div>
 			</div>
 
 			<Alert variant="default" className="border-yellow-200 bg-yellow-50 text-yellow-800">
@@ -121,14 +130,14 @@ function CompetitorsSettingsPage() {
 				</AlertDescription>
 			</Alert>
 
-			<form onSubmit={handleSubmit} className="space-y-6">
+			<form onSubmit={handleSubmit} className="space-y-4">
 				<CompetitorsEditor competitors={competitors} onChange={setCompetitors} disabled={isSubmitting} />
 
 				{error && <div className="text-sm text-destructive bg-destructive/10 p-3 rounded-md">{error}</div>}
 				{success && <div className="text-sm text-green-600 bg-green-50 p-3 rounded-md">{success}</div>}
 
 				<div className="flex gap-2">
-					<Button type="submit" disabled={isSubmitting} className="cursor-pointer">
+					<Button type="submit" disabled={isSubmitting || isReadOnly} className="cursor-pointer">
 						{isSubmitting ? "Saving..." : "Save Changes"}
 					</Button>
 				</div>

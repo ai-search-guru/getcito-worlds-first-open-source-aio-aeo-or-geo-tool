@@ -22,6 +22,9 @@ export const brands = pgTable("brands", {
 	enabledModels: text("enabled_models").array(),
 	targetMarket: text("target_market"),
 	targetLanguage: text("target_language"),
+	shortDescription: text("short_description"),
+	productsAndServices: text("products_and_services").array().notNull().default([]),
+	keywords: text("keywords").array().notNull().default([]),
 	createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
 	updatedAt: timestamp("updated_at", { withTimezone: true })
 		.defaultNow()

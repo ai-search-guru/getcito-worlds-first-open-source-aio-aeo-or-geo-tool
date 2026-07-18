@@ -101,8 +101,10 @@ export function EmailPasswordLogin({
 	canRegister?: boolean;
 }) {
 	const navigate = useNavigate();
-	const [email, setEmail] = useState(isDemo ? "demo@Getcitohq.com" : "");
-	const [password, setPassword] = useState(isDemo ? "demo" : "");
+	const demoEmail = import.meta.env.VITE_DEMO_EMAIL || "team@Getcito.com";
+	const demoPassword = import.meta.env.VITE_DEMO_PASSWORD || "getcito123";
+	const [email, setEmail] = useState(isDemo ? demoEmail : "");
+	const [password, setPassword] = useState(isDemo ? demoPassword : "");
 	const [error, setError] = useState<string | null>(null);
 	const [loading, setLoading] = useState(false);
 
@@ -189,6 +191,8 @@ export function EmailPasswordLogin({
 }
 
 function DemoCredentialsCallout() {
+	const demoEmail = import.meta.env.VITE_DEMO_EMAIL || "team@getcito.com";
+	const demoPassword = import.meta.env.VITE_DEMO_PASSWORD || "getcito123";
 	return (
 		<div className="flex items-start gap-3 rounded-lg border border-amber-500/30 bg-amber-500/10 p-4 text-sm">
 			<IconInfoCircle className="mt-0.5 size-5 shrink-0 text-amber-600 dark:text-amber-400" />
@@ -197,11 +201,11 @@ function DemoCredentialsCallout() {
 				<dl className="flex flex-wrap gap-x-4 gap-y-1 text-xs text-amber-900/90 dark:text-amber-100/80">
 					<div className="flex items-center gap-1.5">
 						<dt className="opacity-70">Email</dt>
-						<dd className="rounded bg-amber-500/15 px-1.5 py-0.5 font-mono text-[11px]">demo@Getcitohq.com</dd>
+						<dd className="rounded bg-amber-500/15 px-1.5 py-0.5 font-mono text-[11px]">{demoEmail}</dd>
 					</div>
 					<div className="flex items-center gap-1.5">
 						<dt className="opacity-70">Password</dt>
-						<dd className="rounded bg-amber-500/15 px-1.5 py-0.5 font-mono text-[11px]">demo</dd>
+						<dd className="rounded bg-amber-500/15 px-1.5 py-0.5 font-mono text-[11px]">{demoPassword}</dd>
 					</div>
 				</dl>
 			</div>

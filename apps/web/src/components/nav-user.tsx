@@ -81,12 +81,19 @@ export function NavUser() {
 						</DropdownMenuLabel>
 						<DropdownMenuSeparator />
 						<DropdownMenuGroup>
-							<DropdownMenuItem asChild className="cursor-pointer">
-								<Link to="/app" onClick={() => setOpenMobile(false)}>
+							{clientConfig?.features.readOnly ? (
+								<DropdownMenuItem disabled>
 									<IconStatusChange />
-									Switch Brand
-								</Link>
-							</DropdownMenuItem>
+									Switch Brand (Disabled in Demo)
+								</DropdownMenuItem>
+							) : (
+								<DropdownMenuItem asChild className="cursor-pointer">
+									<Link to="/app" onClick={() => setOpenMobile(false)}>
+										<IconStatusChange />
+										Switch Brand
+									</Link>
+								</DropdownMenuItem>
+							)}
 							{clientConfig?.branding.parentUrl && clientConfig?.branding.parentName && (
 								<DropdownMenuItem asChild className="cursor-pointer">
 									<a href={clientConfig.branding.parentUrl} target="_blank" rel="noreferrer">

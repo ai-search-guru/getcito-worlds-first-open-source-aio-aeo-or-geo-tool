@@ -1,6 +1,6 @@
 import { createFileRoute } from "@tanstack/react-router";
 
-const SITE_URL = "https://www.Getcitohq.com";
+const SITE_URL = "https://www.Getcito.com";
 
 export const Route = createFileRoute("/robots.txt")({
 	server: {

@@ -28,7 +28,7 @@ The Getcito repository maintainers are responsible for enforcing this Code of Co
 
 ## Reporting
 
-If you experience or witness behavior that violates this Code of Conduct, please report it by emailing [conduct@getcitohq.com](mailto:conduct@getcitohq.com).
+If you experience or witness behavior that violates this Code of Conduct, please report it by emailing [team@getcito.com](mailto:team@getcito.com).
 
 ## Attribution
 

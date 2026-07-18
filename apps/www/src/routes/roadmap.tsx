@@ -13,7 +13,7 @@ const title = "Roadmap · Getcito";
 const description =
 	"See what's coming next for Getcito. React or comment on GitHub issues to help prioritize.";
 
-const PROJECT_BOARD_URL = "https://github.com/orgs/Getcitohq/projects/3/views/1";
+const PROJECT_BOARD_URL = "https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool";
 const ISSUES_URL = "https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/issues";
 
 interface UpcomingHighlight {

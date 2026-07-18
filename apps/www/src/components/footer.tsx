@@ -129,7 +129,7 @@ export function Footer() {
 					</p>
 					<div className="flex items-center gap-3 text-zinc-600">
 						<a
-							href="https://x.com/tryGetcito"
+							href="https://x.com/Getcito"
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="Twitter / X"
@@ -140,7 +140,7 @@ export function Footer() {
 							</svg>
 						</a>
 						<a
-							href="https://linkedin.com/company/Getcitohq"
+							href="https://linkedin.com/company/Getcito"
 							target="_blank"
 							rel="noopener noreferrer"
 							aria-label="LinkedIn"

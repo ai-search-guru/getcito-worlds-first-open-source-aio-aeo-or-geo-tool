@@ -6,7 +6,7 @@ import { Inbox } from "lucide-react";
 import { IconEditCircle } from "@tabler/icons-react";
 import { usePromptsSummary } from "@/hooks/use-prompts-summary";
 import { useBatchChartData } from "@/hooks/use-batch-chart-data";
-import { useBrand } from "@/hooks/use-brands";
+import { useBrand, useCompetitors } from "@/hooks/use-brands";
 import { useListFilters } from "@/hooks/use-list-filters";
 import { Link, useSearch } from "@tanstack/react-router";
 import { VirtualizedPromptList } from "@/components/virtualized-prompt-list";
@@ -143,6 +143,7 @@ function PromptsContent({ brandId, editLink }: { brandId: string | undefined; ed
 				selectedTags={tags}
 				sortedPrompts={sortedPrompts}
 				availableIndividualModels={availableIndividualModels}
+				brand={brand ?? null}
 			/>
 		</FilteredListShell>
 	);
@@ -161,6 +162,7 @@ function ChartSection({
 	selectedTags,
 	sortedPrompts,
 	availableIndividualModels,
+	brand,
 }: {
 	brandId: string | undefined;
 	lookback: LookbackPeriod;
@@ -170,6 +172,7 @@ function ChartSection({
 	selectedTags: string[];
 	sortedPrompts: { id: string; value: string; firstEvaluatedAt?: Date | string | null }[];
 	availableIndividualModels: string[];
+	brand: Brand | null;
 }) {
 	const { batchChartData, isLoading: isLoadingChartData } = useBatchChartData(brandId, {
 		lookback,
@@ -189,32 +192,9 @@ function ChartSection({
 		};
 	}, [batchChartData?.dateRange]);
 
-	const brandForProvider: Brand | null = batchChartData?.brand
-		? {
-				id: batchChartData.brand.id,
-				name: batchChartData.brand.name,
-				website: "",
-				additionalDomains: [],
-				aliases: [],
-				enabled: true,
-				onboarded: true,
-				delayOverrideHours: null,
-				enabledModels: null,
-				createdAt: new Date(),
-				updatedAt: new Date(),
-			}
-		: null;
-
-	const competitorsForProvider: Competitor[] =
-		batchChartData?.competitors?.map((c) => ({
-			id: c.id,
-			name: c.name,
-			brandId: brandId || "",
-			domains: [],
-			aliases: [],
-			createdAt: new Date(),
-			updatedAt: new Date(),
-		})) || [];
+	const brandForProvider: Brand | null = brand ?? null;
+	const { competitors } = useCompetitors(brandId);
+	const competitorsForProvider: Competitor[] = competitors || [];
 
 	return (
 		<ChartDataProvider

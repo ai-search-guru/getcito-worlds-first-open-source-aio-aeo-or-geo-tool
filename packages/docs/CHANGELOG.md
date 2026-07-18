@@ -60,7 +60,7 @@
 
 ### Patch Changes
 
-- 76e2a5f: Add telemetry opt-out prompt during `Getcito init` and new `Getcito telemetry status|enable|disable` subcommand. See [Telemetry](https://Getcitohq.com/docs/developer-guide/telemetry) for what's collected.
+- 76e2a5f: Add telemetry opt-out prompt during `Getcito init` and new `Getcito telemetry status|enable|disable` subcommand. See [Telemetry](https://Getcito.com) for what's collected.
 - edf97d4: Add Mistral as a direct API provider. Set `MISTRAL_API_KEY` and target via `mistral:mistral-api:<model>[:online]`.
 - 7cba46d: License Getcito under the MIT License. Add Code of Conduct, Contributing guide, Security policy, and a lightweight CLA process.
 - Updated dependencies [7cba46d]

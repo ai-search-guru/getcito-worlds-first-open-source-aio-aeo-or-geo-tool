@@ -203,7 +203,7 @@ export const Local = () => {
 
 /** Demo — read-only preview, seeded user, no admin */
 export const Demo = () => {
-	const demoUser = authedUser("Demo User", "demo@Getcitohq.com", "demo");
+	const demoUser = authedUser("Demo User", "demo@Getcito.com", "demo");
 	demoUser.user.picture = "https://api.dicebear.com/9.x/bottts-neutral/svg?seed=Adrian";
 	configureMocks(demoConfig, onboardedBrand, demoUser);
 

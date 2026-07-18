@@ -91,7 +91,7 @@ export const Route = createRootRoute({
 			{
 				src: "/api/plausible/js/script",
 				defer: true,
-				"data-domain": "Getcitohq.com",
+				"data-domain": "Getcito.com",
 				"data-api": "/api/plausible/event",
 			},
 		],

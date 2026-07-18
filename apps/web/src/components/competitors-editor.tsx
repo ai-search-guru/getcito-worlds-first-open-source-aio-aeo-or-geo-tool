@@ -16,6 +16,7 @@ import { Plus, Pencil, Trash2 } from "lucide-react";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { MAX_COMPETITORS } from "@workspace/lib/constants";
 import { cleanAndValidateDomain } from "@/lib/domain-categories";
+import { WebLogo } from "@/components/web-logo";
 
 export interface CompetitorEntry {
 	_key: string;
@@ -64,6 +65,7 @@ export function CompetitorsEditor({ competitors, onChange, disabled }: Competito
 			{competitors.map((competitor, index) => (
 				<div key={competitor._key} className="border rounded-lg overflow-hidden">
 					<div className="flex items-center gap-3 p-3">
+						<WebLogo domain={competitor.domains[0]} size={28} />
 						<div className="flex-1 min-w-0">
 							{competitor.name ? (
 								<span className="text-sm font-medium">{competitor.name}</span>

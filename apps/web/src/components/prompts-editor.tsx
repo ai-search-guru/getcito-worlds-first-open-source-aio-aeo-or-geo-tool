@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useCallback } from "react";
 import { Button } from "@workspace/ui/components/button";
 import { Save } from "lucide-react";
 import { useNavigate } from "@tanstack/react-router";
@@ -6,6 +6,9 @@ import { useInvalidatePromptsSummary } from "@/hooks/use-prompts-summary";
 import { updatePromptsFn } from "@/server/prompts";
 import { trackEvent } from "@/lib/posthog";
 import { PromptsListEditor, type EditablePrompt } from "@/components/prompts-list-editor";
+import { useRouteContext } from "@tanstack/react-router";
+import type { ClientConfig } from "@workspace/config/types";
+import { computeSystemTags } from "@workspace/lib/tag-utils";
 
 interface Prompt {
 	id: string;
@@ -20,11 +23,13 @@ interface Prompt {
 interface PromptsEditorProps {
 	initialPrompts: Prompt[];
 	brandId: string;
+	brandName?: string;
+	brandWebsite?: string;
 	pageTitle: string;
 	pageDescription: string;
 }
 
-export function PromptsEditor({ initialPrompts, brandId, pageTitle, pageDescription }: PromptsEditorProps) {
+export function PromptsEditor({ initialPrompts, brandId, brandName, brandWebsite, pageTitle, pageDescription }: PromptsEditorProps) {
 	const [prompts, setPrompts] = useState<EditablePrompt[]>(() =>
 		initialPrompts.map((p) => ({
 			id: p.id,
@@ -39,6 +44,8 @@ export function PromptsEditor({ initialPrompts, brandId, pageTitle, pageDescript
 	const saveInProgress = useRef(false);
 	const navigate = useNavigate();
 	const invalidatePromptsSummary = useInvalidatePromptsSummary();
+	const routeContext = useRouteContext({ strict: false }) as { clientConfig?: ClientConfig };
+	const isReadOnly = routeContext.clientConfig?.features.readOnly;
 
 	const savePrompts = async () => {
 		if (saveInProgress.current) {
@@ -84,6 +91,14 @@ export function PromptsEditor({ initialPrompts, brandId, pageTitle, pageDescript
 		}
 	};
 
+	const handleComputeSystemTags = useCallback(
+		(text: string) => {
+			if (!brandName || !brandWebsite) return [];
+			return computeSystemTags(text, brandName, brandWebsite);
+		},
+		[brandName, brandWebsite],
+	);
+
 	return (
 		<div className="space-y-6">
 			<div className="flex items-center justify-between">
@@ -93,12 +108,16 @@ export function PromptsEditor({ initialPrompts, brandId, pageTitle, pageDescript
 				</div>
 			</div>
 
-			<PromptsListEditor prompts={prompts} onChange={setPrompts} />
+			<PromptsListEditor 
+				prompts={prompts} 
+				onChange={setPrompts} 
+				computeSystemTags={handleComputeSystemTags} 
+			/>
 
 			<div className="flex gap-2 items-center">
 				<Button
 					onClick={savePrompts}
-					disabled={isLoading}
+					disabled={isLoading || isReadOnly}
 					size="sm"
 					className="flex items-center gap-2 cursor-pointer"
 				>

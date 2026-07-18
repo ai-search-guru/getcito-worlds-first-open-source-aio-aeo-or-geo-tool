@@ -17,7 +17,7 @@ import { glossaryTerms } from "@/data/glossary";
 import { aiSearchEngines } from "@/data/ai-search-engines";
 import { aeoVerticals } from "@/data/aeo-verticals";
 
-const SITE_URL = "https://www.Getcitohq.com";
+const SITE_URL = "https://www.Getcito.com";
 
 interface SitemapEntry {
 	path: string;

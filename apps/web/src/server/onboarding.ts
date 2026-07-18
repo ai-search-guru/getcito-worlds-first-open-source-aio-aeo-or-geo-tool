@@ -14,7 +14,7 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
 import { requireAuthSession, requireOrgAccess } from "@/lib/auth/helpers";
-import { analyzeBrandInfo, analyzeCompetitors, analyzePrompts } from "@workspace/lib/onboarding";
+import { analyzeBrand, analyzeBrandInfo, analyzeCompetitors, analyzePrompts } from "@workspace/lib/onboarding";
 import {
 	cancelAnalyzeBrand,
 	enqueueAnalyzeBrand,
@@ -103,9 +103,11 @@ export const analyzeBrandInfoFn = createServerFn({ method: "POST" })
 	.handler(async ({ data }) => {
 		const session = await requireAuthSession();
 		await requireOrgAccess(session.user.id, data.brandId);
-		return analyzeBrandInfo({
+		return analyzeBrand({
 			website: data.website,
 			brandName: data.brandName,
+			maxCompetitors: 0,
+			maxPrompts: 0,
 		});
 	});
 

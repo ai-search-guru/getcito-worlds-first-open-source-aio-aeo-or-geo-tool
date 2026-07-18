@@ -69,14 +69,19 @@ export const Route = createFileRoute("/_authed/app/$brand/settings/prompts")({
 	component: PromptsSettingsPage,
 });
 
+import { Route as brandLayoutRoute } from "@/routes/_authed/app/$brand";
+
 function PromptsSettingsPage() {
 	const { prompts: brandPrompts } = Route.useLoaderData();
 	const { brand: brandId } = Route.useParams();
+	const { brand } = brandLayoutRoute.useLoaderData();
 
 	return (
 		<PromptsEditor
 			initialPrompts={brandPrompts}
 			brandId={brandId}
+			brandName={brand?.name}
+			brandWebsite={brand?.website}
 			pageTitle="Prompts"
 			pageDescription="Add, edit, or remove your brand tracking keywords and prompts"
 		/>

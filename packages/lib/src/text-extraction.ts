@@ -162,6 +162,7 @@ export function extractTextFromBrightdata(rawOutput: any): string {
 		const record = Array.isArray(rawOutput) ? rawOutput[0] : rawOutput;
 		if (!record) return "No content in BrightData output.";
 		for (const key of [
+			"aio_text",
 			"answer_text_markdown",
 			"answer_text",
 			"answer",
@@ -172,6 +173,11 @@ export function extractTextFromBrightdata(rawOutput: any): string {
 		]) {
 			if (typeof record[key] === "string" && record[key].trim()) return record[key].trim();
 		}
+		
+		if (record.general?.search_engine === "google" || record.input?.url === "https://google.com/aimode") {
+			return "No Google AI mode invoked.";
+		}
+
 		return "No text content found in BrightData output.";
 	} catch {
 		return "Error extracting text content.";

@@ -15,11 +15,11 @@ const strictTransportSecurity =
 const SECURITY_HEADERS: Record<string, string> = {
 	"Content-Security-Policy": [
 		"default-src 'self'",
-		"script-src 'self' 'unsafe-inline' https://*.clarity.ms https://var.Getcitohq.com",
+		"script-src 'self' 'unsafe-inline' https://*.clarity.ms https://Getcito.com",
 		"style-src 'self' 'unsafe-inline'",
 		"img-src 'self' data: https: https://c.bing.com",
 		"font-src 'self' data:",
-		"connect-src 'self' https://var.Getcitohq.com https://*.sentry.io https://*.clarity.ms https://c.bing.com",
+		"connect-src 'self' https://Getcito.com https://*.sentry.io https://*.clarity.ms https://c.bing.com",
 		"object-src 'none'",
 		"frame-ancestors 'none'",
 		"base-uri 'self'",

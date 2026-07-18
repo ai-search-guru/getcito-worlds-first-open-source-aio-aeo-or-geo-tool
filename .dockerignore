@@ -81,8 +81,19 @@ apps/cli
 # Misc
 .DS_Store
 **/.DS_Store
+*.pem
+**/*.pem
+*.key
+**/*.key
+*.cert
+**/*.cert
+*.crt
+**/*.crt
 Thumbs.db
 **/Thumbs.db
 *.log
 **/*.log
 e2e/artifacts
+
+docker-compose.whitelabel.yml
+

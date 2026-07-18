@@ -71,7 +71,7 @@
 
 ### Patch Changes
 
-- 76e2a5f: Add telemetry opt-out prompt during `Getcito init` and new `Getcito telemetry status|enable|disable` subcommand. See [Telemetry](https://Getcitohq.com/docs/developer-guide/telemetry) for what's collected.
+- 76e2a5f: Add telemetry opt-out prompt during `Getcito init` and new `Getcito telemetry status|enable|disable` subcommand. See [Telemetry](https://wwww.getcito.com) for what's collected.
 - 7cba46d: License Getcito under the MIT License. Add Code of Conduct, Contributing guide, Security policy, and a lightweight CLA process.
 - 839b98b: Brand onboarding is now a single screen: paste a website and review the suggested products, competitors (with their own domains and aliases), additional brand domains, aliases, and tagged starter prompts before saving. Powered by whichever direct LLM API you've configured (OpenRouter, Anthropic, OpenAI, or Mistral) with web search.
 - Updated dependencies [7990382]

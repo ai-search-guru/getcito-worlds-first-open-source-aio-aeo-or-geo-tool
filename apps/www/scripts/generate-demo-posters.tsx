@@ -358,7 +358,7 @@ function YouTubeThumbnail() {
 						letterSpacing: 1,
 					}}
 				>
-					Getcitohq.com
+					Getcito.com
 				</div>
 			</div>
 		</div>

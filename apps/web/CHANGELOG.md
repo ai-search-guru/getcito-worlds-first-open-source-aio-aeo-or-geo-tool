@@ -171,7 +171,7 @@
 - b635a99: Make default brand cadence configurable via `DEFAULT_DELAY_HOURS` env var. `brand.delayOverrideHours` still takes precedence. The default changed from the hard-coded 72h to 24h.
 - a62ef89: Restyle the demo login and add a preview to Storybook.
 - e9be023: Ensure icons/favicons are comprehensive for non-whitelabel deployments.
-- f3604e2: Replace the page-top demo-mode banner with a compact "Demo" pill next to the sidebar logo (with a tooltip explaining the read-only behavior), and move version / Getcitohq.com / GitHub links into the sidebar footer for every deployment mode except whitelabel. Also reads the better-auth `user.image` field so avatars actually render.
+- f3604e2: Replace the page-top demo-mode banner with a compact "Demo" pill next to the sidebar logo (with a tooltip explaining the read-only behavior), and move version / Getcito.com / GitHub links into the sidebar footer for every deployment mode except whitelabel. Also reads the better-auth `user.image` field so avatars actually render.
   - @workspace/api-spec@0.2.3
   - @workspace/config@0.2.3
   - @workspace/deployment@0.2.3

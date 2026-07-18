@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { Check, Copy, Terminal } from "lucide-react";
 
-const COMMANDS = ["npm install -g @Getcitohq/cli", "Getcito init"];
+const COMMANDS = ["npm install -g @Getcito/cli", "Getcito init"];
 
 export function QuickstartBlock() {
 	const [copied, setCopied] = useState(false);
@@ -42,7 +42,7 @@ export function QuickstartBlock() {
 					<span className="text-zinc-500 select-none">$</span>
 					<span>
 						npm install -g{" "}
-						<span className="text-blue-400">@Getcitohq/cli</span>
+						<span className="text-blue-400">@Getcito/cli</span>
 					</span>
 				</div>
 				<div className="flex gap-3">

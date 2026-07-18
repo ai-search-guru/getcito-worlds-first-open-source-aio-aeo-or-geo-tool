@@ -13,7 +13,7 @@
  */
 import { z } from "zod";
 import { getWebsiteExcerpt } from "../website-excerpt";
-import { runStructuredResearchPrompt } from "./llm";
+import { runStructuredResearchPrompt, runStructuredCompletionPrompt } from "./llm";
 import {
 	cleanAndValidateDomain,
 	cleanDomain,
@@ -60,15 +60,24 @@ function buildSchema(args: { maxCompetitors: number; maxPrompts: number }) {
 			.describe(
 				"Canonical brand name in plaintext (preserve casing, but no markdown — no links, no formatting, just the bare name). The brandName must be searchable: it should literally appear inside the website hostname so that mention-detection works. For example, for nike.com use \"Nike\" (not \"Nike, Inc.\"). Don't include legal entity suffixes like \"Inc.\" or \"Ltd.\"",
 			),
+		shortDescription: z
+			.string()
+			.describe("A concise 2-3 sentence summary of what the company does"),
+		productsAndServices: z
+			.array(z.string())
+			.describe("List of main products, services, features, or offerings"),
+		keywords: z
+			.array(z.string())
+			.describe("4-5 relevant keywords or phrases representing core business"),
 		additionalDomains: z
 			.array(z.string())
 			.describe(
-				"Other public domains the brand owns (regional ccTLDs, alternate spellings, parent-company sites). Hostnames only. Do not include the primary website. Empty if uncertain.",
+				"Other public domains the brand owns (regional ccTLDs, alternate spellings, parent-company sites). Hostnames only. Do not include the primary website.",
 			),
 		aliases: z
 			.array(z.string())
 			.describe(
-				`Other names users use for this brand (abbreviations, parent-company names, common misspellings). ${ALIAS_GUIDANCE} Empty if none are commonly used.`,
+				`Other names users use for this brand (abbreviations, parent-company names, common misspellings). ${ALIAS_GUIDANCE}`,
 			),
 		competitors: z
 			.array(competitorSchema)
@@ -98,6 +107,9 @@ export interface OnboardingPrompt {
 
 export interface OnboardingSuggestion {
 	brandName: string;
+	shortDescription?: string;
+	productsAndServices?: string[];
+	keywords?: string[];
 	website: string;
 	additionalDomains: string[];
 	aliases: string[];
@@ -115,7 +127,7 @@ export interface AnalyzeBrandOptions {
 }
 
 const DEFAULT_MAX_COMPETITORS = 10;
-const DEFAULT_MAX_PROMPTS = 30;
+const DEFAULT_MAX_PROMPTS = 10;
 
 /**
  * Resolved inputs for one analysis run: the prompt the LLM sees, the schema
@@ -182,7 +194,11 @@ export async function analyzeBrand(options: AnalyzeBrandOptions): Promise<Onboar
 	const start = Date.now();
 	console.log(`[onboarding] analyzeBrand start: ${options.website}`);
 	const ctx = await buildAnalysisContext(options);
+	
+	// The user requested web search to be ON so it can find aliases and additional domains,
+	// even though it will take ~15 seconds instead of 3 seconds.
 	const raw = await runStructuredResearchPrompt(ctx.prompt, ctx.schema);
+	
 	const result = normalizeAnalysisResult(raw, ctx);
 	console.log(
 		`[onboarding] analyzeBrand done: ${options.website} in ${Date.now() - start}ms (brand="${result.brandName}", competitors=${result.competitors.length}, prompts=${result.suggestedPrompts.length})`,
@@ -239,9 +255,10 @@ function buildPrompt(args: {
 
 Likely brand name (from domain): ${args.brandNameHint}
 ${excerptBlock}
-Use web search to verify facts. Never invent information — return empty arrays when uncertain.
+Use the provided website text and your extensive pre-trained knowledge to identify the brand details. 
+You must do your best to fill out the shortDescription, productsAndServices, keywords, additionalDomains, and aliases based on what you know about the brand. For major brands, try to list all known domains and aliases.
 
-You MUST return the structured JSON object — even if you can find nothing about this brand. In that case set brandName to the likely name above and return empty arrays for every other field. Refusing to produce JSON, or replying with prose explaining what you don't know, is a failure mode; an object with mostly-empty arrays is the correct answer when information is genuinely unavailable.${skipNotes.length > 0 ? `\n\n${skipNotes.join(" ")}` : ""}`;
+You MUST return the structured JSON object. Refusing to produce JSON, or replying with prose explaining what you don't know, is a failure mode.${skipNotes.length > 0 ? `\n\n${skipNotes.join(" ")}` : ""}`;
 }
 
 function normalize(args: {
@@ -306,6 +323,9 @@ function normalize(args: {
 
 	return {
 		brandName,
+		shortDescription: raw.shortDescription,
+		productsAndServices: raw.productsAndServices,
+		keywords: raw.keywords,
 		website,
 		additionalDomains: dedupedAdditionalDomains,
 		aliases,

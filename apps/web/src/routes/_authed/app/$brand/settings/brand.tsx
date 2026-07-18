@@ -13,7 +13,8 @@ import { Label } from "@workspace/ui/components/label";
 import { useBrand } from "@/hooks/use-brands";
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from "@workspace/ui/components/select";
 import { updateBrandFn, deleteBrandFn } from "@/server/brands";
-import { useNavigate } from "@tanstack/react-router";
+import { useRouteContext, useNavigate } from "@tanstack/react-router";
+import type { ClientConfig } from "@workspace/config/types";
 import { citationKeys } from "@/hooks/use-citations";
 import { dashboardKeys } from "@/hooks/use-dashboard-summary";
 import { Tooltip, TooltipTrigger, TooltipContent } from "@workspace/ui/components/tooltip";
@@ -50,6 +51,8 @@ function BrandSettingsPage() {
 	const [targetLanguage, setTargetLanguage] = useState<string>("");
 	const [isDeleting, setIsDeleting] = useState(false);
 	const navigate = useNavigate();
+	const context = useRouteContext({ strict: false }) as { clientConfig?: ClientConfig };
+	const isReadOnly = context.clientConfig?.features.readOnly;
 
 	useEffect(() => {
 		if (brand) {
@@ -279,25 +282,27 @@ function BrandSettingsPage() {
 				{success && <div className="text-sm text-green-600 bg-green-50 p-3 rounded-md">{success}</div>}
 
 				<div className="flex gap-2">
-					<Button type="submit" disabled={isSubmitting || isDeleting} className="cursor-pointer">
+					<Button type="submit" disabled={isSubmitting || isDeleting || isReadOnly} className="cursor-pointer">
 						{isSubmitting ? "Saving..." : "Save Changes"}
 					</Button>
 				</div>
 			</form>
 
-			<div className="mt-12 pt-6 border-t border-border">
-				<h3 className="text-lg font-medium text-destructive mb-2">Danger Zone</h3>
-				<p className="text-sm text-muted-foreground mb-4">
-					Permanently delete this brand and all of its associated data, including prompts and run history. This action cannot be undone.
-				</p>
-				<Button 
-					variant="destructive" 
-					onClick={handleDelete}
-					disabled={isSubmitting || isDeleting}
-				>
-					{isDeleting ? "Deleting..." : "Delete Brand"}
-				</Button>
-			</div>
+			{!isReadOnly && (
+				<div className="mt-12 pt-6 border-t border-border">
+					<h3 className="text-lg font-medium text-destructive mb-2">Danger Zone</h3>
+					<p className="text-sm text-muted-foreground mb-4">
+						Permanently delete this brand and all of its associated data, including prompts and run history. This action cannot be undone.
+					</p>
+					<Button 
+						variant="destructive" 
+						onClick={handleDelete}
+						disabled={isSubmitting || isDeleting}
+					>
+						{isDeleting ? "Deleting..." : "Delete Brand"}
+					</Button>
+				</div>
+			)}
 		</div>
 	);
 }

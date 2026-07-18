@@ -10,8 +10,6 @@
 # Contributions you have made and will make to projects of Blue Whale
 # Software, LLC.
 #
-# Read the CLA before signing:
-#   https://github.com/getcitohq/getcito/blob/main/CLA.md
 #
 # Format:
 #   - one GitHub username per line, lowercase, no leading "@"

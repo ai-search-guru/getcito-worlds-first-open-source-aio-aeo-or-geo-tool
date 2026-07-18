@@ -15,7 +15,8 @@ import { Checkbox } from "@workspace/ui/components/checkbox";
 import { Switch } from "@workspace/ui/components/switch";
 import { TagsInput } from "@workspace/ui/components/tags-input";
 import { Tooltip, TooltipContent, TooltipTrigger } from "@workspace/ui/components/tooltip";
-import { Plus, Inbox } from "lucide-react";
+import { Textarea } from "@workspace/ui/components/textarea";
+import { Plus, Inbox, ListPlus, Trash2 } from "lucide-react";
 import { IconInfoCircle } from "@tabler/icons-react";
 import { MAX_PROMPTS } from "@workspace/lib/constants";
 
@@ -44,9 +45,11 @@ interface PromptsListEditorProps {
 	onChange: (next: EditablePrompt[]) => void;
 	/** Show the read-only System Tags column. Default true. */
 	showSystemTags?: boolean;
+	/** Optional function to dynamically compute system tags as the user types */
+	computeSystemTags?: (text: string) => string[];
 }
 
-export function PromptsListEditor({ prompts, onChange, showSystemTags = true }: PromptsListEditorProps) {
+export function PromptsListEditor({ prompts, onChange, showSystemTags = true, computeSystemTags }: PromptsListEditorProps) {
 	const [selectedKeys, setSelectedKeys] = useState<Set<string>>(new Set());
 
 	const allTagOptions = useMemo(() => {
@@ -56,11 +59,21 @@ export function PromptsListEditor({ prompts, onChange, showSystemTags = true }: 
 	}, [prompts]);
 
 	const update = (index: number, patch: Partial<EditablePrompt>) => {
-		onChange(prompts.map((p, i) => (i === index ? { ...p, ...patch } : p)));
+		onChange(
+			prompts.map((p, i) => {
+				if (i !== index) return p;
+				const next = { ...p, ...patch };
+				// Auto-compute system tags if text changed and a compute function was provided
+				if ("value" in patch && computeSystemTags) {
+					next.systemTags = computeSystemTags(patch.value as string);
+				}
+				return next;
+			}),
+		);
 	};
 	const add = () => {
 		if (prompts.length >= MAX_PROMPTS) return;
-		onChange([...prompts, newPromptEntry()]);
+		onChange([...prompts, newPromptEntry({ tags: ["custom"] })]);
 	};
 
 	// Count selection against current prompts so stale keys (e.g. after the
@@ -88,11 +101,43 @@ export function PromptsListEditor({ prompts, onChange, showSystemTags = true }: 
 
 	const validCount = prompts.filter((p) => p.enabled && p.value.trim().length > 0).length;
 
-	// Desktop layout only — column order is [select] [text] [system?] [tags] [switch].
+	const [isBulkMode, setIsBulkMode] = useState(false);
+	const [bulkInput, setBulkInput] = useState("");
+
+	const handleBulkAdd = () => {
+		const newLines = bulkInput
+			.split("\n")
+			.map((s) => s.trim())
+			.filter((s) => s.length > 0);
+		
+		if (newLines.length === 0) {
+			setIsBulkMode(false);
+			return;
+		}
+
+		const spaceLeft = MAX_PROMPTS - prompts.length;
+		const toAdd = newLines.slice(0, spaceLeft).map((text) => 
+			newPromptEntry({ 
+				value: text,
+				tags: ["custom"],
+				...(computeSystemTags ? { systemTags: computeSystemTags(text) } : {})
+			})
+		);
+		
+		onChange([...prompts, ...toAdd]);
+		setBulkInput("");
+		setIsBulkMode(false);
+	};
+
+	// Desktop layout only — column order is [select] [text] [system?] [tags] [switch+delete].
 	// Mobile renders a stacked per-prompt block instead (no selection, no bulk).
 	const gridCols = showSystemTags
-		? "md:grid-cols-[2.25rem_minmax(0,1fr)_6rem_minmax(14rem,1fr)_2.75rem]"
-		: "md:grid-cols-[2.25rem_minmax(0,1fr)_minmax(14rem,1fr)_2.75rem]";
+		? "md:grid-cols-[2.25rem_minmax(0,1fr)_6rem_minmax(14rem,1fr)_5rem]"
+		: "md:grid-cols-[2.25rem_minmax(0,1fr)_minmax(14rem,1fr)_5rem]";
+
+	const remove = (index: number) => {
+		onChange(prompts.filter((_, i) => i !== index));
+	};
 
 	return (
 		<div className="space-y-4">
@@ -206,12 +251,22 @@ export function PromptsListEditor({ prompts, onChange, showSystemTags = true }: 
 										placeholder="Enter prompt text..."
 										className="min-w-0 flex-1"
 									/>
-									<div className="pt-2">
+									<div className="pt-2 flex items-center gap-2">
 										<Switch
 											checked={prompt.enabled}
 											onCheckedChange={(checked) => update(index, { enabled: checked })}
 											aria-label={prompt.enabled ? "Disable prompt" : "Enable prompt"}
 										/>
+										<Button
+											type="button"
+											variant="ghost"
+											size="sm"
+											onClick={() => remove(index)}
+											className="h-auto p-1.5 text-muted-foreground hover:text-destructive shrink-0 cursor-pointer"
+											aria-label="Delete prompt"
+										>
+											<Trash2 className="h-4 w-4" />
+										</Button>
 									</div>
 								</div>
 								<TagsInput
@@ -250,12 +305,22 @@ export function PromptsListEditor({ prompts, onChange, showSystemTags = true }: 
 									searchPlaceholder="Search or create tag..."
 									normalizeValue={(raw) => raw.toLowerCase().trim()}
 								/>
-								<div className="flex justify-center pt-2">
+								<div className="flex justify-center items-center gap-1 pt-2">
 									<Switch
 										checked={prompt.enabled}
 										onCheckedChange={(checked) => update(index, { enabled: checked })}
 										aria-label={prompt.enabled ? "Disable prompt" : "Enable prompt"}
 									/>
+									<Button
+										type="button"
+										variant="ghost"
+										size="sm"
+										onClick={() => remove(index)}
+										className="h-auto p-1.5 text-muted-foreground hover:text-destructive shrink-0 cursor-pointer"
+										aria-label="Delete prompt"
+									>
+										<Trash2 className="h-4 w-4" />
+									</Button>
 								</div>
 							</div>
 						</div>
@@ -264,15 +329,51 @@ export function PromptsListEditor({ prompts, onChange, showSystemTags = true }: 
 			)}
 
 			{prompts.length < MAX_PROMPTS && (
-				<Button
-					variant="outline"
-					size="sm"
-					type="button"
-					onClick={add}
-					className="flex items-center gap-2 cursor-pointer"
-				>
-					<Plus className="h-4 w-4" /> Add Prompt
-				</Button>
+				<div className="flex flex-col gap-2">
+					{isBulkMode ? (
+						<div className="space-y-2 border rounded-md p-3 bg-muted/20">
+							<div className="flex justify-between items-center mb-1">
+								<span className="text-sm font-medium">Bulk Add Prompts</span>
+								<span className="text-xs text-muted-foreground">{MAX_PROMPTS - prompts.length} slots remaining</span>
+							</div>
+							<Textarea
+								value={bulkInput}
+								onChange={(e) => setBulkInput(e.target.value)}
+								placeholder="Paste multiple prompts here, each on a new line..."
+								className="min-h-[100px]"
+							/>
+							<div className="flex gap-2 justify-end pt-1">
+								<Button size="sm" variant="ghost" onClick={() => setIsBulkMode(false)} className="cursor-pointer">
+									Cancel
+								</Button>
+								<Button size="sm" onClick={handleBulkAdd} className="cursor-pointer">
+									Add to list
+								</Button>
+							</div>
+						</div>
+					) : (
+						<div className="flex gap-2">
+							<Button
+								variant="outline"
+								size="sm"
+								type="button"
+								onClick={add}
+								className="flex items-center gap-2 cursor-pointer"
+							>
+								<Plus className="h-4 w-4" /> Add Prompt
+							</Button>
+							<Button
+								variant="outline"
+								size="sm"
+								type="button"
+								onClick={() => setIsBulkMode(true)}
+								className="flex items-center gap-2 cursor-pointer"
+							>
+								<ListPlus className="h-4 w-4" /> Bulk Add
+							</Button>
+						</div>
+					)}
+				</div>
 			)}
 
 			{prompts.length >= MAX_PROMPTS && (

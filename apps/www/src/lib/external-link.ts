@@ -1,8 +1,8 @@
 // Domains we own or co-own. Outbound links to these keep the Referer header —
 // rel="noopener" only, never "noreferrer" — so the destination's analytics can
 // attribute the visit back to this site. Every other external link gets the
-// full rel="noopener noreferrer". Subdomains count (e.g. demo.Getcitohq.com).
-const OWNED_DOMAINS = ["Getcitohq.com", "bluewhale.dev", "jrhizor.dev"];
+// full rel="noopener noreferrer". Subdomains count (e.g. demo.Getcito.com).
+const OWNED_DOMAINS = ["Getcito.com"];
 
 function isOwnedHost(hostname: string): boolean {
 	return OWNED_DOMAINS.some(

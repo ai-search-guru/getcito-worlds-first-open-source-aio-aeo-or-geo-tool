@@ -12,6 +12,7 @@ const BD_DATASET_IDS: Record<string, string> = {
 	gemini: "gd_mbz66arm2mf9cu856y",
 	grok: "gd_m8ve0u141icu75ae74",
 	"google-ai-mode": "gd_mcswdt6z2elth3zqr2",
+	"google-ai-overview": "gd_mfz5x93lmsjjjylob",
 };
 
 const BD_BASE_URL: Record<string, string> = {
@@ -41,8 +42,12 @@ function getCountryCode(countryName: string): string | undefined {
 }
 
 function normalizeAnswer(record: Record<string, any>): string {
-	for (const key of ["answer_text_markdown", "answer_text", "answer", "response_raw", "response", "text", "content"]) {
+	for (const key of ["aio_text", "answer_text_markdown", "answer_text", "answer", "response_raw", "response", "text", "content"]) {
 		if (typeof record[key] === "string" && record[key].trim()) return record[key].trim();
+	}
+	// If this is a Google Search result without an AI overview, we don't want to return the raw JSON
+	if (record.general?.search_engine === "google" || record.input?.url === "https://google.com/aimode") {
+		return "No Google AI mode invoked.";
 	}
 	return JSON.stringify(record).slice(0, 2000);
 }
@@ -128,17 +133,31 @@ export const brightdata: Provider = {
 		try {
 			const triggerUrl = `https://api.brightdata.com/datasets/v3/trigger?dataset_id=${datasetId}&notify=false&include_errors=true&format=json`;
 			
-			const payloadData: any = {
+			const defaultMarket = options?.targetMarket ?? "US";
+			const defaultLanguage = options?.targetLanguage ?? "en";
+
+			let payloadData: any = {
 				url: BD_BASE_URL[model] ?? "",
 				prompt,
 				index: 1,
 				...(model === "chatgpt" ? { web_search: options?.webSearch ?? false } : {}),
-				...(options?.targetMarket ? { country: getCountryCode(options.targetMarket) ?? options.targetMarket } : {}),
-				...(model === "google-ai-mode" && options?.targetLanguage 
-					? { hl: getLanguageCode(options.targetLanguage) ?? "en" } 
-					: (options?.targetLanguage ? { additional_prompt: `Please provide your response in ${options.targetLanguage}.` } : {})
-				),
+				country: getCountryCode(defaultMarket) ?? defaultMarket,
+				...(model === "google-ai-mode"
+					? { hl: getLanguageCode(defaultLanguage) ?? "en" }
+					: { additional_prompt: `Please provide your response in ${defaultLanguage}.` }),
 			};
+
+			if (model === "google-ai-overview") {
+				payloadData = {
+					url: "https://www.google.com/",
+					keyword: prompt,
+					language: options?.targetLanguage ? (getLanguageCode(options.targetLanguage) ?? "en") : "en",
+					country: options?.targetMarket ? (getCountryCode(options.targetMarket) ?? "US") : "US",
+					start_page: 1,
+					end_page: 10,
+					collapse_aio: false
+				};
+			}
 
 			let triggerRes = await fetch(triggerUrl, {
 				method: "POST",

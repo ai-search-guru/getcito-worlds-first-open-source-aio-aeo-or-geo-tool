@@ -4,11 +4,11 @@ import { isMarkdownPreferred, rewritePath } from "fumadocs-core/negotiation";
 const SECURITY_HEADERS: Record<string, string> = {
 	"Content-Security-Policy": [
 		"default-src 'self'",
-		"script-src 'self' 'unsafe-inline' https://var.Getcitohq.com",
+		"script-src 'self' 'unsafe-inline' https://var.Getcito.com",
 		"style-src 'self' 'unsafe-inline'",
 		"img-src 'self' data: https:",
 		"font-src 'self' data:",
-		"connect-src 'self' https://var.Getcitohq.com https://*.mux.com https://*.litix.io",
+		"connect-src 'self' https://getcito.com https://*.mux.com https://*.litix.io",
 		"media-src 'self' blob: https://*.mux.com",
 		"worker-src 'self' blob:",
 		// YouTube embeds in blog posts (privacy-enhanced youtube-nocookie host).

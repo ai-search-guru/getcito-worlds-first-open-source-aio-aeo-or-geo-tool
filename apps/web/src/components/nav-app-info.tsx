@@ -26,11 +26,11 @@ export function NavAppInfo() {
 			<div className="flex items-center gap-1">
 				<Tooltip>
 					<TooltipTrigger asChild>
-						<a href="https://www.Getcitohq.com/" target="_blank" className={linkClass}>
+						<a href="https://www.Getcito.com/" target="_blank" className={linkClass}>
 							<IconWorld className="size-4" />
 						</a>
 					</TooltipTrigger>
-					<TooltipContent>Getcitohq.com</TooltipContent>
+					<TooltipContent>Getcito.com</TooltipContent>
 				</Tooltip>
 				<Tooltip>
 					<TooltipTrigger asChild>

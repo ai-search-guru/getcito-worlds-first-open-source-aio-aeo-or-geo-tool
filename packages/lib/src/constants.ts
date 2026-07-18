@@ -1,5 +1,5 @@
 // Constants for prompt processing
-export const RUNS_PER_PROMPT = 5;
+export const RUNS_PER_PROMPT = 2;
 
 // Fallback cadence (hours) when the DEFAULT_DELAY_HOURS env var is unset or invalid.
 export const DEFAULT_DELAY_HOURS_FALLBACK = 24;

@@ -11,28 +11,28 @@ Getcito is Answer Engine Optimization (AEO), also called generative engine optim
 
 ## Product
 
-- [Getcito](https://www.Getcitohq.com/): Know how AI talks about your brand — track visibility across any AI model, monitor mentions, analyze citations, and benchmark competitors.
-- [Features](https://www.Getcitohq.com/features): Visibility dashboard, per-prompt and per-model tracking, citation analysis, competitor intelligence, prompt management, response deep-dives, and long-term trends.
-- [Pricing](https://www.Getcitohq.com/pricing): Free and open source to self-host, managed cloud hosting coming soon, and white-label available for agencies.
-- [Live Demo](https://demo.Getcitohq.com): Explore a fully populated Getcito instance — no installation required.
-- [Vision](https://www.Getcitohq.com/vision): Why we believe AI visibility monitoring should be affordable, transparent, and built to last.
+- [Getcito](https://www.Getcito.com/): Know how AI talks about your brand — track visibility across any AI model, monitor mentions, analyze citations, and benchmark competitors.
+- [Features](https://www.getcito.com/features): Visibility dashboard, per-prompt and per-model tracking, citation analysis, competitor intelligence, prompt management, response deep-dives, and long-term trends.
+- [Pricing](https://www.getcito.com/pricing): Free and open source to self-host, managed cloud hosting coming soon, and white-label available for agencies.
+- [Live Demo](https://demo.getcito.com): Explore a fully populated Getcito instance — no installation required.
+- [Vision](https://www.getcito.com/vision): Why we believe AI visibility monitoring should be affordable, transparent, and built to last.
 
 ## Documentation
 
-- [Documentation](https://www.Getcitohq.com/docs.md): Introduction to Getcito, the open source AI visibility platform.
-- [Quick Start](https://www.Getcitohq.com/docs/getting-started.md): Get Getcito running on your own infrastructure in under 5 minutes using the CLI.
-- [User Guide](https://www.Getcitohq.com/docs/user-guide.md): A complete walkthrough, from first login to daily visibility tracking, prompts, citations, competitors, and reports.
-- [Developer Guide](https://www.Getcitohq.com/docs/developer-guide.md): Run, configure, integrate with, and contribute to Getcito, including architecture and self-hosting setup.
-- [API Reference](https://www.Getcitohq.com/docs/api.md): Complete REST API documentation for Getcito's administrative API.
-- [llms-full.txt](https://www.Getcitohq.com/llms-full.txt): The full text of all Getcito documentation in a single file.
+- [Documentation](https://www.getcito.com/docs.md): Introduction to Getcito, the open source AI visibility platform.
+- [Quick Start](https://www.getcito.com/docs/getting-started.md): Get Getcito running on your own infrastructure in under 5 minutes using the CLI.
+- [User Guide](https://www.getcito.com/docs/user-guide.md): A complete walkthrough, from first login to daily visibility tracking, prompts, citations, competitors, and reports.
+- [Developer Guide](https://www.getcito.com/docs/developer-guide.md): Run, configure, integrate with, and contribute to Getcito, including architecture and self-hosting setup.
+- [API Reference](https://www.getcito.com/docs/api.md): Complete REST API documentation for Getcito's administrative API.
+- [llms-full.txt](https://www.getcito.com/llms-full.txt): The full text of all Getcito documentation in a single file.
 
 ## Resources
 
-- [AI Visibility Tool Directory](https://www.Getcitohq.com/ai-visibility-tools): Compare 100+ AI visibility and Answer Engine Optimization tools, with a feature matrix, pricing, and head-to-head comparisons with Getcito.
-- [Changelog](https://www.Getcitohq.com/changelog): Recent releases, improvements, and bug fixes.
-- [Roadmap](https://www.Getcitohq.com/roadmap): What's coming next, prioritized in the open on GitHub.
-- [Provider Status](https://www.Getcitohq.com/status): Real-time status and performance monitoring for AI answer engine integrations.
-- [Brand Assets](https://www.Getcitohq.com/brand): Download Getcito logos, icons, and brand guidelines.
+- [AI Visibility Tool Directory](https://www.getcito.com/ai-visibility-tools): Compare 100+ AI visibility and Answer Engine Optimization tools, with a feature matrix, pricing, and head-to-head comparisons with Getcito.
+- [Changelog](https://www.getcito.com/changelog): Recent releases, improvements, and bug fixes.
+- [Roadmap](https://www.getcito.com/roadmap): What's coming next, prioritized in the open on GitHub.
+- [Provider Status](https://www.getcito.com/status): Real-time status and performance monitoring for AI answer engine integrations.
+- [Brand Assets](https://www.getcito.com/brand): Download Getcito logos, icons, and brand guidelines.
 
 ## Open Source
 
@@ -43,7 +43,7 @@ Getcito is Answer Engine Optimization (AEO), also called generative engine optim
 ## Optional
 
 - [X / Twitter](https://x.com/tryGetcito): Product updates and AI visibility insights.
-- [LinkedIn](https://linkedin.com/company/Getcitohq): Company updates from Getcito.
+- [LinkedIn](https://linkedin.com/company/getcito): Company updates from Getcito.
 - [Blue Whale Software](https://bluewhale.dev?ref=Getcito): The team building Getcito.
 
 ---

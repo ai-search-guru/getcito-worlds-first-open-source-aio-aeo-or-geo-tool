@@ -20,6 +20,8 @@ export type ProgressBarItem = {
 	onClick?: () => void;
 	/** Optional tooltip text shown on hover over the label */
 	tooltip?: string;
+	/** Optional icon element rendered before the label */
+	icon?: React.ReactNode;
 	/** Optional action element rendered next to the label */
 	action?: React.ReactNode;
 	/** Optional additional metadata */
@@ -49,6 +51,8 @@ export type ProgressBarChartProps = {
 	spacing?: string;
 	/** Show label in bold if it matches this value */
 	highlightLabel?: string;
+	/** Whether to show a color dot before the label */
+	showColorIndicator?: boolean;
 	/** Additional CSS classes for the container */
 	className?: string;
 	/** Whether labels should be truncated if too long */
@@ -67,6 +71,7 @@ export function ProgressBarChart({
 	customTotal,
 	spacing = "space-y-4",
 	highlightLabel,
+	showColorIndicator = false,
 	className,
 	truncateLabels = true,
 	fillHeight = false,
@@ -116,7 +121,13 @@ export function ProgressBarChart({
 				return (
 					<div key={item.label} className="space-y-2">
 					<div className="flex items-center justify-between">
-						<div className="flex items-center gap-1 min-w-0 flex-1">
+						<div className="flex items-center gap-2 min-w-0 flex-1">
+							{showColorIndicator && (
+								<div 
+									className="w-2.5 h-2.5 rounded-full shrink-0" 
+									style={{ backgroundColor: color }} 
+								/>
+							)}
 							{item.tooltip ? (
 								<Tooltip>
 									<TooltipTrigger asChild>
@@ -147,6 +158,7 @@ export function ProgressBarChart({
 									{item.label}
 								</span>
 							)}
+							{item.icon}
 							{item.action}
 						</div>
 							<div className="flex items-center gap-2 ml-2 shrink-0">

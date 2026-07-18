@@ -27,6 +27,7 @@ import {
 import { trackEvent } from "@/lib/posthog";
 import { CompetitorsEditor, newCompetitorEntry, type CompetitorEntry } from "@/components/competitors-editor";
 import { PromptsListEditor, newPromptEntry, type EditablePrompt } from "@/components/prompts-list-editor";
+import { WebLogo } from "./web-logo";
 
 interface PromptWizardProps {
 	onComplete: () => void;
@@ -45,6 +46,9 @@ interface WizardData {
 	aliases: string[];
 	competitors: CompetitorEntry[];
 	prompts: EditablePrompt[];
+	shortDescription?: string;
+	productsAndServices?: string[];
+	keywords?: string[];
 }
 
 const EditableTagsInput = memo(
@@ -146,8 +150,15 @@ export default function PromptWizard({ onComplete }: PromptWizardProps) {
 				website: brand?.website || result.website || "",
 				additionalDomains: result.additionalDomains,
 				aliases: result.aliases,
-				competitors: data.competitors,
-				prompts: data.prompts,
+				competitors: result.competitors.map((c) =>
+					newCompetitorEntry({ name: c.name, domains: c.domains, aliases: c.aliases, expanded: false }),
+				),
+				prompts: result.suggestedPrompts.map((p) =>
+					newPromptEntry({ value: p.prompt, tags: p.tags, enabled: true }),
+				),
+				shortDescription: result.shortDescription,
+				productsAndServices: result.productsAndServices,
+				keywords: result.keywords,
 			};
 			setData(newData);
 			if (STORAGE_KEY) localStorage.setItem(STORAGE_KEY, JSON.stringify(newData));
@@ -267,6 +278,15 @@ export default function PromptWizard({ onComplete }: PromptWizardProps) {
 		(prompts: EditablePrompt[]) => setData((p) => ({ ...p, prompts })),
 		[],
 	);
+	const updateShortDescription = useCallback((shortDescription: string) => setData((p) => ({ ...p, shortDescription })), []);
+	const updateProductsAndServices = useCallback(
+		(productsAndServices: string[]) => setData((p) => ({ ...p, productsAndServices })),
+		[],
+	);
+	const updateKeywords = useCallback(
+		(keywords: string[]) => setData((p) => ({ ...p, keywords })),
+		[],
+	);
 
 	const previewCounts = useMemo(() => {
 		const enabled = data.prompts.filter((p) => p.enabled && p.value.trim().length > 0).length;
@@ -299,6 +319,9 @@ export default function PromptWizard({ onComplete }: PromptWizardProps) {
 					aliases: data.aliases,
 					competitors: competitorsPayload,
 					prompts: promptsPayload,
+					shortDescription: data.shortDescription,
+					productsAndServices: data.productsAndServices,
+					keywords: data.keywords,
 				},
 			});
 
@@ -361,11 +384,16 @@ export default function PromptWizard({ onComplete }: PromptWizardProps) {
 	return (
 		<div className="max-w-2xl mx-auto space-y-6">
 			<div className="space-y-2">
-				<h2 className="text-2xl font-bold">Brand details</h2>
-				<p className="text-muted-foreground">
-					Confirm the brand identity, additional domains, and aliases used for tracking.
-				</p>
-				<div className="space-y-3">
+				<div className="flex items-center gap-4">
+					<WebLogo domain={data.website} size={48} />
+					<div>
+						<h2 className="text-2xl font-bold">Brand details</h2>
+						<p className="text-muted-foreground">
+							Confirm the brand identity, additional domains, and aliases used for tracking.
+						</p>
+					</div>
+				</div>
+				<div className="space-y-3 mt-4">
 					<div>
 						<p className="text-xs text-muted-foreground">Brand name</p>
 						<Input
@@ -399,6 +427,34 @@ export default function PromptWizard({ onComplete }: PromptWizardProps) {
 							onValueChange={updateAliases}
 							placeholder="Add alias..."
 							maxItems={10}
+						/>
+					</div>
+				</div>
+				<div className="space-y-3 mt-3">
+					<div>
+						<p className="text-xs text-muted-foreground">Short description</p>
+						<Input
+							value={data.shortDescription || ""}
+							onChange={(e) => updateShortDescription(e.target.value)}
+							placeholder="Brief summary of the brand..."
+						/>
+					</div>
+					<div>
+						<p className="text-xs text-muted-foreground">Products and services</p>
+						<EditableTagsInput
+							items={data.productsAndServices || []}
+							onValueChange={updateProductsAndServices}
+							placeholder="Add product or service..."
+							maxItems={20}
+						/>
+					</div>
+					<div>
+						<p className="text-xs text-muted-foreground">Keywords</p>
+						<EditableTagsInput
+							items={data.keywords || []}
+							onValueChange={updateKeywords}
+							placeholder="Add keyword..."
+							maxItems={20}
 						/>
 					</div>
 				</div>

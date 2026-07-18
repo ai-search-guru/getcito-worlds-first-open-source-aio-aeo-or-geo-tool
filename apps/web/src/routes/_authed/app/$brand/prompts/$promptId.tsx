@@ -27,13 +27,15 @@ import { InfoTip, QueryWordsSection, UnknownQueriesNote, VariationsList, type Va
 import { getDaysFromLookback } from "@/lib/chart-utils";
 import { getModelDisplayName } from "@/lib/utils";
 import { promptKeywords } from "@/lib/fanout-analysis";
-import { useBrand } from "@/hooks/use-brands";
+import { useBrand, useCompetitors } from "@/hooks/use-brands";
 import { usePromptStats } from "@/hooks/use-prompt-stats";
 import { usePromptRunsOnly } from "@/hooks/use-prompt-runs-only";
 import { useQueryFanout } from "@/hooks/use-query-fanout";
 import { getPromptMetadataFn } from "@/server/prompts";
 import { extractTextContent } from "@workspace/lib/text-extraction";
 import ReactMarkdown from "react-markdown";
+import { shareOfVoiceColorMap } from "@/lib/share-of-voice-palette";
+import { WebLogo } from "@/components/web-logo";
 
 // -------------------------------------------------------------------
 // Types
@@ -366,6 +368,9 @@ function MentionsTab({
 	brandName?: string;
 	brandId: string;
 }) {
+	const { brand } = useBrand(brandId);
+	const { competitors } = useCompetitors(brandId);
+
 	if (isLoading) return <TabLoadingSkeleton lines={5} />;
 
 	if (mentionStats.length === 0) {
@@ -373,6 +378,19 @@ function MentionsTab({
 	}
 
 	const brandMentionPct = Math.round(((mentionStats.find((s) => s.name === brandName)?.count || 0) / (totalRuns || 1)) * 100);
+
+	const colorMap = shareOfVoiceColorMap(
+		mentionStats.map((s) => ({
+			name: s.name,
+			isBrand: s.name === brandName,
+			mentions: s.count,
+		}))
+	);
+
+	const getDomain = (name: string) => {
+		if (name === brand?.name) return brand?.website;
+		return competitors?.find((c) => c.name === name)?.domains?.[0];
+	};
 
 	return (
 		<Card className="gap-4">
@@ -403,8 +421,16 @@ function MentionsTab({
 			<Separator />
 			<CardContent>
 				<ProgressBarChart
-					items={mentionStats.map((stat) => ({ label: stat.name, count: stat.count }))}
-					defaultColor="#3b82f6"
+					showColorIndicator
+					items={mentionStats.map((stat) => {
+						const domain = getDomain(stat.name);
+						return { 
+							label: stat.name, 
+							count: stat.count,
+							color: colorMap.get(stat.name) || "#3b82f6",
+							icon: domain ? <WebLogo domain={domain} size={16} /> : undefined
+						};
+					})}
 					customTotal={totalRuns || 1}
 					highlightLabel={brandName}
 				/>

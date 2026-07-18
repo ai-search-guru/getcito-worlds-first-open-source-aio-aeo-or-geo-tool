@@ -1,6 +1,6 @@
 import { getMarketingOgImage } from "./og";
 
-export const SITE_URL = "https://www.Getcitohq.com";
+export const SITE_URL = "https://www.Getcito.com";
 export const SITE_NAME = "Getcito";
 export const SITE_DESCRIPTION = "Open source AI visibility tracking and optimization.";
 export const SITE_LOGO_URL = `${SITE_URL}/brand/icons/getcito-icon-512.png`;
@@ -72,7 +72,7 @@ export function organizationJsonLd() {
 		sameAs: [
 			"https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool",
 			"https://x.com/tryGetcito",
-			"https://www.linkedin.com/company/Getcitohq",
+			"https://www.linkedin.com/company/Getcito",
 			"https://discord.gg/s24nubCtKz",
 		],
 		parentOrganization: {

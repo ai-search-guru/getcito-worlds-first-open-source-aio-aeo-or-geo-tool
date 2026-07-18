@@ -75,6 +75,9 @@ export const updateBrandBodySchema = z.object({
 	domains: z.array(z.string()).min(1).optional(),
 	aliases: z.array(z.string()).optional(),
 	enabled: z.boolean().optional(),
+	shortDescription: z.string().optional(),
+	productsAndServices: z.array(z.string()).optional(),
+	keywords: z.array(z.string()).optional(),
 });
 
 /** Wizard save: brand-level fields + new prompts/competitors in one shot. */
@@ -86,6 +89,9 @@ export const wizardOnboardingInputSchema = z.object({
 	aliases: z.array(z.string()).optional(),
 	competitors: z.array(competitorInputSchema).optional(),
 	prompts: z.array(promptInputSchema).optional(),
+	shortDescription: z.string().optional(),
+	productsAndServices: z.array(z.string()).optional(),
+	keywords: z.array(z.string()).optional(),
 });
 
 /** Internal shape for createBrand — matches storage (website + additionalDomains). */
@@ -107,6 +113,9 @@ export interface UpdateBrandInput {
 	additionalDomains?: string[];
 	aliases?: string[];
 	enabled?: boolean;
+	shortDescription?: string;
+	productsAndServices?: string[];
+	keywords?: string[];
 }
 
 export type WizardOnboardingInput = z.infer<typeof wizardOnboardingInputSchema>;
@@ -196,6 +205,9 @@ export function apiUpdateInputToInternal(
 		brandName: input.brandName,
 		aliases: input.aliases,
 		enabled: input.enabled,
+		shortDescription: input.shortDescription,
+		productsAndServices: input.productsAndServices,
+		keywords: input.keywords,
 	};
 	if (input.domains !== undefined) {
 		const { website, additionalDomains } = splitDomainsForStorage(input.domains);
@@ -365,6 +377,9 @@ export async function updateBrand(input: UpdateBrandInput): Promise<BrandResult>
 	}
 	if (input.aliases !== undefined) patch.aliases = dedupeAliases(input.aliases);
 	if (input.enabled !== undefined) patch.enabled = input.enabled;
+	if (input.shortDescription !== undefined) patch.shortDescription = input.shortDescription;
+	if (input.productsAndServices !== undefined) patch.productsAndServices = input.productsAndServices;
+	if (input.keywords !== undefined) patch.keywords = input.keywords;
 
 	await db.update(brands).set(patch).where(eq(brands.id, input.brandId));
 	const refreshed = await db.query.brands.findFirst({ where: eq(brands.id, input.brandId) });
@@ -382,6 +397,9 @@ export async function saveWizardOnboarding(input: WizardOnboardingInput): Promis
 		website: input.website,
 		additionalDomains: input.additionalDomains,
 		aliases: input.aliases,
+		shortDescription: input.shortDescription,
+		productsAndServices: input.productsAndServices,
+		keywords: input.keywords,
 	});
 
 	await db.update(brands).set({ onboarded: true, updatedAt: new Date() }).where(eq(brands.id, input.brandId));

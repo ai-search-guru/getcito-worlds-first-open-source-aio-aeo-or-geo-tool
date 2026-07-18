@@ -27,9 +27,12 @@ out/
 # production
 /build
 
-# misc
+# misc / secrets
 .DS_Store
 *.pem
+*.key
+*.cert
+*.crt
 
 # debug
 npm-debug.log*
@@ -40,7 +43,9 @@ debug-storybook.log
 storybook-static/
 
 # env files (can opt-in for committing if needed)
-.env*
+.env
+!.env.example
+!.env.local.example
 
 # playwright
 playwright-report/
@@ -89,3 +94,4 @@ REBRANDING_PLAN.md
 
 # CLI is being ignored for now until it is published
 apps/cli/
+docker-compose.whitelabel.yml 

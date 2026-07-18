@@ -15,7 +15,7 @@ const OPENROUTER_API_URL = `${OPENROUTER_BASE_URL}/chat/completions`;
 // web-search plugin (vs the Exa fallback) and produced the best brand-info
 // recall + cheapest cost in our compare-onboarding runs. Other families that
 // support native search per the docs: Anthropic, Perplexity, xAI.
-const DEFAULT_RESEARCH_MODEL = "openai/gpt-5-mini";
+const DEFAULT_RESEARCH_MODEL = "openai/gpt-4o-mini";
 
 function openrouterHeaders(): Record<string, string> {
 	return {
@@ -95,7 +95,7 @@ export const openrouter: Provider = {
 		};
 		// `engine: "native"` runs the underlying provider's real web-search tool
 		// (e.g. Anthropic's web_search_20250305) instead of the Exa fallback.
-		if (webSearch) body.plugins = [{ id: "web", engine: "native" }];
+		if (webSearch) body.plugins = [{ id: "web" }];
 		const res = await fetch(OPENROUTER_API_URL, {
 			method: "POST",
 			headers: openrouterHeaders(),
@@ -147,7 +147,13 @@ export const openrouter: Provider = {
 			},
 			body: JSON.stringify({
 				model: modelSlug,
-				messages: [{ role: "user", content: prompt }],
+				messages: [
+					{ 
+						role: "system", 
+						content: `Please provide your response in language: ${options?.targetLanguage ?? "en"}. Assume the user's location is: ${options?.targetMarket ?? "US"}.`
+					},
+					{ role: "user", content: prompt }
+				],
 			}),
 		});
 

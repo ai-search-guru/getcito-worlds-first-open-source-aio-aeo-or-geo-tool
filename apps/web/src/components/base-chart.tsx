@@ -23,6 +23,7 @@ import {
 	selectCompetitorsToDisplay,
 } from "@/lib/chart-utils";
 import type { Brand, Competitor } from "@workspace/lib/db/schema";
+import { WebLogo } from "@/components/web-logo";
 
 interface BaseChartProps {
 	data: ChartDataPoint[];
@@ -73,6 +74,7 @@ export function BaseChart({
 		},
 		[brand.id]: {
 			label: brand.name,
+			logo: brand.website ? <WebLogo domain={brand.website} size={14} /> : undefined,
 			color: chartColors[0], // Brand gets first color
 		},
 	};
@@ -82,6 +84,7 @@ export function BaseChart({
 		const colorIndex = (index + 1) % chartColors.length;
 		chartConfig[competitor.id] = {
 			label: competitor.name,
+			logo: competitor.domains?.[0] ? <WebLogo domain={competitor.domains[0]} size={14} /> : undefined,
 			color: chartColors[colorIndex],
 		};
 	});
