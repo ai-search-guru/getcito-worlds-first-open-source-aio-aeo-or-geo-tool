@@ -13,7 +13,7 @@
     "./scrape-targets": "./src/scrape-targets.ts"
   },
   "devDependencies": {
-    "@types/node": "^25.9.3",
+    "@types/node": "^26.1.1",
     "typescript": "^6.0.3",
     "vitest": "^4.1.8"
   }
