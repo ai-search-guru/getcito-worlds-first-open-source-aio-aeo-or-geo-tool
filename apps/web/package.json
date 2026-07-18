@@ -27,7 +27,7 @@
 		"@tailwindcss/vite": "^4.3.1",
 		"@takumi-rs/core": "^1.8.5",
 		"@takumi-rs/image-response": "^1.8.5",
-		"@takumi-rs/wasm": "^1.8.5",
+		"@takumi-rs/wasm": "^2.1.2",
 		"@tanstack/devtools-vite": "^0.7.0",
 		"@tanstack/react-devtools": "^0.10.5",
 		"@tanstack/react-query": "^5.101.0",
