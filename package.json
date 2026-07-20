@@ -25,11 +25,11 @@
     "license-check": "node scripts/check-licenses.mjs"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.5.0",
-    "@changesets/cli": "^2.31.0",
-    "knip": "^6.16.1",
-    "tsx": "^4.22.4",
-    "turbo": "^2.9.18",
+    "@biomejs/biome": "2.5.4",
+    "@changesets/cli": "^2.31.1",
+    "knip": "^6.27.0",
+    "tsx": "^4.23.1",
+    "turbo": "^2.10.5",
     "typescript": "^6.0.3"
   }
 }
