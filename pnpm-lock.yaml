@@ -77,8 +77,8 @@ importers:
         specifier: ^1.8.5
         version: 1.8.5(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
       '@takumi-rs/wasm':
-        specifier: ^1.8.5
-        version: 1.8.5(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
+        specifier: ^2.5.3
+        version: 2.5.3(csstype@3.2.3)(preact@10.29.2)(react@19.2.7)
       '@tanstack/devtools-vite':
         specifier: ^0.7.0
         version: 0.7.0(@emnapi/core@1.11.0)(@emnapi/runtime@1.11.0)(vite@8.0.16(@types/node@25.9.3)(esbuild@0.28.1)(jiti@2.7.0)(tsx@4.22.4)(yaml@2.9.0))
@@ -3301,11 +3301,32 @@ packages:
       react-dom:
         optional: true
 
+  '@takumi-rs/helpers@2.5.3':
+    resolution: {integrity: sha512-cIyXo7SludeAWoEO5EQojq4UpVM4Oe/aKGCmkW5eDHpRFJSrq5VcEeMFURfh9gngp0l3apBDDb+liO5CF5pZjA==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      preact: ^10.0.0
+      react: ^18.0.0 || ^19.0.0
+    peerDependenciesMeta:
+      preact:
+        optional: true
+      react:
+        optional: true
+
   '@takumi-rs/image-response@1.8.5':
     resolution: {integrity: sha512-oSh/RiAKXAfscWODB/mGb3eZvC+Cm5QRs3QcAzOuLsrysMOcbiKd9/2suzdYIEsDP1eouAoF6hXyWSSAEE7nkw==}
 
   '@takumi-rs/wasm@1.8.5':
     resolution: {integrity: sha512-yPWm5oktc+AWNb48oJPd2eJ3Ac4rFFhJaGF1IzvO6jOe6Sj2VoZqNRLI6IO8OxUKkF14e3t1Ibo2R31cjfoZtA==}
+
+  '@takumi-rs/wasm@2.5.3':
+    resolution: {integrity: sha512-H3FAJft1QCcuMgjMUTW0IJZMNXkg8veJDwzsMAAn98Z3Z0XBeK9d5DZGYJSrvUcFDoV0NU2AFGACOYPX3DH59A==}
+    engines: {node: '>=18'}
+    peerDependencies:
+      csstype: '*'
+    peerDependenciesMeta:
+      csstype:
+        optional: true
 
   '@tanstack/devtools-client@0.0.6':
     resolution: {integrity: sha512-f85ZJXJnDIFOoykG/BFIixuAevJovCvJF391LPs6YjBAPhGYC50NWlx1y4iF/UmK5/cCMx+/JqI5SBOz7FanQQ==}
@@ -8729,6 +8750,11 @@ snapshots:
       react: 19.2.7
       react-dom: 19.2.7(react@19.2.7)
 
+  '@takumi-rs/helpers@2.5.3(preact@10.29.2)(react@19.2.7)':
+    optionalDependencies:
+      preact: 10.29.2
+      react: 19.2.7
+
   '@takumi-rs/image-response@1.8.5(react-dom@19.2.7(react@19.2.7))(react@19.2.7)':
     dependencies:
       takumi-js: 1.8.5(react-dom@19.2.7(react@19.2.7))(react@19.2.7)
@@ -8742,6 +8768,15 @@ snapshots:
     transitivePeerDependencies:
       - react
       - react-dom
+
+  '@takumi-rs/wasm@2.5.3(csstype@3.2.3)(preact@10.29.2)(react@19.2.7)':
+    dependencies:
+      '@takumi-rs/helpers': 2.5.3(preact@10.29.2)(react@19.2.7)
+    optionalDependencies:
+      csstype: 3.2.3
+    transitivePeerDependencies:
+      - preact
+      - react
 
   '@tanstack/devtools-client@0.0.6':
     dependencies:
