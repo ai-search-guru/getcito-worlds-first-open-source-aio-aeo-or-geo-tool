@@ -9,9 +9,9 @@
     "seed": "tsx seed.ts"
   },
   "devDependencies": {
-    "@playwright/test": "^1.60.0",
-    "@types/pg": "^8.20.0",
-    "pg": "^8.21.0",
-    "tsx": "^4.22.4"
+    "@playwright/test": "^1.63.0",
+    "@types/pg": "^8.23.1",
+    "pg": "^8.23.0",
+    "tsx": "^4.23.13"
   }
 }
