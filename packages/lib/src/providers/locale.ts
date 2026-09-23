@@ -49,3 +49,32 @@ export function localeCountryCode(options?: ProviderOptions): string | undefined
 	if (!options?.targetMarket) return undefined;
 	return BRIGHTDATA_COUNTRIES[options.targetMarket]?.toUpperCase();
 }
+
+/**
+ * The same locale as a plain-text instruction for the *prompt itself*, rather
+ * than for the provider's system message.
+ *
+ * {@link localeSystemPrompt} only reaches the model as a system turn, and a
+ * system turn loses to the task text in front of it: an English instruction
+ * still yields English output for a Spanish brand. Naming the language inside
+ * the prompt is what actually holds for generated content (suggested tracking
+ * prompts, descriptions, recommendations).
+ *
+ * `subject` names what must come back in the target language; omit it for
+ * schemas that only hold proper nouns (names, domains, aliases), where the
+ * market clause still steers relevance but there is nothing to translate.
+ * Returns undefined when the brand set neither value, so a brand that never
+ * picked a locale gets exactly the prompt it got before.
+ */
+export function localePromptInstruction(options?: ProviderOptions, subject?: string): string | undefined {
+	const parts: string[] = [];
+	if (options?.targetLanguage && subject) {
+		parts.push(
+			`Write ${subject} in ${options.targetLanguage} — the brand's target language. Do not translate brand names, domains, or aliases.`,
+		);
+	}
+	if (options?.targetMarket) {
+		parts.push(`The brand's target market is ${options.targetMarket} — prefer results relevant to that audience.`);
+	}
+	return parts.length > 0 ? parts.join(" ") : undefined;
+}

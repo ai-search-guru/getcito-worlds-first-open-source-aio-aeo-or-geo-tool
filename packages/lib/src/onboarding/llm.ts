@@ -23,6 +23,7 @@ import type { z } from "zod";
 import {
 	getProvider,
 	type Provider,
+	type ProviderOptions,
 	parseScrapeTargets,
 	type StructuredResearchResult,
 	withProviderCallTracking,
@@ -115,16 +116,34 @@ export function resolveResearchProvider(env: Record<string, string | undefined> 
 /**
  * Run a research prompt and return a Zod-validated structured response. The
  * heavy lifting (web search, structured outputs, retry) lives inside each
- * provider's `runStructuredResearch` impl — we just pick the provider.
+ * provider's `runStructuredResearch` impl — we just pick the provider and hand
+ * it the brand's locale.
+ *
+ * `options.targetMarket` / `options.targetLanguage` reach the provider as its
+ * system message and its search-localization hint; `options.webSearch` is
+ * forwarded too (undefined keeps the provider default). `version` is not
+ * accepted: the model id is provider-scoped and resolved here.
  */
-export async function runStructuredResearchPrompt<T>(prompt: string, schema: z.ZodType<T>): Promise<T> {
+export async function runStructuredResearchPrompt<T>(
+	prompt: string,
+	schema: z.ZodType<T>,
+	options?: ProviderOptions,
+): Promise<T> {
 	const { provider, version } = resolveResearchProvider();
 	if (!provider.runStructuredResearch) {
 		throw new Error(`Provider "${provider.id}" does not implement structured research`);
 	}
 	const result = await withProviderCallTracking(
 		{ provider: provider.id, model: version ?? provider.id, kind: "research" },
-		() => provider.runStructuredResearch!({ prompt, schema, version }),
+		() =>
+			provider.runStructuredResearch!({
+				prompt,
+				schema,
+				version,
+				webSearch: options?.webSearch,
+				targetMarket: options?.targetMarket,
+				targetLanguage: options?.targetLanguage,
+			}),
 	);
 	return result.object;
 }
@@ -135,18 +154,30 @@ export async function runStructuredResearchPrompt<T>(prompt: string, schema: z.Z
  * provider selection (honors `ONBOARDING_LLM_TARGET` / the preference order),
  * no tools and no agent loop. Use when the prompt already carries all the data.
  *
+ * Accepts the brand locale for the same reason (the completion itself must come
+ * back in the brand's language); `webSearch` and `version` are not part of this
+ * path by construction.
+ *
  * Returns the validated object plus the resolved model id (`modelVersion`) so
  * callers can record which model produced the result.
  */
 export async function runStructuredCompletionPrompt<T>(
 	prompt: string,
 	schema: z.ZodType<T>,
+	options?: ProviderOptions,
 ): Promise<StructuredResearchResult<T>> {
 	const { provider, version } = resolveResearchProvider();
 	if (!provider.runStructuredResearch) {
 		throw new Error(`Provider "${provider.id}" does not implement structured research`);
 	}
 	return withProviderCallTracking({ provider: provider.id, model: version ?? provider.id, kind: "research" }, () =>
-		provider.runStructuredResearch!({ prompt, schema, version, webSearch: false }),
+		provider.runStructuredResearch!({
+			prompt,
+			schema,
+			version,
+			webSearch: false,
+			targetMarket: options?.targetMarket,
+			targetLanguage: options?.targetLanguage,
+		}),
 	);
 }

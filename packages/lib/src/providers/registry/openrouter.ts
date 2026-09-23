@@ -82,13 +82,19 @@ export const openrouter: Provider = {
 		prompt,
 		schema,
 		webSearch = true,
+		targetMarket,
+		targetLanguage,
 	}: StructuredResearchOptions<T>): Promise<StructuredResearchResult<T>> {
 		// Raw fetch (no AI SDK) so we can attach the OpenRouter `plugins` field
 		// — the AI SDK's OpenAI-compat path doesn't pass it through.
 		const jsonSchema = z.toJSONSchema(schema as z.ZodType);
 		const body: Record<string, unknown> = {
 			model: DEFAULT_RESEARCH_MODEL,
-			messages: [{ role: "user", content: prompt }],
+			messages: [
+				// Same system hint `run` sends: the brand's target market/language.
+				...localeSystemMessages({ targetMarket, targetLanguage }),
+				{ role: "user", content: prompt },
+			],
 			response_format: {
 				type: "json_schema",
 				json_schema: { name: "research_output", strict: true, schema: jsonSchema },

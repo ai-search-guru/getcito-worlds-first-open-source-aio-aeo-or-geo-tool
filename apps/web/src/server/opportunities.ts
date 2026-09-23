@@ -20,6 +20,7 @@ import { createServerFn } from "@tanstack/react-start";
 import { db } from "@workspace/lib/db/db";
 import { brandOpportunities, brands, competitors } from "@workspace/lib/db/schema";
 import { runStructuredCompletionPrompt } from "@workspace/lib/onboarding";
+import { localePromptInstruction } from "@workspace/lib/providers";
 import { desc, eq } from "drizzle-orm";
 import { z } from "zod";
 import { requireAuthSession, requireOrgAccess } from "@/lib/auth/helpers";
@@ -222,6 +223,9 @@ interface DigestCitation extends CitedPage {
 interface Digest {
 	text: string;
 	brandName: string;
+	/** The brand's locale: the report is written in this language/market. */
+	targetLanguage?: string;
+	targetMarket?: string;
 	prompts: { id: string; value: string }[];
 	/** Per prompt, its cited pages tagged by owner — for the per-opportunity drill-downs. */
 	citationsByPrompt: Map<string, DigestCitation[]>;
@@ -243,7 +247,13 @@ async function buildDigest(brandId: string, timezoneParam: string): Promise<Dige
 
 	const [brandRows, competitorRows, run30, comp30, daily30, pages30, run7, comp7, byModel] = await Promise.all([
 		db
-			.select({ name: brands.name, website: brands.website, additionalDomains: brands.additionalDomains })
+			.select({
+				name: brands.name,
+				website: brands.website,
+				additionalDomains: brands.additionalDomains,
+				targetLanguage: brands.targetLanguage,
+				targetMarket: brands.targetMarket,
+			})
 			.from(brands)
 			.where(eq(brands.id, brandId))
 			.limit(1),
@@ -400,7 +410,14 @@ async function buildDigest(brandId: string, timezoneParam: string): Promise<Dige
 		`- Competitor-owned pages cited (you cannot get listed on these — for context only): ${competitorPages.map(fmtDomain).join("; ") || "none"}`,
 	].join("\n");
 
-	return { text, brandName, prompts: prompts.map((p) => ({ id: p.id, value: p.value })), citationsByPrompt };
+	return {
+		text,
+		brandName,
+		targetLanguage: brandRows[0]?.targetLanguage ?? undefined,
+		targetMarket: brandRows[0]?.targetMarket ?? undefined,
+		prompts: prompts.map((p) => ({ id: p.id, value: p.value })),
+		citationsByPrompt,
+	};
 }
 
 /** From an opportunity's related prompt IDs, gather its cited pages (deduped by
@@ -452,10 +469,15 @@ function enrichReport(raw: RawReport, digest: Digest): OpportunitiesReport {
 
 /** Generate the report, retrying until the model's output satisfies the schema.
  * Returns the validated report plus the model id that produced it. */
-async function generateValidReport(prompt: string): Promise<{ report: RawReport; model: string | null } | null> {
+async function generateValidReport(
+	prompt: string,
+	locale: { targetLanguage?: string; targetMarket?: string },
+): Promise<{ report: RawReport; model: string | null } | null> {
 	for (let attempt = 1; attempt <= MAX_GENERATION_ATTEMPTS; attempt++) {
 		try {
-			const result = await runStructuredCompletionPrompt(prompt, opportunitiesSchema);
+			// The locale reaches the provider as a system message; the prompt text
+			// carries the stronger version of the same instruction.
+			const result = await runStructuredCompletionPrompt(prompt, opportunitiesSchema, locale);
 			const parsed = opportunitiesSchema.safeParse(result.object);
 			if (parsed.success) return { report: parsed.data, model: result.modelVersion ?? null };
 			console.warn(`[opportunities] schema mismatch (attempt ${attempt}/${MAX_GENERATION_ATTEMPTS})`);
@@ -495,8 +517,15 @@ export const getOpportunitiesFn = createServerFn({ method: "GET" })
 			return { report: null, reason: "insufficient-data", generatedFor: null };
 		}
 
-		const prompt = `${GUIDANCE}\n\n=== BRAND DATA ===\n${digest.text}\n\n=== TASK ===\n${TASK}`;
-		const generated = await generateValidReport(prompt);
+		// Write the report in the brand's language (the whole report is prose the
+		// user reads), and for its market.
+		const locale = { targetLanguage: digest.targetLanguage, targetMarket: digest.targetMarket };
+		const localeNote = localePromptInstruction(
+			locale,
+			'the summary, every opportunity title and its "why", and the risks',
+		);
+		const prompt = `${GUIDANCE}\n\n=== BRAND DATA ===\n${digest.text}\n\n=== TASK ===\n${TASK}${localeNote ? `\n\n${localeNote}` : ""}`;
+		const generated = await generateValidReport(prompt, locale);
 		if (!generated) {
 			// Couldn't get a schema-valid report — serve the last good one if we have it.
 			if (latest) return { report: latest.report as OpportunitiesReport, reason: null, generatedFor: null };

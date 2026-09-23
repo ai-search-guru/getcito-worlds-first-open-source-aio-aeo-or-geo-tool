@@ -12,8 +12,9 @@
  * has to round-trip). The columns used here (`name`, `data`, `state`,
  * `output`, `created_on`) are stable across the pinned pg-boss v12 line.
  */
-import { sql } from "drizzle-orm";
+import { eq, sql } from "drizzle-orm";
 import { db } from "@workspace/lib/db/db";
+import { brands } from "@workspace/lib/db/schema";
 import type { OnboardingSuggestion } from "@workspace/lib/onboarding";
 import { getBoss } from "@/lib/boss-client";
 import { extractDomain } from "@/lib/domain-categories";
@@ -38,6 +39,33 @@ export interface AnalyzeBrandInput {
 	brandId: string;
 	website: string;
 	brandName?: string;
+}
+
+/**
+ * The brand's locale — what the generated prompts/descriptions must be written
+ * in. Undefined for a brand that never picked one, so the analyzer keeps the
+ * model's own default exactly as before.
+ */
+export interface BrandLocale {
+	targetLanguage?: string;
+	targetMarket?: string;
+}
+
+/**
+ * Read a brand's locale straight off its row. Used by the enqueue path (the
+ * worker has no DB read of its own here) and by the inline analyze calls in
+ * `@/server/onboarding`, which need it for the same reason.
+ */
+export async function getBrandLocale(brandId: string): Promise<BrandLocale> {
+	const [brand] = await db
+		.select({ targetLanguage: brands.targetLanguage, targetMarket: brands.targetMarket })
+		.from(brands)
+		.where(eq(brands.id, brandId))
+		.limit(1);
+	return {
+		targetLanguage: brand?.targetLanguage ?? undefined,
+		targetMarket: brand?.targetMarket ?? undefined,
+	};
 }
 
 interface JobRow {
@@ -86,7 +114,9 @@ export async function enqueueAnalyzeBrand(input: AnalyzeBrandInput): Promise<voi
 		return;
 	}
 
-	await boss.send(ANALYZE_BRAND_QUEUE, input);
+	// Carry the brand's locale in the payload: the worker generates the prompts
+	// and descriptions for this brand, so it has to know the language.
+	await boss.send(ANALYZE_BRAND_QUEUE, { ...input, ...(await getBrandLocale(input.brandId)) });
 }
 
 /** Poll the status/result of the latest brand-analysis job for a brand. */

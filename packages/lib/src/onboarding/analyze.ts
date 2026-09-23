@@ -12,6 +12,7 @@
  * to communicate context + quality guidelines, not field-by-field shape.
  */
 import { z } from "zod";
+import { localePromptInstruction } from "../providers";
 import { getWebsiteExcerpt } from "../website-excerpt";
 import { runStructuredResearchPrompt, runStructuredCompletionPrompt } from "./llm";
 import {
@@ -124,6 +125,13 @@ export interface AnalyzeBrandOptions {
 	maxCompetitors?: number;
 	/** 0 disables prompt generation entirely. */
 	maxPrompts?: number;
+	/**
+	 * The brand's target language/market. They reach the provider as its system
+	 * message and, more importantly, are spelled out in the prompt text — a
+	 * system message alone still yields English prompts for a Spanish brand.
+	 */
+	targetLanguage?: string;
+	targetMarket?: string;
 }
 
 const DEFAULT_MAX_COMPETITORS = 10;
@@ -150,6 +158,8 @@ export async function buildAnalysisContext(options: AnalyzeBrandOptions): Promis
 		brandName: providedBrandName,
 		maxCompetitors = DEFAULT_MAX_COMPETITORS,
 		maxPrompts = DEFAULT_MAX_PROMPTS,
+		targetLanguage,
+		targetMarket,
 	} = options;
 
 	const normalizedWebsite = cleanDomain(website);
@@ -166,6 +176,8 @@ export async function buildAnalysisContext(options: AnalyzeBrandOptions): Promis
 		websiteExcerpt,
 		includeCompetitors: maxCompetitors > 0,
 		includePrompts: maxPrompts > 0,
+		targetLanguage,
+		targetMarket,
 	});
 
 	return {
@@ -197,7 +209,10 @@ export async function analyzeBrand(options: AnalyzeBrandOptions): Promise<Onboar
 	
 	// The user requested web search to be ON so it can find aliases and additional domains,
 	// even though it will take ~15 seconds instead of 3 seconds.
-	const raw = await runStructuredResearchPrompt(ctx.prompt, ctx.schema);
+	const raw = await runStructuredResearchPrompt(ctx.prompt, ctx.schema, {
+		targetLanguage: options.targetLanguage,
+		targetMarket: options.targetMarket,
+	});
 	
 	const result = normalizeAnalysisResult(raw, ctx);
 	console.log(
@@ -236,12 +251,25 @@ async function safeGetExcerpt(website: string): Promise<string> {
 	}
 }
 
+/**
+ * The brand's locale as a block appended to a research prompt, or "" when the
+ * brand set neither value — an unconfigured brand keeps byte-for-byte the
+ * prompt it had before. `subject` names the generated field(s) that must come
+ * back in the target language; omit it for schemas that only hold proper nouns.
+ */
+function localeBlock(options: { targetLanguage?: string; targetMarket?: string }, subject?: string): string {
+	const instruction = localePromptInstruction(options, subject);
+	return instruction ? `\n\n${instruction}` : "";
+}
+
 function buildPrompt(args: {
 	website: string;
 	brandNameHint: string;
 	websiteExcerpt: string;
 	includeCompetitors: boolean;
 	includePrompts: boolean;
+	targetLanguage?: string;
+	targetMarket?: string;
 }): string {
 	const excerptBlock = args.websiteExcerpt
 		? `\nText from ${args.website}:\n---\n${args.websiteExcerpt}\n---\n`
@@ -258,7 +286,7 @@ ${excerptBlock}
 Use the provided website text and your extensive pre-trained knowledge to identify the brand details. 
 You must do your best to fill out the shortDescription, productsAndServices, keywords, additionalDomains, and aliases based on what you know about the brand. For major brands, try to list all known domains and aliases.
 
-You MUST return the structured JSON object. Refusing to produce JSON, or replying with prose explaining what you don't know, is a failure mode.${skipNotes.length > 0 ? `\n\n${skipNotes.join(" ")}` : ""}`;
+You MUST return the structured JSON object. Refusing to produce JSON, or replying with prose explaining what you don't know, is a failure mode.${skipNotes.length > 0 ? `\n\n${skipNotes.join(" ")}` : ""}${localeBlock(args, "the shortDescription, productsAndServices, keywords, and every suggested prompt")}`;
 }
 
 function normalize(args: {
@@ -367,7 +395,12 @@ export interface OnboardingBrandInfo {
 	aliases: string[];
 }
 
-export async function analyzeBrandInfo(options: { website: string; brandName?: string }): Promise<OnboardingBrandInfo> {
+export async function analyzeBrandInfo(options: {
+	website: string;
+	brandName?: string;
+	targetLanguage?: string;
+	targetMarket?: string;
+}): Promise<OnboardingBrandInfo> {
 	const start = Date.now();
 	console.log(`[onboarding] analyzeBrandInfo start: ${options.website}`);
 
@@ -378,16 +411,21 @@ export async function analyzeBrandInfo(options: { website: string; brandName?: s
 	const websiteExcerpt = await safeGetExcerpt(normalizedWebsite);
 
 	const excerptBlock = websiteExcerpt ? `\nText from ${normalizedWebsite}:\n---\n${websiteExcerpt}\n---\n` : "\n";
+	// This schema is all proper nouns, so only the market clause applies (which
+	// regional domains/aliases are worth listing).
 	const prompt = `Analyze the brand at ${normalizedWebsite}.
 
 Likely brand name (from domain): ${brandNameHint}
 ${excerptBlock}
 Use web search to verify facts about the company's official name and other domains. Never invent information — return empty arrays when uncertain.
 
-You MUST return the structured JSON object — even if you can find nothing about this brand. In that case set brandName to the likely name above and return empty arrays for every other field.`;
+You MUST return the structured JSON object — even if you can find nothing about this brand. In that case set brandName to the likely name above and return empty arrays for every other field.${localeBlock(options)}`;
 
 	const schema = buildBrandInfoSchema();
-	const raw = await runStructuredResearchPrompt(prompt, schema);
+	const raw = await runStructuredResearchPrompt(prompt, schema, {
+		targetLanguage: options.targetLanguage,
+		targetMarket: options.targetMarket,
+	});
 
 	const brandName = (raw.brandName || brandNameHint).trim() || brandNameHint;
 
@@ -434,6 +472,8 @@ export async function analyzeCompetitors(options: {
 	website: string; 
 	brandName: string;
 	maxCompetitors?: number;
+	targetLanguage?: string;
+	targetMarket?: string;
 }): Promise<OnboardingCompetitorsInfo> {
 	const start = Date.now();
 	console.log(`[onboarding] analyzeCompetitors start: ${options.website}`);
@@ -447,12 +487,17 @@ export async function analyzeCompetitors(options: {
 	const websiteExcerpt = await safeGetExcerpt(normalizedWebsite);
 	const excerptBlock = websiteExcerpt ? `\nText from ${normalizedWebsite}:\n---\n${websiteExcerpt}\n---\n` : "\n";
 	
+	// Competitor names are proper nouns, so only the market clause applies —
+	// it's what keeps the list to companies serving the brand's market.
 	const prompt = `Analyze the brand "${options.brandName}" at ${normalizedWebsite}.
 ${excerptBlock}
-Identify direct competitors that sell similar products or services. Use web search to verify facts. Never invent information — return an empty array if uncertain.`;
+Identify direct competitors that sell similar products or services. Use web search to verify facts. Never invent information — return an empty array if uncertain.${localeBlock(options)}`;
 
 	const schema = buildCompetitorsSchema(maxCompetitors);
-	const raw = await runStructuredResearchPrompt(prompt, schema);
+	const raw = await runStructuredResearchPrompt(prompt, schema, {
+		targetLanguage: options.targetLanguage,
+		targetMarket: options.targetMarket,
+	});
 
 	const competitors: OnboardingCompetitor[] = [];
 	const ownedDomains = new Set([normalizedWebsite]);
@@ -507,6 +552,8 @@ export async function analyzePrompts(options: {
 	brandName: string;
 	competitorNames?: string[];
 	maxPrompts?: number;
+	targetLanguage?: string;
+	targetMarket?: string;
 }): Promise<OnboardingPromptsInfo> {
 	const start = Date.now();
 	console.log(`[onboarding] analyzePrompts start: ${options.website}`);
@@ -526,10 +573,13 @@ export async function analyzePrompts(options: {
 ${excerptBlock}
 ${comps}
 
-Identify a starter set of AI tracking prompts to monitor this brand's visibility in LLM outputs. Use web search to verify facts.`;
+Identify a starter set of AI tracking prompts to monitor this brand's visibility in LLM outputs. Use web search to verify facts.${localeBlock(options, "each suggested prompt")}`;
 
 	const schema = buildPromptsSchema(maxPrompts);
-	const raw = await runStructuredResearchPrompt(prompt, schema);
+	const raw = await runStructuredResearchPrompt(prompt, schema, {
+		targetLanguage: options.targetLanguage,
+		targetMarket: options.targetMarket,
+	});
 
 	const suggestedPrompts: OnboardingPrompt[] = [];
 	const seen = new Set<string>();

@@ -123,15 +123,18 @@ export const mistralApi: Provider = {
 		schema,
 		version,
 		webSearch = true,
+		targetMarket,
+		targetLanguage,
 	}: StructuredResearchOptions<T>): Promise<StructuredResearchResult<T>> {
 		const jsonSchema = z.toJSONSchema(schema as z.ZodType);
 		const targetModel = version ?? DEFAULT_RESEARCH_MODEL;
+		const locale = { targetMarket, targetLanguage };
 
 		if (!webSearch) {
 			// Pure completion: plain chat endpoint with server-validated json_schema.
 			const data = await mistralPost("/v1/chat/completions", {
 				model: targetModel,
-				messages: [{ role: "user", content: prompt }],
+				messages: [...localeSystemMessages(locale), { role: "user", content: prompt }],
 				response_format: {
 					type: "json_schema",
 					json_schema: { name: "research_output", strict: true, schema: jsonSchema },
@@ -146,10 +149,13 @@ export const mistralApi: Provider = {
 		// /v1/conversations forwards completion_args.response_format through to
 		// the underlying chat completion, so we can have web_search AND
 		// server-validated json_schema output in a single call.
+		const instructions = localeSystemPrompt(locale);
 		const data = await mistralPost("/v1/conversations", {
 			model: targetModel,
 			inputs: prompt,
 			tools: [{ type: "web_search" }],
+			// Same locale hint `run` sends on this endpoint.
+			...(instructions ? { instructions } : {}),
 			completion_args: {
 				response_format: {
 					type: "json_schema",

@@ -32,6 +32,14 @@ export interface StructuredResearchOptions<T> {
 	 * supplied entirely in the prompt — no tools, no agent loop.
 	 */
 	webSearch?: boolean;
+	/**
+	 * The brand's locale, same two fields as {@link ProviderOptions}. Structured
+	 * research assembles its own request, so a provider that drops these
+	 * generates every brand in the model's default language and market even
+	 * though tracked-prompt runs honor them.
+	 */
+	targetMarket?: string;
+	targetLanguage?: string;
 }
 
 export interface StructuredResearchResult<T> {

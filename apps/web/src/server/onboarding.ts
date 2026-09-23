@@ -19,6 +19,7 @@ import {
 	cancelAnalyzeBrand,
 	enqueueAnalyzeBrand,
 	getAnalyzeBrandStatus,
+	getBrandLocale,
 	type AnalyzeBrandStatus,
 } from "@/lib/analyze-brand-job";
 import { saveWizardOnboarding, wizardOnboardingInputSchema } from "@/server/onboarding-core";
@@ -108,6 +109,8 @@ export const analyzeBrandInfoFn = createServerFn({ method: "POST" })
 			brandName: data.brandName,
 			maxCompetitors: 0,
 			maxPrompts: 0,
+			// Generate in the brand's language/market, not the model's default.
+			...(await getBrandLocale(data.brandId)),
 		});
 	});
 
@@ -128,6 +131,7 @@ export const analyzeCompetitorsFn = createServerFn({ method: "POST" })
 		return analyzeCompetitors({
 			website: data.website,
 			brandName: data.brandName,
+			...(await getBrandLocale(data.brandId)),
 		});
 	});
 
@@ -150,5 +154,6 @@ export const analyzePromptsFn = createServerFn({ method: "POST" })
 			website: data.website,
 			brandName: data.brandName,
 			competitorNames: data.competitorNames,
+			...(await getBrandLocale(data.brandId)),
 		});
 	});

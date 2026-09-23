@@ -8,6 +8,9 @@ export interface AnalyzeBrandData {
 	brandName?: string;
 	maxCompetitors?: number;
 	maxPrompts?: number;
+	/** Brand locale, resolved from the brand row by the web app when it enqueues. */
+	targetLanguage?: string;
+	targetMarket?: string;
 }
 
 /**
@@ -28,6 +31,6 @@ export async function analyzeBrandJob(jobs: Job<AnalyzeBrandData>[]): Promise<On
 		throw new Error("analyze-brand handler received an empty batch");
 	}
 
-	const { website, brandName, maxCompetitors, maxPrompts } = job.data;
-	return analyzeBrand({ website, brandName, maxCompetitors, maxPrompts });
+	const { website, brandName, maxCompetitors, maxPrompts, targetLanguage, targetMarket } = job.data;
+	return analyzeBrand({ website, brandName, maxCompetitors, maxPrompts, targetLanguage, targetMarket });
 }

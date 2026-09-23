@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { localeCountryCode, localeSystemMessages, localeSystemPrompt } from "./locale";
+import { localeCountryCode, localePromptInstruction, localeSystemMessages, localeSystemPrompt } from "./locale";
 
 describe("localeSystemPrompt", () => {
 	it("returns undefined when the brand set no market or language", () => {
@@ -41,5 +41,35 @@ describe("localeCountryCode", () => {
 	it("is undefined for an unset or unknown market, so the tool keeps its default", () => {
 		expect(localeCountryCode({})).toBeUndefined();
 		expect(localeCountryCode({ targetMarket: "Atlantis" })).toBeUndefined();
+	});
+});
+
+describe("localePromptInstruction", () => {
+	it("is undefined when the brand set no locale, so the prompt is unchanged", () => {
+		expect(localePromptInstruction()).toBeUndefined();
+		expect(localePromptInstruction({})).toBeUndefined();
+		expect(localePromptInstruction({ webSearch: true }, "each suggested prompt")).toBeUndefined();
+	});
+
+	it("names the language inside the prompt, for the fields it applies to", () => {
+		expect(localePromptInstruction({ targetLanguage: "Spanish" }, "each suggested prompt")).toBe(
+			"Write each suggested prompt in Spanish — the brand's target language. Do not translate brand names, domains, or aliases.",
+		);
+	});
+
+	it("omits the language clause for a schema that holds only proper nouns", () => {
+		expect(localePromptInstruction({ targetLanguage: "Spanish" })).toBeUndefined();
+	});
+
+	it("keeps the market hint even with nothing to translate", () => {
+		expect(localePromptInstruction({ targetMarket: "Mexico" })).toBe(
+			"The brand's target market is Mexico — prefer results relevant to that audience.",
+		);
+	});
+
+	it("combines both when the brand set both", () => {
+		expect(localePromptInstruction({ targetMarket: "Mexico", targetLanguage: "Spanish" }, "the summary")).toBe(
+			"Write the summary in Spanish — the brand's target language. Do not translate brand names, domains, or aliases. The brand's target market is Mexico — prefer results relevant to that audience.",
+		);
 	});
 });

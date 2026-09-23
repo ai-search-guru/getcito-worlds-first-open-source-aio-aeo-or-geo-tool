@@ -84,11 +84,28 @@ export const openaiApi: Provider = {
 		schema,
 		version,
 		webSearch = true,
+		targetMarket,
+		targetLanguage,
 	}: StructuredResearchOptions<T>): Promise<StructuredResearchResult<T>> {
 		const targetModel = version ?? DEFAULT_RESEARCH_MODEL;
+		const locale = { targetMarket, targetLanguage };
+		const system = localeSystemPrompt(locale);
+		const country = localeCountryCode(locale);
 		const result = await generateText({
 			model: getOpenAIResponsesModel(targetModel),
-			...(webSearch ? { tools: { web_search: openai.tools.webSearch({ searchContextSize: "medium" }) as any } } : {}),
+			...(webSearch
+				? {
+						tools: {
+							web_search: openai.tools.webSearch({
+								searchContextSize: "medium",
+								// Same reason as run(): the tool geolocates the caller's IP
+								// unless it's told which market the brand targets.
+								...(country ? { userLocation: { type: "approximate" as const, country } } : {}),
+							}) as any,
+						},
+					}
+				: {}),
+			...(system ? { system } : {}),
 			experimental_output: Output.object({ schema }),
 			prompt,
 		});

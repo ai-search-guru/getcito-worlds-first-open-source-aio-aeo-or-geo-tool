@@ -214,11 +214,28 @@ export const anthropicApi: Provider = {
 		schema,
 		version,
 		webSearch = true,
+		targetMarket,
+		targetLanguage,
 	}: StructuredResearchOptions<T>): Promise<StructuredResearchResult<T>> {
 		const targetModel = version ?? DEFAULT_RESEARCH_MODEL;
+		const locale = { targetMarket, targetLanguage };
+		const system = localeSystemPrompt(locale);
+		const country = localeCountryCode(locale);
 		const result = await generateText({
 			model: getAnthropicLanguageModel(targetModel),
-			...(webSearch ? { tools: { web_search: anthropic.tools.webSearch_20250305({ maxUses: 5 }) } } : {}),
+			...(webSearch
+				? {
+						tools: {
+							web_search: anthropic.tools.webSearch_20250305({
+								maxUses: 5,
+								// Same reason as run(): without user_location the tool searches
+								// from the caller's IP, not the brand's target market.
+								...(country ? { userLocation: { type: "approximate" as const, country } } : {}),
+							}),
+						},
+					}
+				: {}),
+			...(system ? { system } : {}),
 			experimental_output: Output.object({ schema }),
 			prompt,
 		});

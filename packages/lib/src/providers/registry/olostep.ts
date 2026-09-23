@@ -386,6 +386,8 @@ export const olostep: Provider = {
 		prompt,
 		schema,
 		version,
+		targetMarket,
+		targetLanguage,
 	}: StructuredResearchOptions<T>): Promise<StructuredResearchResult<T>> {
 		const model = version && OLOSTEP_PARSERS[version] ? version : "chatgpt";
 		const jsonSchema = z.toJSONSchema(schema as z.ZodType);
@@ -402,6 +404,9 @@ export const olostep: Provider = {
 				attempt === 0
 					? instruction
 					: `${instruction}\n\nA previous attempt returned text that was not valid JSON. Output the JSON object and nothing else.`,
+				// Olostep localizes in `run` (response language + scrape country),
+				// so the structured path has to forward the brand's locale too.
+				{ targetMarket, targetLanguage },
 			);
 			try {
 				return {
