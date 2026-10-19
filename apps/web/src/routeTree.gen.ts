@@ -42,6 +42,9 @@ import { Route as ApiV1ReportsReportIdRouteImport } from './routes/api/v1/report
 import { Route as ApiV1PromptsPromptIdRouteImport } from './routes/api/v1/prompts/$promptId'
 import { Route as ApiV1CompetitorsCompetitorIdRouteImport } from './routes/api/v1/competitors/$competitorId'
 import { Route as ApiV1BrandsBrandIdRouteImport } from './routes/api/v1/brands/$brandId'
+import { Route as ApiOpenaiChatgptStatusRouteImport } from './routes/api/openai/chatgpt/status'
+import { Route as ApiOpenaiChatgptStartRouteImport } from './routes/api/openai/chatgpt/start'
+import { Route as ApiOpenaiChatgptCallbackRouteImport } from './routes/api/openai/chatgpt/callback'
 import { Route as AuthedReportsRenderReportIdRouteImport } from './routes/_authed/reports/render/$reportId'
 import { Route as AuthedAppBrandVisibilityRouteImport } from './routes/_authed/app/$brand/visibility'
 import { Route as AuthedAppBrandShareOfVoiceRouteImport } from './routes/_authed/app/$brand/share-of-voice'
@@ -225,6 +228,22 @@ const ApiV1BrandsBrandIdRoute = ApiV1BrandsBrandIdRouteImport.update({
   path: '/api/v1/brands/$brandId',
   getParentRoute: () => rootRouteImport,
 } as any)
+const ApiOpenaiChatgptStatusRoute = ApiOpenaiChatgptStatusRouteImport.update({
+  id: '/api/openai/chatgpt/status',
+  path: '/api/openai/chatgpt/status',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiOpenaiChatgptStartRoute = ApiOpenaiChatgptStartRouteImport.update({
+  id: '/api/openai/chatgpt/start',
+  path: '/api/openai/chatgpt/start',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ApiOpenaiChatgptCallbackRoute =
+  ApiOpenaiChatgptCallbackRouteImport.update({
+    id: '/api/openai/chatgpt/callback',
+    path: '/api/openai/chatgpt/callback',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const AuthedReportsRenderReportIdRoute =
   AuthedReportsRenderReportIdRouteImport.update({
     id: '/render/$reportId',
@@ -354,6 +373,9 @@ export interface FileRoutesByFullPath {
   '/app/$brand/share-of-voice': typeof AuthedAppBrandShareOfVoiceRoute
   '/app/$brand/visibility': typeof AuthedAppBrandVisibilityRoute
   '/reports/render/$reportId': typeof AuthedReportsRenderReportIdRoute
+  '/api/openai/chatgpt/callback': typeof ApiOpenaiChatgptCallbackRoute
+  '/api/openai/chatgpt/start': typeof ApiOpenaiChatgptStartRoute
+  '/api/openai/chatgpt/status': typeof ApiOpenaiChatgptStatusRoute
   '/api/v1/brands/$brandId': typeof ApiV1BrandsBrandIdRoute
   '/api/v1/competitors/$competitorId': typeof ApiV1CompetitorsCompetitorIdRoute
   '/api/v1/prompts/$promptId': typeof ApiV1PromptsPromptIdRouteWithChildren
@@ -401,6 +423,9 @@ export interface FileRoutesByTo {
   '/app/$brand/share-of-voice': typeof AuthedAppBrandShareOfVoiceRoute
   '/app/$brand/visibility': typeof AuthedAppBrandVisibilityRoute
   '/reports/render/$reportId': typeof AuthedReportsRenderReportIdRoute
+  '/api/openai/chatgpt/callback': typeof ApiOpenaiChatgptCallbackRoute
+  '/api/openai/chatgpt/start': typeof ApiOpenaiChatgptStartRoute
+  '/api/openai/chatgpt/status': typeof ApiOpenaiChatgptStatusRoute
   '/api/v1/brands/$brandId': typeof ApiV1BrandsBrandIdRoute
   '/api/v1/competitors/$competitorId': typeof ApiV1CompetitorsCompetitorIdRoute
   '/api/v1/prompts/$promptId': typeof ApiV1PromptsPromptIdRouteWithChildren
@@ -454,6 +479,9 @@ export interface FileRoutesById {
   '/_authed/app/$brand/share-of-voice': typeof AuthedAppBrandShareOfVoiceRoute
   '/_authed/app/$brand/visibility': typeof AuthedAppBrandVisibilityRoute
   '/_authed/reports/render/$reportId': typeof AuthedReportsRenderReportIdRoute
+  '/api/openai/chatgpt/callback': typeof ApiOpenaiChatgptCallbackRoute
+  '/api/openai/chatgpt/start': typeof ApiOpenaiChatgptStartRoute
+  '/api/openai/chatgpt/status': typeof ApiOpenaiChatgptStatusRoute
   '/api/v1/brands/$brandId': typeof ApiV1BrandsBrandIdRoute
   '/api/v1/competitors/$competitorId': typeof ApiV1CompetitorsCompetitorIdRoute
   '/api/v1/prompts/$promptId': typeof ApiV1PromptsPromptIdRouteWithChildren
@@ -507,6 +535,9 @@ export interface FileRouteTypes {
     | '/app/$brand/share-of-voice'
     | '/app/$brand/visibility'
     | '/reports/render/$reportId'
+    | '/api/openai/chatgpt/callback'
+    | '/api/openai/chatgpt/start'
+    | '/api/openai/chatgpt/status'
     | '/api/v1/brands/$brandId'
     | '/api/v1/competitors/$competitorId'
     | '/api/v1/prompts/$promptId'
@@ -554,6 +585,9 @@ export interface FileRouteTypes {
     | '/app/$brand/share-of-voice'
     | '/app/$brand/visibility'
     | '/reports/render/$reportId'
+    | '/api/openai/chatgpt/callback'
+    | '/api/openai/chatgpt/start'
+    | '/api/openai/chatgpt/status'
     | '/api/v1/brands/$brandId'
     | '/api/v1/competitors/$competitorId'
     | '/api/v1/prompts/$promptId'
@@ -606,6 +640,9 @@ export interface FileRouteTypes {
     | '/_authed/app/$brand/share-of-voice'
     | '/_authed/app/$brand/visibility'
     | '/_authed/reports/render/$reportId'
+    | '/api/openai/chatgpt/callback'
+    | '/api/openai/chatgpt/start'
+    | '/api/openai/chatgpt/status'
     | '/api/v1/brands/$brandId'
     | '/api/v1/competitors/$competitorId'
     | '/api/v1/prompts/$promptId'
@@ -640,6 +677,9 @@ export interface RootRouteChildren {
   ApiManifestIndexRoute: typeof ApiManifestIndexRoute
   ApiOgIndexRoute: typeof ApiOgIndexRoute
   ApiSetupStatusIndexRoute: typeof ApiSetupStatusIndexRoute
+  ApiOpenaiChatgptCallbackRoute: typeof ApiOpenaiChatgptCallbackRoute
+  ApiOpenaiChatgptStartRoute: typeof ApiOpenaiChatgptStartRoute
+  ApiOpenaiChatgptStatusRoute: typeof ApiOpenaiChatgptStatusRoute
   ApiV1BrandsBrandIdRoute: typeof ApiV1BrandsBrandIdRoute
   ApiV1CompetitorsCompetitorIdRoute: typeof ApiV1CompetitorsCompetitorIdRoute
   ApiV1PromptsPromptIdRoute: typeof ApiV1PromptsPromptIdRouteWithChildren
@@ -885,6 +925,27 @@ declare module '@tanstack/react-router' {
       path: '/api/v1/brands/$brandId'
       fullPath: '/api/v1/brands/$brandId'
       preLoaderRoute: typeof ApiV1BrandsBrandIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/openai/chatgpt/status': {
+      id: '/api/openai/chatgpt/status'
+      path: '/api/openai/chatgpt/status'
+      fullPath: '/api/openai/chatgpt/status'
+      preLoaderRoute: typeof ApiOpenaiChatgptStatusRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/openai/chatgpt/start': {
+      id: '/api/openai/chatgpt/start'
+      path: '/api/openai/chatgpt/start'
+      fullPath: '/api/openai/chatgpt/start'
+      preLoaderRoute: typeof ApiOpenaiChatgptStartRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/api/openai/chatgpt/callback': {
+      id: '/api/openai/chatgpt/callback'
+      path: '/api/openai/chatgpt/callback'
+      fullPath: '/api/openai/chatgpt/callback'
+      preLoaderRoute: typeof ApiOpenaiChatgptCallbackRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authed/reports/render/$reportId': {
@@ -1136,6 +1197,9 @@ const rootRouteChildren: RootRouteChildren = {
   ApiManifestIndexRoute: ApiManifestIndexRoute,
   ApiOgIndexRoute: ApiOgIndexRoute,
   ApiSetupStatusIndexRoute: ApiSetupStatusIndexRoute,
+  ApiOpenaiChatgptCallbackRoute: ApiOpenaiChatgptCallbackRoute,
+  ApiOpenaiChatgptStartRoute: ApiOpenaiChatgptStartRoute,
+  ApiOpenaiChatgptStatusRoute: ApiOpenaiChatgptStatusRoute,
   ApiV1BrandsBrandIdRoute: ApiV1BrandsBrandIdRoute,
   ApiV1CompetitorsCompetitorIdRoute: ApiV1CompetitorsCompetitorIdRoute,
   ApiV1PromptsPromptIdRoute: ApiV1PromptsPromptIdRouteWithChildren,

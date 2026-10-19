@@ -75,8 +75,11 @@ function buildProviderKeyRequirements(env: EnvMap = process.env): EnvRequirement
 		requirements.push({
 			id: `PROVIDER_${provider.toUpperCase().replace(/-/g, "_")}`,
 			label: keys.join(" + "),
-			description: `Required by SCRAPE_TARGETS provider "${provider}".`,
-			isSatisfied: requireAll(keys),
+			description: provider === "openai-api"
+				? `Required by SCRAPE_TARGETS provider "${provider}", unless a ChatGPT plan is connected in local mode.`
+				: `Required by SCRAPE_TARGETS provider "${provider}".`,
+			isSatisfied: (env) =>
+				(provider === "openai-api" && env.DEPLOYMENT_MODE === "local") || requireAll(keys)(env),
 		});
 	}
 

@@ -10,6 +10,21 @@ export * from "./schema-auth";
 
 export const reportStatusEnum = pgEnum("report_status", ["pending", "processing", "completed", "failed"]);
 
+/** Encrypted ChatGPT-plan OAuth credentials for the local OpenAI provider. */
+export const providerAuth = pgTable("provider_auth", {
+	provider: text("provider").primaryKey().notNull(),
+	encryptedCredentials: text("encrypted_credentials").notNull(),
+	updatedAt: timestamp("updated_at", { withTimezone: true }).defaultNow().notNull(),
+}).enableRLS();
+
+/** Short-lived PKCE handshakes survive the browser redirect through loopback/Docker. */
+export const providerAuthAttempts = pgTable("provider_auth_attempts", {
+	state: text("state").primaryKey().notNull(),
+	encryptedAttempt: text("encrypted_attempt").notNull(),
+	expiresAt: timestamp("expires_at", { withTimezone: true }).notNull(),
+	createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull(),
+}).enableRLS();
+
 export const brands = pgTable("brands", {
 	id: text("id").primaryKey().notNull(),
 	name: text("name").notNull(),

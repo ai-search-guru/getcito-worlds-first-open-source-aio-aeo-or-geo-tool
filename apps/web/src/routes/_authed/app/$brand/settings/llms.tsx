@@ -14,6 +14,8 @@ import { IconCircleCheck, IconCircleX, IconInfoCircle } from "@tabler/icons-reac
 import { Skeleton } from "@workspace/ui/components/skeleton";
 import { useBrand } from "@/hooks/use-brands";
 import { iconForModel } from "@/components/filter-bar";
+import { Button } from "@workspace/ui/components/button";
+import { useEffect, useState } from "react";
 
 export const Route = createFileRoute("/_authed/app/$brand/settings/llms")({
 	head: ({ matches, match }) => {
@@ -32,6 +34,40 @@ export const Route = createFileRoute("/_authed/app/$brand/settings/llms")({
 function LlmsSettingsPage() {
 	const { brand, isLoading } = useBrand();
 	const configs = brand?.effectiveModelConfigs ?? [];
+	const [chatGptStatus, setChatGptStatus] = useState<{ connected: boolean; email?: string } | null>(null);
+	const [chatGptError, setChatGptError] = useState("");
+	const [disconnecting, setDisconnecting] = useState(false);
+
+	useEffect(() => {
+		if (!brand || !configs.some((config) => config.provider === "openai-api")) return;
+		fetch("/api/openai/chatgpt/status", { cache: "no-store" })
+			.then(async (response) => {
+				const value = await response.json();
+				if (!response.ok) throw new Error(value.error ?? "Could not read ChatGPT connection status.");
+				setChatGptStatus(value);
+			})
+			.catch((error: unknown) => setChatGptError(error instanceof Error ? error.message : "Could not read ChatGPT connection status."));
+		const authResult = new URLSearchParams(window.location.search).get("chatgptAuth");
+		if (authResult === "connected") setChatGptError("");
+		if (authResult === "cancelled") setChatGptError("ChatGPT sign-in was cancelled.");
+		if (authResult === "failed") setChatGptError("ChatGPT sign-in did not complete. Please try again.");
+	}, [brand, configs]);
+
+	const disconnectChatGpt = async () => {
+		setDisconnecting(true);
+		setChatGptError("");
+		try {
+			const response = await fetch("/api/openai/chatgpt/status", { method: "POST" });
+			const result = await response.json();
+			if (!response.ok) throw new Error(result.error ?? "Could not disconnect ChatGPT.");
+			setChatGptStatus({ connected: false });
+			if (!result.revoked) setChatGptError("Local credentials were cleared, but OpenAI did not confirm token revocation. You can remove GetCito from ChatGPT Settings.");
+		} catch (error) {
+			setChatGptError(error instanceof Error ? error.message : "Could not disconnect ChatGPT.");
+		} finally {
+			setDisconnecting(false);
+		}
+	};
 
 	return (
 		<div className="space-y-6 max-w-6xl">
@@ -42,6 +78,36 @@ function LlmsSettingsPage() {
 					search.
 				</p>
 			</div>
+
+			{brand && configs.some((config) => config.provider === "openai-api") && (
+				<Card>
+					<CardHeader>
+						<h2 className="text-lg font-semibold">OpenAI access</h2>
+					</CardHeader>
+					<CardContent className="space-y-3">
+						<p className="text-sm text-muted-foreground">
+							Connect a ChatGPT plan for the OpenAI provider, or configure an OpenAI API key on the server.
+						</p>
+						{chatGptStatus?.connected ? (
+							<div className="flex flex-wrap items-center gap-3">
+								<p className="text-sm">
+									Connected with ChatGPT as <span className="font-medium">{chatGptStatus.email}</span>
+									<span className="mx-2 text-muted-foreground">·</span>
+									<a className="underline underline-offset-4" href="https://chatgpt.com/#settings/usage" target="_blank" rel="noreferrer">Manage plan usage</a>
+								</p>
+								<Button type="button" variant="outline" disabled={disconnecting} onClick={disconnectChatGpt}>
+									{disconnecting ? "Disconnecting…" : "Disconnect"}
+								</Button>
+							</div>
+						) : (
+							<Button asChild>
+								<a href={`/api/openai/chatgpt/start?brand=${encodeURIComponent(brand.id)}`}>Continue with ChatGPT</a>
+							</Button>
+						)}
+						{chatGptError && <p role="alert" className="text-sm text-destructive">{chatGptError}</p>}
+					</CardContent>
+				</Card>
+			)}
 
 			{isLoading && !brand ? (
 				<div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">

@@ -109,7 +109,7 @@ export const ENV_REGISTRY: EnvVarSpec[] = [
 		scope: "server",
 		requiredBy: "dynamic-scrape-targets",
 		provider: "openai-api",
-		description: "OpenAI API key.",
+		description: "OpenAI API key. Local deployments can instead connect a ChatGPT plan in Settings > LLMs.",
 	},
 	{
 		name: "ANTHROPIC_API_KEY",

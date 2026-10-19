@@ -271,9 +271,13 @@ Required-column legend: **local** = required in local mode · **wl** = required 
 |----------|----------|-------------|
 | `OPENROUTER_API_KEY` | openrouter | OpenRouter API key (one key, many models). |
 | `ANTHROPIC_API_KEY` | anthropic-api | Anthropic API key. |
-| `OPENAI_API_KEY` | openai-api | OpenAI API key. |
+| `OPENAI_API_KEY` | openai-api | OpenAI API key. In local mode, you can instead connect a ChatGPT plan in Settings > LLMs. |
 | `MISTRAL_API_KEY` | mistral-api | Mistral API key. |
 | `AZURE_FOUNDRY_API_KEY` / `AZURE_FOUNDRY_BASE_URL` | azure-foundry-api | Azure AI Foundry key and endpoint URL. |
+
+#### Sign in with ChatGPT (local mode)
+
+For a local deployment using `openai-api`, you can connect a ChatGPT plan from **Settings → LLMs → Continue with ChatGPT** instead of supplying `OPENAI_API_KEY`. The OAuth credentials are encrypted in PostgreSQL using `BETTER_AUTH_SECRET`; access tokens refresh automatically. The OAuth flow requires a browser and a loopback callback, so open the local app on the same machine as the Docker host. A connected ChatGPT plan takes precedence over `OPENAI_API_KEY`; the key remains a fallback if the plan is disconnected. This uses OpenAI's preview Sign in with ChatGPT flow and is subject to the account's plan, model availability, and preview limitations.
 
 ### White-label (Auth0)
 
