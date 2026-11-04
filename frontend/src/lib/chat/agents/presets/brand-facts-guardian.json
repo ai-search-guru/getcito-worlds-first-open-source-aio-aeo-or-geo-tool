@@ -1,0 +1,30 @@
+{
+  "id": "brand-facts-guardian",
+  "goal": "visibility",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "wrongclaim",
+    "facts"
+  ],
+  "triggers": [
+    {
+      "kind": "kpi",
+      "kpi": "positive_sentiment",
+      "direction": "down",
+      "threshold": 10,
+      "unit": "percent",
+      "period": "week"
+    },
+    {
+      "kind": "schedule",
+      "repeat": "WE",
+      "time": "09:00"
+    }
+  ],
+  "mode": "ask_first",
+  "connections": [],
+  "status": "ready",
+  "needs": []
+}

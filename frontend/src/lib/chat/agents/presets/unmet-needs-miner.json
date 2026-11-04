@@ -1,0 +1,24 @@
+{
+  "id": "unmet-needs-miner",
+  "goal": "visibility",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [
+    "product"
+  ],
+  "skills": [
+    "gaps",
+    "questions"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "month_first",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "ready",
+  "needs": []
+}

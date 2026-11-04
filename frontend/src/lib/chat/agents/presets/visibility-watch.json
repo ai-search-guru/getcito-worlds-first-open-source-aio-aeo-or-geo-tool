@@ -1,0 +1,38 @@
+{
+  "id": "visibility-watch",
+  "goal": "visibility",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "report"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "daily",
+      "time": "08:00"
+    },
+    {
+      "kind": "kpi",
+      "kpi": "ai_visibility",
+      "direction": "any",
+      "threshold": 10,
+      "unit": "percent",
+      "period": "day"
+    }
+  ],
+  "mode": "auto",
+  "connections": [
+    {
+      "key": "google_search_console",
+      "required": false
+    },
+    {
+      "key": "google_analytics",
+      "required": false
+    }
+  ],
+  "status": "ready",
+  "needs": []
+}

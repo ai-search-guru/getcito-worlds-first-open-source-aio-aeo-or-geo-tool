@@ -1,0 +1,18 @@
+{
+  "id": "technical-fixer",
+  "goal": "technical",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [
+    "aeo",
+    "developers"
+  ],
+  "skills": [],
+  "triggers": [],
+  "mode": "ask_first",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "ship_as_pr"
+  ]
+}

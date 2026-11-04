@@ -1,0 +1,23 @@
+{
+  "id": "ai-traffic-signups",
+  "goal": "reporting",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [
+    "growth"
+  ],
+  "skills": [],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "MO",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "traffic_skill"
+  ]
+}

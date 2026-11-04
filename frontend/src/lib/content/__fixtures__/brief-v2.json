@@ -1,0 +1,108 @@
+{
+  "goal": "Show finance leads how a rolling 13-week cash forecast works in Ledgerly.",
+  "audience": "Finance leads at small companies who forecast in spreadsheets today.",
+  "outline": [
+    {
+      "heading": "What a rolling 13-week cash forecast is",
+      "keyPoints": [
+        "How it moves forward one week every week",
+        "What goes in it"
+      ],
+      "fanout": "13 week cash flow forecast template",
+      "platform": "chatgpt",
+      "answer": "A 13-week forecast of cash in and out that adds a week as each week ends.",
+      "format": "paragraphs",
+      "facts": [
+        {
+          "claim": "How far static forecasts drift in a quarter",
+          "sourceType": "study",
+          "source": null
+        },
+        {
+          "claim": "Ledgerly customers' average forecast error",
+          "sourceType": "statistic",
+          "source": {
+            "kind": "input",
+            "ref": "data:1",
+            "label": "Forecast error by month"
+          }
+        }
+      ]
+    },
+    {
+      "heading": "Rolling forecast vs static budget",
+      "keyPoints": [
+        "Update cadence",
+        "Accuracy",
+        "Effort"
+      ],
+      "fanout": null,
+      "platform": null,
+      "answer": "A rolling forecast is updated weekly; a budget is set once a year.",
+      "format": "table",
+      "facts": []
+    }
+  ],
+  "keywords": [
+    "rolling cash forecast",
+    "13 week cash flow model"
+  ],
+  "origin": "rebuild",
+  "builtAt": "2026-10-26T10:00:00Z",
+  "builtFrom": {
+    "prompts": 2,
+    "fanouts": 4,
+    "pages": 1,
+    "queries": 2
+  },
+  "citedLength": {
+    "characters": 6200,
+    "pages": 2
+  },
+  "version": 2,
+  "tldr": "A rolling 13-week forecast keeps cash visible; Ledgerly updates it from your bank weekly.",
+  "angle": "Ledgerly's own variance data across its customers, not a template.",
+  "proof": [
+    {
+      "kind": "data",
+      "what": "Average forecast error before and after switching"
+    },
+    {
+      "kind": "case",
+      "what": "A customer who caught a shortfall six weeks out"
+    }
+  ],
+  "leftOut": [
+    "how to read a cash flow statement"
+  ],
+  "freshness": {
+    "datedPoint": "The forecast error figure, with its month",
+    "updatedLine": true,
+    "yearInTitle": false
+  },
+  "entities": {
+    "brand": "Ledgerly",
+    "products": [
+      "Ledgerly Forecast"
+    ],
+    "competitors": [
+      "Cashwise"
+    ]
+  },
+  "links": {
+    "internal": [
+      {
+        "url": "https://ledgerly.example/pricing",
+        "anchor": "Ledgerly pricing",
+        "section": "Rolling forecast vs static budget"
+      }
+    ],
+    "outbound": [
+      {
+        "url": "https://www.reddit.com/r/FPandA/comments/abc",
+        "anchor": "what finance teams say",
+        "section": null
+      }
+    ]
+  }
+}

@@ -1,0 +1,96 @@
+name: GetCito CI
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+env:
+  NEXT_TELEMETRY_DISABLED: "1"
+  TZ: UTC
+
+jobs:
+  integrity:
+    name: Version and database schema
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Package and Docker version consistency
+        run: npm run version:check
+      - name: Regenerate schema.sql from migrations
+        run: bash supabase/build-schema.sh
+      - name: Fail if schema.sql is out of date
+        run: |
+          if ! git diff --quiet -- supabase/schema.sql; then
+            echo "::error::supabase/schema.sql is out of date. Run 'bash supabase/build-schema.sh' and commit the result."
+            git --no-pager diff -- supabase/schema.sql
+            exit 1
+          fi
+
+  frontend:
+    name: Frontend checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    defaults:
+      run:
+        working-directory: frontend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: yarn
+          cache-dependency-path: frontend/yarn.lock
+      - run: yarn install --frozen-lockfile --non-interactive
+      - name: Prettier format check
+        run: yarn format:check
+      - name: ESLint
+        run: yarn lint
+      - name: TypeScript typecheck
+        run: yarn typecheck
+        env:
+          # tsc --noEmit over the whole app sits at Node's default heap limit
+          # and has run out of memory here once; 6 GB fits the hosted runner.
+          NODE_OPTIONS: --max-old-space-size=6144
+      - name: Vitest tests
+        run: yarn test
+      - name: Next.js production build
+        run: yarn build
+        env:
+          # next build evaluates modules that initialize Supabase and Stripe
+          # clients; fake values keep CI independent of deployment secrets.
+          NEXT_PUBLIC_SUPABASE_URL: https://ci-placeholder.supabase.co
+          NEXT_PUBLIC_SUPABASE_ANON_KEY: ci-placeholder-anon-key
+          SUPABASE_SERVICE_ROLE_KEY: ci-placeholder-service-role-key
+          STRIPE_SECRET_KEY: sk_test_ci_placeholder
+
+  backend:
+    name: Backend checks
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: backend
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 24
+          cache: npm
+          cache-dependency-path: backend/package-lock.json
+      - run: npm ci
+      - run: npm run lint
+      - run: npm run format:check
+      - name: Vitest tests
+        run: npm run test

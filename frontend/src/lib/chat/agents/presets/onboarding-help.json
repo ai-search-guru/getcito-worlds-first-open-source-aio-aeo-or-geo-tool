@@ -1,0 +1,16 @@
+{
+  "id": "onboarding-help",
+  "goal": "help",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [],
+  "triggers": [],
+  "mode": "auto",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "help_articles",
+    "setup_skill"
+  ]
+}

@@ -1,0 +1,338 @@
+---
+title: "AI Traffic Analytics"
+description: "Measure real visits to your site from AI answer engines, what they're worth, and which AI bots read your pages."
+---
+
+## Why this exists
+
+Most analytics platforms (Google Analytics, Plausible, etc.) lump AI traffic into "direct" or "referral" buckets — they can't tell you a visitor arrived from ChatGPT vs. perplexity.ai. GetCito's tracking snippet reads the referrer, classifies AI sources by domain, and gives you a clean breakdown. Connect Google Analytics, Google Search Console and your Cloudflare or Vercel, and the same page shows what those visits are worth, whether AI is changing your Google traffic, and which AI bots read your pages.
+
+## Data sources
+
+The **AI Traffic Analytics** page (`/dashboard/traffic`, **AI Referral Traffic** in the sidebar) reads up to four sources. The **Data sources** strip at the top shows each one's state:
+
+| Source | What it adds |
+|---|---|
+| **Tracking snippet** | AI-referred visits, page by page, as they happen. Reads **Active · last visit …** once it has sent a visit in the last week, otherwise **Not detected**. |
+| **Google Analytics** | AI visits on days the snippet has none, plus engaged visits, key events, revenue and the AI share of all traffic. |
+| **Google Search Console** | Google clicks, the pages where AI may be taking them, and the Google queries you don't track yet. |
+| **AI bots** | Which AI bots read your pages, from your own Cloudflare or Vercel. Growth plan and above. |
+
+A section whose source isn't connected stays on the page with a **Needs …** tag and a **Connect** button, rather than hiding. Only admins and managers can connect a source.
+
+In cloud mode, while the workspace's plan has ended ([read-only](/faq)), the snippet and your AI-bot connections are answered but nothing is stored, so your site keeps working and the sender doesn't retry: a beacon to `POST /track/{trackingCode}` gets `204`, and `POST /bots/ingest` gets `200` with `{ "received": 0, "verified": 0, "stored": 0, "inactive": true }`.
+
+## Setup
+
+<Steps>
+  <Step title="Add the tracking snippet">
+    Copy the snippet from the page. It sits at the top until the snippet has sent a visit in the last week; after that, **Code** in the Data sources strip opens it. It looks like:
+    ```html
+    <script src="https://YOUR_API_URL/t.js" data-t="YOUR_TRACKING_CODE" defer></script>
+    ```
+    The page fills in your own address and tracking code, so copy it rather than typing it. To follow AI visitors to signups, demo forms and orders, turn on [Conversions from AI visits](#conversions-from-ai-visits): the page then shows the tag with them.
+  </Step>
+  <Step title="Paste into your site">
+    Add the script before `</head>` on every page you want to track, **your 404 page included**, so [Broken AI links](#pages) can see visitors who land on a missing page. For Next.js, drop it in your root layout. For WordPress, use a header injection plugin. For static sites, edit the template.
+  </Step>
+  <Step title="Connect Google Analytics and Search Console (optional)">
+    Click **Connect** on either card in the Data sources strip and sign in to Google; access is read-only. If the card then reads **Connected · choose a property for this brand**, pick the property under **Manage** (Settings → Integrations). Connections are shared across your organization.
+
+    Google Analytics' first numbers arrive in about 15 minutes; up to 14 months of history can take up to 24 hours. Search Console's can take up to 48 hours, because Google reports about two days late. On a self-hosted server, both read **Not set up on this server** until the server has its Google connection keys.
+  </Step>
+  <Step title="Wait for first visits">
+    A visit is stored as soon as an AI-referred visitor lands. Reload the page, or change the range, to see new ones.
+  </Step>
+</Steps>
+
+## Date range, changes and export
+
+- **Range** — 24h, 7d, 30d, 90d, All or Custom. The page opens on the last 24 hours, then on the range you last picked in this browser. Every section follows it.
+- **Change** — each figure is compared with the period of the same length just before. Below 30 visits in either period the change reads **Low sample** instead of a percentage, and a platform or page with no visits before reads **new**. All time has no previous period.
+- **Export** — the **Export** button gives the whole page as **Excel (.xlsx)**, one sheet per section, or **CSV (.zip)**, one CSV per section. Each table also has its own Excel and CSV buttons. A range with more than 100,000 visits is too large to export at once.
+
+## How visits are counted
+
+- **One visit per session.** A reload, or a further link from the same answer, continues the visit rather than counting another. The visits card gives the pageviews beside the visits.
+- **Snippet or Google Analytics, never both.** On days the snippet sent any visit, the page counts the snippet's; on the other days, Google Analytics'. The two are never added together, and the visits card says how many days came from Google Analytics.
+- **The visit list is the snippet's.** Google Analytics doesn't report single visits, so the **Recent AI Referral Visits** list shows only what the snippet saw.
+
+## What you see
+
+The sections run top to bottom in this order.
+
+### Summary line
+
+One or two sentences above the KPI cards, for example: *"Last 7 days: 120 AI-referred visits, 3.2% of all traffic, up 18% on the previous period. ChatGPT sent the most (64), and its visitors convert best (6% of their visits had a key event). 4 pages are cited in AI answers but get no clicks. 12 Google queries with clicks aren't tracked as prompts."*
+
+Each fact appears only when the page can back it: the change needs 30 visits in both periods; the share of traffic and the best-converting platform need Google Analytics (and two platforms with 30 visits and 5 key events each); the untracked queries need Search Console.
+
+### KPI cards
+
+| Card | What it shows | Needs |
+|---|---|---|
+| **AI-referred visits** | Visits from AI assistants, with the change on the previous period | Snippet or Google Analytics |
+| **Top platform** | The AI platform that sent the most visits | — |
+| **Platforms** | How many AI platforms sent at least one visit | — |
+| **AI share of traffic** | AI-referred visits as a share of all the sessions Google Analytics recorded | Google Analytics |
+| **Engaged visits** | The share of AI sessions Google Analytics counts as engaged, beside the same share for Google organic | Google Analytics |
+| **Key events from AI** | Key events (conversions) in AI sessions, their rate against Google organic, and revenue when the property reports purchases | Google Analytics |
+| **Google clicks** | Clicks from Google Search. Google reports about two days late, so 24h and 7d show its latest reported days | Search Console |
+
+### Trend and platforms
+
+<CardGroup cols={2}>
+  <Card title="AI Referral Trend" icon="chart-line">
+    **By platform**: visits per day, or per hour on the 24-hour range. **vs Google clicks**: AI visits and Google clicks, each indexed to 100 on its first day with data. Dashed amber lines mark the days actions entered the Action Center or prompts were added. The Google line needs Search Console, and a range of 7 days or longer since Google reports clicks by day.
+  </Card>
+  <Card title="Platform Breakdown" icon="chart-pie">
+    Each AI platform's share of the range's visits.
+  </Card>
+  <Card title="Referrals by Platform" icon="table-list">
+    Visits and change per platform, with **Engaged** and **Key events** from Google Analytics.
+  </Card>
+  <Card title="Top Landing Pages" icon="file">
+    The pages that receive the most AI visits, with their change and how often tracked AI answers cite them (**Cited in answers**).
+  </Card>
+</CardGroup>
+
+<Note>
+AI Overviews and AI Mode clicks are part of Google organic clicks, and Google doesn't let them be separated. The Google line counts them all.
+</Note>
+
+### Where AI visitors convert
+
+Two tables from Google Analytics:
+
+- **Top converting pages from AI** — landing pages ranked by key events from AI visits, or by revenue when the property reports it, with the rate (shown from 30 visits) and the best platform.
+- **Which answers bring buyers** — the topics of your tracked prompts whose answers cite those converting pages, by the AI platform the visitors came from. It shows which topics bring buyers, not just visits.
+
+A range with fewer than 30 AI visits uses the last 30 days here, and says so.
+
+### Pages
+
+**Pages** answers which pages get AI visits, which don't, and why. Its tabs:
+
+| Tab | Lists |
+|---|---|
+| **No AI traffic** | Pages with traffic in Google Analytics or in your sitemap that got no AI visit, most valuable first — by revenue, orders, conversions or, without those, engagement. **AI visibility** says why: **Cited**, **Not cited** (prompts target it) or **No prompt**. |
+| **Cited, not clicked** | Pages AI answers cited at least 20 times in the range that got no AI visit. |
+| **Traffic, no prompt** | Pages AI assistants sent visitors to that no tracked prompt's answer cited: the visits come from questions you don't track. |
+| **Broken AI links** | Pages AI visitors landed on that don't exist, each with a suggested **Redirect to**. |
+| **All pages** | Every page with AI visits, citations, traffic or a sitemap entry in the range. |
+
+Rows carry their next step: **Audit page** for a page AI cites or a prompt targets, **Add prompts** for one no prompt points to. On **No AI traffic** and **Cited, not clicked**, each row's **…** menu also has **Send to Action Center**, **Add prompts** and **Suggest content**, and under the list **Audit N cited pages** (or **Audit N pages**) starts Site Audits for the cited pages shown, while **Send to Action Center** sends the pages shown as one action.
+
+**Add prompts** suggests questions people ask AI assistants that the page answers, including ones from its Search Console queries, and lets you add your own. The prompts you track from it point to the page, so their answers show whether AI cites it. Each one uses a prompt slot on your plan.
+
+**Broken AI links** reads what the visitor got:
+
+- **Not found (404)** or **Gone (410)**, from the status the browser reported;
+- **Shows a not-found page (200)** — a single-page app that answers every address with 200 and shows its own not-found page. It is listed once at least two visits saw it;
+- **Page title says not found** — where the browser reports no status (Safari, for one).
+
+The suggested redirect is a working page: a **Similar page**, **The page above it**, or the **Home page**. Addresses with a query string get no suggestion. With the tab open, the Excel and CSV buttons export the redirect list.
+
+### Google Search Console
+
+**Is AI changing your Google traffic?** Two tables, from Search Console's own data:
+
+- **Is AI taking Google clicks?** — pages whose impressions rose 15% or more while their CTR fell 20% or more, among pages with at least 100 impressions in the period before. An AI Overview may be answering in place of the click. **Positions** shows whether you're cited for a tracked prompt about the page; **Add prompts** appears when none is about it yet.
+- **Untracked Google queries** — queries with clicks that no tracked prompt covers, most clicked first. **Track** adds one as a prompt; **Track all** adds the listed ones that your plan's prompt slots allow. Admins and managers can track queries. Up to the 5,000 most clicked queries are checked.
+
+### AI bots reading your site
+
+From your own Cloudflare or Vercel. Only verified bots count: the user agent and the operator's published IP ranges must both match. Today that's OpenAI's GPTBot, OAI-SearchBot and ChatGPT-User, Anthropic's ClaudeBot, Claude-SearchBot and Claude-User, and Perplexity's PerplexityBot and Perplexity-User.
+
+- **By bot type** — hits, pages read and last seen for **Training**, **Search index** and **User fetch**, with the bots under each.
+- **Pages AI bots read** — hits per page, and when each type last read it.
+- **Search-bot alert** — pages AI answers cited in the last 30 days that no AI search bot read in those 30 days. It starts 30 days after the first AI-bot request, and pauses when the bot data doesn't cover the last 30 days or the month's cap was reached.
+
+Bot counts are kept by UTC day, so the 24-hour range reads yesterday and today (UTC), and All time reads the last 90 days. On the Starter plan the section shows sample data with **Upgrade**; without a connection, **Connect** or **Preview with sample data**.
+
+#### Connect AI bots
+
+<Steps>
+  <Step title="Open the dialog">
+    Click **Connect** on the **AI bots** card in the Data sources strip.
+  </Step>
+  <Step title="Choose how your site sends AI-bot requests">
+    - **Cloudflare Worker** (recommended) — a small Worker on your site's route passes every request through and sends only AI-bot requests, in batches.
+    - **Cloudflare Logpush** — Cloudflare sends only the AI bots' log lines, filtered at its edge. Nothing runs on your requests.
+    - **Vercel Drain** — Vercel sends your request logs; GetCito keeps the AI bots and drops the rest. Vercel Pro and Enterprise only.
+
+    Each option says what it costs on your own Cloudflare or Vercel bill before you connect. None of them changes your site's speed.
+  </Step>
+  <Step title="Create the connection and copy its settings">
+    Click **Create connection** and follow the numbered steps. **Copy the settings right away: the secret in them isn't shown again.** If you lose it, revoke the connection and create a new one.
+  </Step>
+</Steps>
+
+**Manage** on the card lists your connections with their last request, lets you **Revoke** one, and shows this month's use. Plans in cloud mode store a monthly number of detailed rows; past it, detailed rows pause until the next month and the totals are still counted. Log records from Logpush or a Vercel drain have a monthly cap of their own. Only requests to your brand's own domains, or their subdomains, are kept.
+
+### Recent AI Referral Visits
+
+One row per visit, with time, platform, page and country. Search by URL or path, filter by platform, and page through the range ten at a time.
+
+## Alerts in the Action Center
+
+The nightly signals pass watches AI Traffic and raises these in the Action Center's **Signals**:
+
+| Signal | Raised when | Feeds |
+|---|---|---|
+| **AI visits fell from … to … week over week** | AI visits over the last 7 whole days (UTC) fell 40% or more from the 7 before, which had at least 30 | **Recover AI traffic** |
+| **Broken AI links on …** | AI visitors landed on a page that answered 404 or 410 in the last 7 days | **Fix broken citation targets** |
+| **AI search bots haven't read … that AI answers cite** | A page AI answers cited in the last 30 days wasn't read by any AI search bot in that time (needs 30 days of AI-bot data) | **Fix AI crawler accessibility** (needs Site Audit) |
+| **… started sending visitors** | An AI platform sent visits in the last 7 days for the first time | — |
+
+## Weekly AI Traffic e-mail
+
+Every Monday (UTC), each brand with AI visits gets an e-mail about the week before (Monday to Sunday, UTC):
+
+- three cards: AI visits with the change, the top platform, and the share of traffic (with Google Analytics) or how many pages are cited but not clicked;
+- the [summary line](#summary-line);
+- AI visits by day and by platform;
+- **Top changes** — up to three, broken AI links first, then the platforms and pages whose AI visits moved most;
+- **Open AI Traffic →**, which opens this page.
+
+It goes to the brand's [Daily Pulse](/guides/daily-pulse) recipients. To turn it off for a brand, untick **AI Traffic weekly digest** in **Settings → Notifications**; admins and managers can change it. It's on by default, and it isn't sent while the brand's Daily Pulse is **Off**.
+
+No e-mail goes out for a week with no AI visits in it or the week before, or when the organization's subscription isn't active. A send that fails on Monday is tried again on Tuesday and Wednesday. The e-mail is cloud only.
+
+## Conversions from AI visits
+
+Google Analytics' key events say how many AI sessions converted. To see which pages AI visitors went through on the way to a signup, a demo form or an order, turn on conversions for the brand. The snippet then follows visitors who came from an AI assistant for 30 days from that first visit, and credits each conversion to the assistant that first sent them (first touch). The [Content Editor](/guides/content-editor) shows what came of it: the **Live page** tab per page, and the Content plan's AI results line for the whole site.
+
+Conversions are off by default. A brand that doesn't turn them on keeps the tag it has, and the snippet keeps storing nothing.
+
+<Steps>
+  <Step title="Turn conversions on">
+    In **Brand settings → Tracking**, under **Conversions from AI visits**, tick **Track conversions from AI visits** and choose **Consent**:
+
+    - **Wait for the visitor's consent** (recommended): no id is kept and no journey is sent until your site says the visitor agreed. AI visits themselves are counted as before.
+    - **Don't wait: our own banner covers it**: use this only if your cookie banner already asks for analytics storage, or where no consent is needed.
+
+    Only admins and managers can change it.
+  </Step>
+  <Step title="Replace the tag">
+    Under **Use this tag**, copy the tag with the copy button on its code, and use it in place of the one you have, before `</head>` on every page. It has two lines:
+    ```html
+    <script>window.getcito=window.getcito||function(){(getcito.q=getcito.q||[]).push(arguments)};</script>
+    <script src="https://YOUR_API_URL/t.js" data-t="YOUR_TRACKING_CODE" data-c="1" data-consent="wait" defer></script>
+    ```
+    The first line lets your site call `getcito()` before the snippet has loaded: the calls wait for it.
+
+    The tag carries your choices: `data-c="1"` turns following on, and `data-consent` is `wait` or `always`. The snippet reads them from the tag, so after you change **Consent**, copy the tag again. To turn conversions off, untick **Track conversions from AI visits** and put the tag without them back: until then the snippet still keeps the id in visitors' browsers, though GetCito stores none of their events.
+  </Step>
+  <Step title="Say when the visitor agrees">
+    With **Wait for the visitor's consent**, call this from your cookie banner once the visitor agrees, and on every page after:
+    ```js
+    getcito('consent', 'granted');
+    ```
+    When the visitor says no, or takes consent back, call `getcito('consent', 'denied');` in both modes, and with **Don't wait** on every page after, while they say no (a visitor who comes back from an AI assistant is otherwise given a new id at once): it deletes the id kept in their browser, and nothing more is sent. The snippet takes an id kept earlier as consent given, so without this call a visitor who changes their mind is still followed. Google Consent Mode set with `gtag()` needs no call; a banner set up in Google Tag Manager does: see [Consent](#consent).
+  </Step>
+  <Step title="Count your conversions">
+    Forms with an email field count on their own (see [Forms](#forms)). For anything else, such as a thank-you page or a purchase, call `getcito('conversion', …)` from your own code (see [Conversion calls](#conversion-calls)). On Shopify, add the [Shopify pixel](#shopify) for orders.
+  </Step>
+</Steps>
+
+### Consent
+
+With **Wait for the visitor's consent**, the snippet keeps the visitor's events on the page until it knows they agreed, and drops them if they leave first. The id is made on the page the AI assistant sent them to, so they need to agree there: agreeing on a later page doesn't bring the journey back. It counts as agreeing when:
+
+- your site calls `getcito('consent', 'granted')`;
+- Google Consent Mode grants `analytics_storage` in an `update`, or in a `default` set on the page before the snippet that names no region. A regional default ("denied in the EU") can't say which this visitor got, so the snippet waits for an update. A default set after the snippet only ever pauses it;
+- the visitor already has an id from an earlier page, which means they agreed then, unless a Consent Mode default on the page denies `analytics_storage`.
+
+A Consent Mode `update` that takes `analytics_storage` back deletes the stored id and what waited, as `getcito('consent', 'denied')` does. The page keeps the id in memory, so a grant later on the same page (a banner that reports "denied" until the visitor chooses, or a visitor who changes their mind) still keeps the journey. Calls your site queued before the snippet loaded run consent first. With **Don't wait**, the id is kept at once, unless Consent Mode denies `analytics_storage` or sets a regional default: then the snippet waits for an update.
+
+<Note>
+A cookie banner set up inside Google Tag Manager (a consent template) doesn't reach the snippet by itself. Add a tag in Tag Manager that runs `getcito('consent', 'granted');` once consent is given, and one that runs `getcito('consent', 'denied');` when it's refused or taken back.
+</Note>
+
+### Forms
+
+When a visitor the snippet follows sends a form with an email field (an `<input type="email">`, or one whose `name` contains `email`), it counts as a **signup**, each form once per page load. Contact and newsletter forms count as signups too, unless you give them their own goal. On the `<form>` tag:
+
+- `data-getcito-goal="newsletter"` names its goal: `signup`, `demo`, `order`, `booking`, `newsletter` or `custom`. A form with a goal counts even without an email field;
+- `data-getcito="off"` leaves it out;
+- `data-getcito-label="pricing-demo"` names the form; otherwise its `id` or `name` does.
+
+A form with a password field counts only when it also has a field with `autocomplete="new-password"` (a signup), so login forms don't count, unless the form names its goal. Nothing typed in a form is sent. Don't also call a conversion from your own code for the same form, or it counts twice.
+
+### Conversion calls
+
+```js
+getcito('conversion', { type: 'demo' });
+getcito('conversion', { type: 'order', value: 129.5, currency: 'EUR', units: 2, order: '1001' });
+```
+
+| Field | What it is |
+|---|---|
+| `type` | The goal: `signup`, `demo`, `order`, `booking`, `newsletter` or `custom`. Another name counts as `custom`, which the Content Editor shows as **Other conversions**. |
+| `value`, `currency` | What the conversion was worth (0 to 1,000,000,000), and its currency as a three-letter code such as `EUR`. Revenue adds up orders' and bookings' values per currency; a value without a currency isn't added. |
+| `units` | How many items an order had: a whole number up to 100,000. |
+| `order` | Your own order id: up to 128 letters, digits and `_ # : / . -`. An order sent twice for the same visitor counts once. Only a hash of it is kept, for that check. An id in another form is dropped, and then the order counts each time it's sent. |
+| `label` | A name for the conversion, up to 80 characters of letters, digits, spaces and `_ . : # / -`, such as `pricing-demo`. A label in another form, or one that looks like a phone number, is dropped. Never put what the visitor typed here. |
+
+### Shopify
+
+Shopify runs no theme code on its checkout, so orders come from a Customer events pixel:
+
+1. In **Brand settings → Tracking**, under **Shopify store**, copy the pixel with the copy button on its code. For a brand whose **Site type** isn't e-commerce, click **Show the Shopify pixel** first.
+2. In Shopify admin, open **Settings › Customer events › Add custom pixel** and name it GetCito.
+3. Under **Customer privacy**, set **Permission** to **Analytics** and **Data sale** to **Data collected does not qualify as data sale**.
+4. Paste the code, save, then **Connect** it.
+
+The pixel sends each completed checkout's value, currency and units, with Shopify's order id when the event has one (so an order sent twice counts once; never the checkout's token), for visitors the snippet followed on your storefront, so the storefront still needs the tag in `theme.liquid`.
+
+With **Wait for the visitor's consent**, also add the consent script (the second code box under **Shopify store**) to `theme.liquid`, after the tag. It passes on the answer from Shopify's cookie banner, and grants where Shopify needs no consent. Without it, no visitor of the store is followed.
+
+A headless store whose checkout is on another domain can't link its orders this way.
+
+### What it can't see
+
+- Visitors who refuse cookies, in the EU for example, and visitors who agree only after leaving the page the AI assistant sent them to.
+- More than 300 pages from one visitor in 30 days, or more than 10 conversions from one visitor in a day: the rest isn't stored.
+- AI visits that arrive without a referrer or an AI `utm_source`: they count as Direct.
+- Google's AI Overviews and AI Mode, which stay an estimate.
+- Journeys from one subdomain to another, `www` to `app` for example: each keeps its own id.
+- Forms inside an iframe (a Typeform or Calendly embed) or a shadow root, forms sent from script with `form.submit()`, and posts without a form. Call `getcito('conversion', …)` for these.
+- Conversions after Safari has cleared the id: it does so after seven days of Safari use without a visit to your site.
+
+## Supported AI sources
+
+The snippet and the Google Analytics sync count the same AI assistants, from one list (`backend/src/lib/ai-sources.json`):
+
+- ChatGPT (chatgpt.com, chat.openai.com)
+- Perplexity (perplexity.ai)
+- Claude (claude.ai)
+- Gemini (gemini.google.com)
+- Copilot (copilot.microsoft.com, copilot.com, and Bing links from Copilot answers)
+- Grok, DeepSeek, Meta AI, You.com, Phind, Poe, Google Labs
+
+A visit counts when the referrer is one of these hosts or a subdomain of it (m.perplexity.ai), or, without one, when the link's `utm_source` names it (ChatGPT adds `utm_source=chatgpt.com`). A name inside another host doesn't count.
+
+Google Analytics also counts its own **AI Assistant** channel, so an assistant that isn't on the list yet still shows, under its source's name. The list is versioned: each change is dated in the file, and every stored visit records the version that counted it.
+
+## Privacy
+
+The snippet sends nothing for a visitor who didn't come from an AI assistant on the list above. For an AI-referred visit it sends the page address, the referrer, the AI source, the browser's user agent, language and screen size, and the page's HTTP status as the browser saw it. GetCito adds the country the request came from. **The snippet sets no cookies. Without conversions, it stores nothing in the visitor's browser.**
+
+With [conversions](#conversions-from-ai-visits) on, it stores one item, `getcito_v` in the browser's local storage, for visitors who came from an AI assistant and, unless you chose **Don't wait**, agreed: a random id with the source, page and time of their first AI visit. After 30 days it's no longer used, and the snippet deletes it on the visitor's next page on your site. It's also deleted when the visitor withdraws consent. For those visitors the snippet also sends the addresses of the pages they go on to (without their query string; a part of the path that holds an email is stored as `[email]`), the forms they send (the goal and the form's name, never what was typed in it) and your conversion calls, each with the random id and the first AI visit. No name, email or IP address is stored with a conversion.
+
+**The visitor's IP address is never stored.** To group a visit's pageviews into one visit, GetCito keeps a one-way key made from the IP address, your brand and a random salt that changes every day. Each day's salt is deleted after two days. From then on, nothing links a key to an address, and one visitor's days can't be joined. A visit that runs past midnight (UTC) counts as two.
+
+AI-bot requests from Cloudflare or Vercel are stored without IP addresses.
+
+## Common patterns
+
+- **Spike on a Friday** — usually a viral Reddit/Twitter thread that AI engines indexed and started recommending
+- **Sudden country shift** — Perplexity or Gemini changed regional weighting; not a metric you control
+- **Specific page surge** — one of your articles is being cited as authoritative; lock it in with internal links to defend
+- **Cited, not clicked keeps growing** — answers show your page but give no reason to click; add what the answer can't (tools, data, examples) and audit the page
+- **A new broken AI link** — an AI engine is citing an address you moved or retired; add the suggested redirect before the visits go elsewhere
+
+<Card title="Continue: Competitors" icon="arrow-right" href="/guides/competitors">
+  Benchmark your AI presence against named rivals.
+</Card>

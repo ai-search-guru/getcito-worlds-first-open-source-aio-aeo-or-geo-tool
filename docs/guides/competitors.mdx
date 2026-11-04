@@ -1,0 +1,83 @@
+---
+title: "Competitors"
+description: "Track named competitors and compare your AI visibility with each one, head-to-head."
+---
+
+## Opening the page
+
+The **Competitors** page (`/dashboard/competitors`) is on the left menu right under **Reports**. [Brand Visibility](/guides/answer-engine-insights) opens it too: **Head-to-Head** on the **Leaderboard** card, or a competitor's name there, which opens the page with that competitor selected. Before a brand has competitors, Brand Visibility shows **Head-to-Head Comparison** in the leaderboard's place. The Action Center's **Add at least 3 competitors** step in Getting started opens it too.
+
+## Adding competitors
+
+Click **Add Competitor**. Each competitor has:
+
+- **Name** — as AI answers write it. GetCito looks for the name in every answer.
+- **Domain** (optional) — GetCito also looks for the domain in answers, counts citations of the competitor's pages, marks those pages **Competitor** on [Citations](/guides/citations), and lets the timeline card below follow them.
+
+**Suggest competitors** researches your brand on the web, from its website, region and language, and lists competitors with their domains. The ones you already track are left out. All of them are ticked: untick the ones you don't want and click **Add N competitors**. **Refresh suggestions** asks again. The brand needs a website first.
+
+On [Citations](/guides/citations), the **+** on a cited domain adds that site as a competitor.
+
+The Getting started step asks for at least 3 competitors, and 5–20 give the clearest picture. A competitor is counted in the answers tracked after you add it; earlier answers aren't counted again.
+
+To remove a competitor, hover its card, click the bin icon, then **Yes, remove competitor**. It's no longer tracked. Past results keep their numbers, but they can't be linked back to the competitor.
+
+In cloud mode, while the workspace is [read-only](/faq), **Add Competitor**, **Suggest competitors** and removing a competitor open the plan dialog instead.
+
+## What the page shows
+
+The **Tracked Competitors** card lists every competitor with its domain and:
+
+- its **AI Visibility Score** (0–100), the score on the Brand Visibility leaderboard, from how often answers name it, cite its site and how early it's named. Hover the score for its answers, citations and position factor.
+- the prompts it's visible in, out of the prompts with answers in the window, e.g. *12/40 prompts*
+
+**No data** means no answer in the window was measured for that competitor yet, for example one you've just added. The **Date Range** at the top (7d, 30d by default, 90d, All or Custom) sets the window for these scores.
+
+**Export CSV** on the card downloads your brand's and every competitor's scores: `name`, `is_own_brand`, `visibility_score`, `visible_prompts`, `prompt_count`, `mention_answers`, `citation_answers`, `mentions`, `citations`.
+
+## Comparison views
+
+Click a competitor's card to compare it with your brand under **[Your brand] vs [competitor]**; click it again to close the comparison. The selected competitor is kept in the URL (`?competitor=`), so a refresh or a shared link opens the same one.
+
+The comparison reads every tracked answer, not just the date range. Its scores are each answer's visibility score (0–100), for your brand and for the competitor.
+
+<Steps>
+  <Step title="Your Avg. Score, Their Avg. Score, Score Difference">
+    Your average score, the competitor's, and the difference between them.
+  </Step>
+  <Step title="Platform Breakdown">
+    Your average and the competitor's on each AI platform, with the difference. A competitor can lead on one platform and trail on another.
+  </Step>
+  <Step title="Gaps and Strengths">
+    **Gaps** lists up to 10 prompt and platform combinations where the competitor scores higher, grouped by prompt, the widest gap first. **Strengths** lists up to 10 where you score higher, your biggest lead first. A prompt with several platforms opens to show each one.
+  </Step>
+  <Step title="Prompt-by-Prompt Comparison">
+    Every prompt with **You**, **Them** and **Diff**, the most recently run first. Click a prompt to see each platform (with its model and region) and how many runs it has. Click a platform with more than one run to see its **Previous runs**, up to 50, with the date, both scores, the difference and the sentiment. The eye icon opens an AI answer.
+  </Step>
+</Steps>
+
+**Export CSV** beside the comparison's title downloads it per prompt and platform: `prompt`, `platform`, `model`, `region`, `runs`, `brand_score`, `competitor_score`, `difference`, `latest_at`.
+
+When there's nothing to compare yet, the comparison says **No comparison data**: run tracking for your prompts first.
+
+## A competitor's pages over time
+
+Below a competitor's comparison, a card shows the competitor's pages over time: why it may be rising. A chart shows the answers that mentioned the competitor, and your brand, each week for the last twelve weeks. A marker sits on each week something happened to the competitor's pages, and a list below names those events, newest first:
+
+- **First cited in your tracked answers**: the first day an AI answer to one of your prompts cited one of the competitor's pages. When a competitor is added, GetCito reads back 90 days of your answers once, so the first date is the first within that window.
+- **Changed**: once a week, GetCito reads again the 10 competitor pages your answers cited most over the last two weeks. When a page's words changed by more than a date or a price moving, it says so, with the Site Audit checks the page gained (an FAQ, a table, statistics…) or lost.
+
+The card needs the competitor's domain to find its pages. Pages are read for free from their public address, never from a site whose robots.txt keeps crawlers out. These reads share a brand's 12 page reads a day with the Action Center's tasks, which go first. Only what Site Audit's checks found and a summary of the page's words are kept, never its text. Nothing is compared with another brand's answers.
+
+## Closing visibility gaps
+
+Once a gap is visible, the workflow is:
+
+1. On **Gaps**, find the prompts where the competitor leads most
+2. Open the AI answer with the eye icon: what is the competitor named or cited for? The timeline card shows whether its pages changed, and **Competitor Gaps** on [Citations](/guides/citations) lists the sources AI cites with the competitor and not with you
+3. Create content for that prompt in **Content** (see [Content Optimization](/guides/content-optimization))
+4. Publish it, earn placements on those sources, and watch the prompt in the comparison as new answers are tracked
+
+<Card title="Continue: Content Optimization" icon="arrow-right" href="/guides/content-optimization">
+  Turn visibility gaps into content from Content › Opportunities.
+</Card>

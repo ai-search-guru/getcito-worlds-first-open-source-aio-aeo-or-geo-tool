@@ -1,0 +1,50 @@
+---
+title: "Demo brand"
+description: "Explore GetCito on a sample brand before you pick a plan, or after yours has ended."
+---
+
+The **demo brand** is **Brewline Coffee**, a made-up coffee roaster with a month of sample data. It lets you look around the product, page by page, before GetCito works on your own brand. It is available only when the deployment operator configures cloud mode and billing.
+
+## Who sees it
+
+- **New workspaces without a card.** Starting a plan takes a card, whichever way you start. Below the plans, the sign-up step **Choose how to start** offers **Not ready to add a card? Explore a demo brand**. Your own brand stays saved, and tracking starts on it when you pick a plan.
+- **Workspaces whose trial ended or whose plan was cancelled.** They keep their own data, read-only, and the read-only banner offers **See the demo**.
+- **Everyone in the workspace.** Once it exists, the demo brand is in the brand menu as **Demo · sample data**. There's one per workspace.
+
+## What it shows
+
+The demo brand is an ordinary brand in your own workspace, so every page reads it the way it reads yours: the same screens, filters, tabs and links. The sample data includes:
+- a dozen tracked prompts and their answers from six AI platforms;
+- the citations and mentions in those answers;
+- four competitors;
+- shopping cards, search volumes and query fan-outs.
+
+Everything in it is fictional. Brewline, its competitors and every site it's cited on live on `.example` domains, which can't belong to a real company.
+
+A band across the top says you're on the demo brand, with the way to your own brand. Chat has a few sample chats for you: the questions, the data Chat read and its answers, worked out from the sample data, with links to the Action Center and the Content Editor. Sending a message, in one of them or a new chat, opens the plans. Hiding the demo brand takes its chats away; showing it again brings them back. **Settings → Integrations** shows Google Search Console, Google Analytics and Webflow connected with sample data, and the integrations still to come as coming soon. WordPress and Framer show as on any brand, not connected: connecting one opens the plans.
+
+## What it can't do
+
+Nothing on the demo brand runs, uses AI or costs anything:
+- it's never tracked, audited or synced, and no job or e-mail runs for it;
+- it never counts against your plan's brands or prompts.
+
+Anything that would run or use AI, such as tracking, generating, improving, auditing or sending, opens the plans instead. The deployment's checkout shows its configured plans and any available trial, price or offer.
+
+The demo brand can't be changed or deleted.
+
+## Hide it, show it again
+
+Admins and managers hide the demo brand from the brand menu with **Hide the demo brand**, and bring it back with **Show the demo brand**. Hiding is for the whole workspace. The demo brand is hidden when your workspace first starts a plan, and it's never deleted: it can be shown again, for a colleague who joins or after a plan ends.
+
+## How it stays current
+
+The demo brand follows the product, without anyone updating it:
+
+- It's rebuilt on the next visit when GetCito changes what the demo shows, or when its data is more than 3 days old. Its dates always end around today.
+- A rebuild keeps the brand and its pages' addresses, so a saved link to the demo still opens.
+- Sample data that nobody opened for 14 days is cleared, and built again on the next visit.
+
+## Self-hosting
+
+The demo brand belongs to cloud mode. A self-hosted workspace has no plan step and never turns read-only, so nothing offers it. Migration `00380_demo_brand.sql` still runs on every install: it adds the demo columns to `brands` and changes nothing for your own brands. For self-hosted sample data, use the local seed described in [Supabase setup](/self-host/supabase-setup).

@@ -1,0 +1,24 @@
+{
+  "id": "feature-question-coverage",
+  "goal": "content",
+  "businessTypes": [
+    "app"
+  ],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "features",
+    "faq"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "WE",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "ready",
+  "needs": []
+}

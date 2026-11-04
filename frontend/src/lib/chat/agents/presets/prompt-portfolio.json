@@ -1,0 +1,23 @@
+{
+  "id": "prompt-portfolio",
+  "goal": "visibility",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [
+    "aeo"
+  ],
+  "skills": [],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "MO",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "prompts_skill"
+  ]
+}

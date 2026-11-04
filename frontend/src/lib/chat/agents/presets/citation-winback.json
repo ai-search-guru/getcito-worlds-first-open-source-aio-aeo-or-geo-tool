@@ -1,0 +1,30 @@
+{
+  "id": "citation-winback",
+  "goal": "citations",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "winback",
+    "faq"
+  ],
+  "triggers": [
+    {
+      "kind": "signal",
+      "category": "recover"
+    }
+  ],
+  "mode": "auto",
+  "connections": [
+    {
+      "key": "google_search_console",
+      "required": false
+    },
+    {
+      "key": "cms",
+      "required": false
+    }
+  ],
+  "status": "ready",
+  "needs": []
+}

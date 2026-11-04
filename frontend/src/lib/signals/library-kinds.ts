@@ -1,0 +1,61 @@
+/**
+ * The signal kinds the V1 definition library's detectors write (#818).
+ *
+ * Generated alongside backend/src/lib/signals/library/kinds.js; the state word
+ * each shows in the Type column, and whether its change arrow is good news.
+ */
+
+export const LIBRARY_SIGNAL_KINDS = {
+  prompt_visibility_gap: { stateKey: 'gap', positive: false },
+  high_demand_gap: { stateKey: 'gap', positive: false },
+  uncovered_demand: { stateKey: 'opportunity', positive: false },
+  prompt_unmapped: { stateKey: 'gap', positive: false },
+  content_underperforming: { stateKey: 'gap', positive: false },
+  lost_mentions: { stateKey: 'lost', positive: false },
+  high_value_prompt_lost: { stateKey: 'lost', positive: false },
+  citation_at_risk: { stateKey: 'slipping', positive: false },
+  topic_gap: { stateKey: 'gap', positive: false },
+  topic_uncovered: { stateKey: 'gap', positive: false },
+  topic_slipping: { stateKey: 'slipping', positive: false },
+  topic_drop: { stateKey: 'dropped', positive: false },
+  platform_slipping: { stateKey: 'slipping', positive: false },
+  platform_drop: { stateKey: 'dropped', positive: false },
+  country_gap: { stateKey: 'gap', positive: false },
+  competitor_leads: { stateKey: 'gap', positive: false },
+  competitor_momentum: { stateKey: 'gain', positive: false },
+  competitor_topic_lead: { stateKey: 'gap', positive: false },
+  competitor_high_value_lead: { stateKey: 'gap', positive: false },
+  competitor_uncovered_topic: { stateKey: 'gap', positive: false },
+  authority_citation_gap: { stateKey: 'gap', positive: false },
+  third_party_citation_gap: { stateKey: 'opportunity', positive: false },
+  third_party_presence_gap: { stateKey: 'gap', positive: false },
+  competitor_cited_source: { stateKey: 'gap', positive: false },
+  competitor_winning_source: { stateKey: 'gap', positive: false },
+  page_citation_slipping: { stateKey: 'slipping', positive: false },
+  owned_page_citation_lost: { stateKey: 'lost', positive: false },
+  fanout_gap: { stateKey: 'opportunity', positive: false },
+  competitor_fanout_gap: { stateKey: 'gap', positive: false },
+  gsc_demand_gap: { stateKey: 'gap', positive: false },
+  search_ai_misalignment: { stateKey: 'gap', positive: false },
+  gsc_low_ctr: { stateKey: 'issue', positive: false },
+  gsc_risk: { stateKey: 'slipping', positive: false },
+  gsc_decline: { stateKey: 'dropped', positive: false },
+  ai_traffic_slipping: { stateKey: 'slipping', positive: false },
+  ai_traffic_drop: { stateKey: 'dropped', positive: false },
+  ai_landing_page_winner: { stateKey: 'opportunity', positive: true },
+  ai_landing_underperforming: { stateKey: 'issue', positive: false },
+  converting_page_slipping: { stateKey: 'slipping', positive: false },
+  cross_channel_risk: { stateKey: 'dropped', positive: false },
+  visibility_traffic_loss: { stateKey: 'dropped', positive: false },
+  ai_visits_weekly_drop: { stateKey: 'dropped', positive: false },
+  broken_citation_target: { stateKey: 'issue', positive: false },
+  cited_page_uncrawled: { stateKey: 'issue', positive: false },
+  crawler_blocked: { stateKey: 'issue', positive: false },
+  structured_data_issue: { stateKey: 'issue', positive: false },
+  outdated_content: { stateKey: 'issue', positive: false },
+  weak_entity: { stateKey: 'issue', positive: false },
+  weak_internal_links: { stateKey: 'issue', positive: false },
+  content_gap: { stateKey: 'issue', positive: false },
+} as const;
+
+export type LibrarySignalKind = keyof typeof LIBRARY_SIGNAL_KINDS;

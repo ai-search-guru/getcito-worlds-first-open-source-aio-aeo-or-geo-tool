@@ -1,0 +1,17 @@
+{
+  "id": "localization",
+  "goal": "content",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "translate"
+  ],
+  "triggers": [],
+  "mode": "auto",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "publish_trigger"
+  ]
+}

@@ -1,0 +1,142 @@
+---
+title: "Metrics API"
+description: "Pull AI visibility metrics into Looker Studio, Sheets, or your own dashboards with an API key."
+---
+
+The Public Metrics API is a read-only, versioned REST surface under `/api/v1/*` on the **web app** host. It exposes the same aggregates the dashboard renders — visibility KPIs, trends, share of voice, citations, AI traffic, prompt performance and shopping cards — so you can blend GetCito data with GA4 / Search Console in an external reporting tool.
+
+<Note>
+  These endpoints live on the web app (Next.js), not the Express API server. If
+  you self-host, the base URL is your web app's domain. Examples use
+  `http://localhost:3000`; replace it with your deployed web app's HTTPS URL
+  for remote integrations such as Looker Studio.
+</Note>
+
+## Authentication
+
+Every request needs a GetCito API key in the `Authorization` header. Create one under **Settings → MCP & API Keys** in the dashboard — the plaintext key (prefix `getcito_`) is shown exactly once at creation time.
+
+```bash
+curl "http://localhost:3000/api/v1/brands" \
+  -H "Authorization: Bearer getcito_..."
+```
+
+Keys are scoped to the user who created them and resolve to that user's organization: every endpoint only returns data for brands the organization owns. Revoking a key (Settings → MCP & API Keys) takes effect immediately.
+
+`GET /api/v1/whoami` echoes the resolved identity — useful as a connection test. It also says the key's user's role, their work areas and whether they may choose who sees which menu sections:
+
+```json
+{
+  "userId": "…",
+  "email": "you@agency.com",
+  "organizationId": "…",
+  "organizationName": "Acme",
+  "role": "manager",
+  "workAreas": [{ "id": "content", "name": "Content" }],
+  "canManageMenus": false
+}
+```
+
+## Conventions
+
+- All endpoints are `GET` and return JSON.
+- `brand_id` is required on every metrics endpoint; list your brands via `GET /api/v1/brands` first.
+- `date_from` / `date_to` accept `YYYY-MM-DD` (the `date_to` day is included through 23:59:59 UTC).
+- Optional filters shared by most endpoints: `model` (comma-separated model slugs), `region`, `topic_id`.
+- Errors return `{ "error": "…" }` with `400` (bad params), `401` (missing/invalid key), `404` (brand not in your organization) or `500`.
+
+## Endpoints
+
+### List brands
+
+```http
+GET /api/v1/brands
+```
+
+Returns `{ "brands": [{ "id", "name", "slug", "industry", "region", "created_at" }] }` for the caller's organization.
+
+### Visibility summary
+
+```http
+GET /api/v1/visibility-summary?brand_id=<uuid>&date_from=2026-06-01&date_to=2026-06-30
+```
+
+Overall KPIs for the window: result count, average visibility score, total mentions, total citations, plus the top 5 competitors by mentions. Supports `model`, `region`.
+
+### Visibility trend
+
+```http
+GET /api/v1/visibility-trend?brand_id=<uuid>&granularity=day
+```
+
+Time-bucketed visibility for charting — the endpoint to join against GA4 date series. `granularity` is `day` (default) or `week` (ISO Monday buckets). Supports `date_from`, `date_to`, `model`, `region`, `topic_id`. Returns:
+
+```json
+{
+  "granularity": "day",
+  "buckets": [
+    {
+      "date": "2026-06-01",
+      "result_count": 24,
+      "ai_visibility_score": 21.4,
+      "avg_visibility_score": 47,
+      "total_mentions": 31,
+      "total_citations": 12,
+      "avg_competitor_score": 39
+    }
+  ]
+}
+```
+
+`ai_visibility_score` is the dashboard's headline Visibility number (0-100): `0.6 × mention rate + 0.25 × citation rate + 0.15 × position factor` over the day's answers. It is only populated for `day` granularity. `avg_visibility_score` and `avg_competitor_score` are legacy intensity averages kept for compatibility — prefer `ai_visibility_score`. The same field also appears on `/api/v1/visibility-summary` (`totals.aiVisibilityScore`, with `mentionAnswers` / `citationAnswers` / `positionFactor` components) and `/api/v1/competitor-comparison` (`ai_visibility_score` on the brand row and every competitor row).
+
+### Competitor comparison & share of voice
+
+```http
+GET /api/v1/competitor-comparison?brand_id=<uuid>&date_from=2026-06-01&date_to=2026-06-30
+```
+
+The brand's benchmark row, one row per competitor (visibility, mentions, citations, appearances) and a `share_of_voice` block with the overall SoV percentage and a per-platform split. Supports `model`, `region`, `topic_id`.
+
+### Citations
+
+```http
+GET /api/v1/citations?brand_id=<uuid>&source_filter=external&limit=50
+```
+
+The domains and URLs AI engines cite around the brand: totals, a source-type breakdown (owned / competitor / editorial / forum / social / review / institutional), `top_domains` and `top_urls`. `source_filter` is one of `all` (default), `owned`, `competitor`, `external`; `limit` caps the top lists (default 50, max 200). Supports `date_from`, `date_to`, `model`, `region`, `topic_id`.
+
+### AI traffic
+
+```http
+GET /api/v1/ai-traffic?brand_id=<uuid>&date_from=2026-06-01&date_to=2026-06-30
+```
+
+Visits referred by AI platforms, collected by the tracking pixel: `tracking`, `total_visits`, `platform_breakdown`, `top_pages` (top 10 paths) and `country_breakdown`. `tracking` says whether the tracking snippet is installed: `not_detected` (not seen on the brand's site, so a `total_visits` of 0 means nothing is measured yet), `installed_quiet` (installed, no AI visit in the last 7 days) or `active`.
+
+### Prompt performance
+
+```http
+GET /api/v1/prompt-performance?brand_id=<uuid>&sort_by=visibility&order=desc&limit=10
+```
+
+Per-prompt aggregates for the window: average visibility, mentions, citations, appearance count and the average competitor score per prompt. `sort_by` is `visibility` (default), `mentions`, `citations` or `appearances`; `order` is `desc` (default) or `asc`; `limit` 1–100 (default 10). Supports `date_from`, `date_to`, `model`, `region`, `topic_id`.
+
+### Shopping cards
+
+```http
+GET /api/v1/shopping-cards?brand_id=<uuid>&role=own&limit=50
+```
+
+Normalized shopping-card rows (product title, brand, price, merchant, rating, position) captured from AI shopping surfaces. `role` filters to `own`, `competitor` or `other` matches; cursor-paginated via `limit` (default 50, max 200) and the returned `next_cursor`.
+
+Shopping analytics comes with the Growth plan and above. On Starter the endpoint answers `403` with `{ "error": "plan_limit", "message": "…" }`.
+
+## Using it from Looker Studio
+
+Until a native Community Connector ships, any generic JSON/API connector (or a small Apps Script that calls these endpoints with `UrlFetchApp`) works: point it at `/api/v1/visibility-trend` with your key in the `Authorization` header and join on the `date` column. The endpoints are also what a future official connector will consume.
+
+<Card title="MCP server" icon="plug" href="/guides/mcp-server">
+  The same API keys power the GetCito MCP server — query these metrics from
+  Claude or any MCP client.
+</Card>

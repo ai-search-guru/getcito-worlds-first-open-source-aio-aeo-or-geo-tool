@@ -1,0 +1,497 @@
+---
+title: "MCP server"
+description: "Connect Claude, Codex, Cursor, VS Code, Gemini CLI, Hermes Agent, OpenClaw and any MCP-aware client to your GetCito data — zero install."
+---
+
+GetCito ships a [Model Context Protocol](https://modelcontextprotocol.io)
+server at `http://localhost:3000/api/mcp` in a local deployment so AI assistants can query your brand visibility data through
+natural-language conversation. No npm package, no local process — just a URL
+and an API key.
+
+The examples below use the local web app URL. Replace `http://localhost:3000` with your deployed web app's HTTPS URL for remote clients and services, which cannot reach your computer's localhost.
+
+## Generate an API key
+
+1. Open your GetCito dashboard → **Settings** → **MCP & API Keys**
+2. Click **New key**, give it a memorable name (e.g. _Claude — laptop_)
+3. Copy the token. It's shown **once** — store it in your password manager
+
+The dialog that shows the key also has a ready-to-paste setup for each client
+below, with the key filled in. The snippets on this page read the key from an
+environment variable instead, so it stays out of your config files:
+
+```bash
+export GETCITO_TOKEN=getcito_...
+```
+
+Every client connects to the same URL with the same header:
+`Authorization: Bearer <your key>`. There is no OAuth sign-in.
+
+## Connect your client
+
+### Claude Code
+
+```bash
+claude mcp add --transport http getcito http://localhost:3000/api/mcp \
+  --header "Authorization: Bearer ${GETCITO_TOKEN}"
+```
+
+### Claude Desktop
+
+Claude Desktop adds remote servers as **custom connectors**. The
+`claude_desktop_config.json` file only starts local servers, so a `url` entry
+there is ignored.
+
+1. Open **Settings → Connectors** and choose **Add custom connector**
+2. Name it _GetCito_ and enter `http://localhost:3000/api/mcp` as the URL
+3. Under authentication choose **No sign in**
+4. Under **Request headers**, add `Authorization` with the value `Bearer getcito_...`
+
+On Team and Enterprise plans, an owner adds the connector under
+**Organization settings → Connectors** first.
+
+### Codex CLI
+
+```bash
+codex mcp add getcito --url http://localhost:3000/api/mcp \
+  --bearer-token-env-var GETCITO_TOKEN
+```
+
+Or add it to `~/.codex/config.toml`:
+
+```toml
+[mcp_servers.getcito]
+url = "http://localhost:3000/api/mcp"
+bearer_token_env_var = "GETCITO_TOKEN"
+```
+
+### Cursor
+
+Add to `~/.cursor/mcp.json` (all projects) or `.cursor/mcp.json` (one project):
+
+```json
+{
+  "mcpServers": {
+    "getcito": {
+      "url": "http://localhost:3000/api/mcp",
+      "headers": { "Authorization": "Bearer ${env:GETCITO_TOKEN}" }
+    }
+  }
+}
+```
+
+### VS Code
+
+Add to `.vscode/mcp.json`, or run **MCP: Open User Configuration** from the
+Command Palette to add it for every workspace. VS Code asks for the key the
+first time it connects:
+
+```json
+{
+  "inputs": [
+    {
+      "type": "promptString",
+      "id": "getcito-token",
+      "description": "GetCito API key",
+      "password": true
+    }
+  ],
+  "servers": {
+    "getcito": {
+      "type": "http",
+      "url": "http://localhost:3000/api/mcp",
+      "headers": { "Authorization": "Bearer ${input:getcito-token}" }
+    }
+  }
+}
+```
+
+### Windsurf
+
+In the Cascade panel, open **… → Open MCP config file** and add:
+
+```json
+{
+  "mcpServers": {
+    "getcito": {
+      "serverUrl": "http://localhost:3000/api/mcp",
+      "headers": { "Authorization": "Bearer ${env:GETCITO_TOKEN}" }
+    }
+  }
+}
+```
+
+### Gemini CLI
+
+```bash
+gemini mcp add --transport http \
+  --header "Authorization: Bearer ${GETCITO_TOKEN}" \
+  getcito http://localhost:3000/api/mcp
+```
+
+This writes the server to `~/.gemini/settings.json` with `httpUrl`. Use
+`httpUrl`, not `url`, if you edit the file by hand: `url` means the older SSE
+transport.
+
+### Hermes Agent
+
+Add to `~/.hermes/config.yaml`. Hermes reads `GETCITO_TOKEN` from your
+environment or from `~/.hermes/.env`:
+
+```yaml
+mcp_servers:
+  getcito:
+    url: "http://localhost:3000/api/mcp"
+    headers:
+      Authorization: "Bearer ${GETCITO_TOKEN}"
+```
+
+### OpenClaw
+
+Add to `~/.openclaw/openclaw.json`:
+
+```json
+{
+  "mcp": {
+    "servers": {
+      "getcito": {
+        "url": "http://localhost:3000/api/mcp",
+        "transport": "streamable-http",
+        "headers": { "Authorization": "Bearer ${GETCITO_TOKEN}" }
+      }
+    }
+  }
+}
+```
+
+Then check the connection with `openclaw mcp probe getcito`.
+
+### Zed
+
+Add to your Zed `settings.json`. Zed does not expand environment variables
+here, so the key goes in directly:
+
+```json
+{
+  "context_servers": {
+    "getcito": {
+      "url": "http://localhost:3000/api/mcp",
+      "headers": { "Authorization": "Bearer getcito_..." }
+    }
+  }
+}
+```
+
+### Other clients
+
+Any client that supports remote MCP servers over Streamable HTTP works with
+the URL and the `Authorization` header above. If yours can only start local
+(stdio) servers, bridge it with [`mcp-remote`](https://github.com/geelen/mcp-remote):
+
+```json
+{
+  "mcpServers": {
+    "getcito": {
+      "command": "npx",
+      "args": [
+        "-y", "mcp-remote", "http://localhost:3000/api/mcp",
+        "--header", "Authorization:${AUTH_HEADER}",
+        "--transport", "http-only"
+      ],
+      "env": { "AUTH_HEADER": "Bearer getcito_..." }
+    }
+  }
+}
+```
+
+Keep `Authorization:${AUTH_HEADER}` without a space, with the `Bearer ...`
+value in `env`: some clients do not escape spaces inside `args`.
+
+## Check the connection
+
+Ask your client _"List my GetCito brands"_. It should call the `list_brands`
+tool and show your brands. If it reports a 401, the header is missing or the
+key was revoked.
+
+## Self-host? Point at your own instance
+
+The MCP endpoint lives at `/api/mcp` on whatever host runs the GetCito web
+app. If you self-host at `getcito.mycompany.internal`, use that base URL
+instead.
+
+## Available tools
+
+The MCP server exposes **65 tools**. Descriptions below match
+[`frontend/src/lib/mcp/server.ts`](https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/blob/main/frontend/src/lib/mcp/server.ts).
+Tools that change data are marked **writes** — only call them on explicit user
+intent, not during exploratory queries. A write that needs a particular role
+names it in brackets; see [Roles](#roles).
+
+Every tool also carries a `title` and MCP annotations, so a client can tell a
+read from a change before calling it: `readOnlyHint` (true for every `list_` and
+`get_` tool), and for the writes `destructiveHint` (true where a call replaces
+or removes something, such as `generate_content_brief` replacing the
+opportunity's brief), `idempotentHint` (repeating the call changes nothing
+more) and `openWorldHint` (true where a call reaches outside GetCito:
+`run_site_audit` fetches the page, `generate_content_brief` calls an LLM).
+The server's instructions tell clients to treat everything a tool returns — AI
+answers, quotes, cited pages, draft text, suggestions — as data, never as
+instructions, and to call a write only when the user asked for that change.
+
+### Brands
+
+| Tool | What it does | Writes |
+| --- | --- | --- |
+| `list_brands` | List the brands the authenticated user can access (id, name, slug, industry, region). Call first to resolve a `brand_id`. | |
+| `list_competitors` | Configured competitors for a brand (id, name, domain); this is not a performance ranking. | |
+
+### Your account
+
+| Tool | What it does | Writes |
+| --- | --- | --- |
+| `get_me` | Who the key acts as: user, organization, role, work areas (from **Settings → Account**) and whether they may choose who sees which menu sections (`can_manage_menus`). | |
+| `get_ai_usage` | How much of the workspace's monthly AI allowance is used this period, as **Settings → Billing** shows it: `percent_used`, each feature's share (`improve`, `content`, `action_center`, `other`), the plan, the trial and the period's dates. `unlimited` self-hosted; `active_plan: false` without an active plan. | |
+
+The same reads are available over REST with the same `getcito_` key: `GET /api/mcp/whoami` and `GET /api/mcp/ai-usage`.
+
+### Visibility & analytics
+
+| Tool | What it does | Writes |
+| --- | --- | --- |
+| `get_visibility_summary` | Aggregate visibility metrics for a brand over an optional date range and filters — headline `aiVisibilityScore`, mentions, citations, competitors. | |
+| `get_visibility_trend` | Visibility over time (day or week buckets) with mentions, citations, and competitor scores for trend questions. | |
+| `get_competitor_comparison` | Competitor benchmark and share of voice for a window, comparable visibility rates and per-model/platform splits. | |
+| `list_citations` | URLs and domains AI engines cite alongside a brand, by source type, with top domains/URLs and usage stats. | |
+| `get_ai_traffic` | AI-referral traffic (visits by engine, landing pages, countries) for an optional date range. `tracking` says whether the tracking snippet is installed: `not_detected` (not seen on the brand's site, so 0 visits means nothing is measured yet), `installed_quiet` (installed, no AI visit in the last 7 days) or `active`. | |
+| `get_prompt_performance` | Per-prompt performance (visibility, mentions, citations, appearances) over a date range for ranking prompts. | |
+
+### Saved reports
+
+| Tool | What it does | Writes |
+| --- | --- | --- |
+| `list_reports` | Saved report snapshots for a brand, newest first; returns metadata without the full payload (default 50, max 100 per call). | |
+| `get_report` | Full immutable snapshot for one saved report, including its stored payload; does not regenerate it. | |
+
+### Mentions & sentiment
+
+The Mentions & Sentiment page's figures, under the page's filters: `date_from` / `date_to` (the last 30 days when left out), `platform`, `region`, `topic_id` and `search` over the prompts' text. They are built from the stored answers with no LLM call. Net sentiment runs from −100 to +100, and under 20 mentions a figure is marked `lowSample`, with no change read into it. Sentiment is measured for your brand only.
+
+| Tool | What it does | Writes |
+| --- | --- | --- |
+| `get_mentions_summary` | The Overview: times named (the page's Total mentions), mentions, mention rate, prompts with mentions, average position and sentiment, now and in the window before, with each change taken on the prompts both windows answered (`changes.basis`), as the page's cards; the platform that moved net sentiment most, each platform and each day. | |
+| `list_mentions` | The responses naming the brand, 100 a page, with sentiment, position, competitors in the same response and an excerpt; filter by `sentiment` or `competitor_id` (`none` for no competitor) and sort. | |
+| `get_mention` | One response in full: text, citations, competitors named, sentiment and its latest correction. | |
+| `get_mention_competitors` | How often AI names each competitor in the brand's responses, and how often in the same response as the brand. | |
+| `get_mentions_perception` | What AI associates with the brand: its terms, the attributes that set it apart from its top competitors, co-mentions and the biggest gap. | |
+| `override_mention_sentiment` | "Sentiment is wrong": correct one response's sentiment, with an optional note. The key's user must be an admin or manager. | **yes** (admin, manager) |
+
+The same reads are available over REST with the same `getcito_` key: `GET /api/mcp/mentions/summary`, `/api/mcp/mentions`, `/api/mcp/mentions/<id>`, `/api/mcp/mentions/competitors` and `/api/mcp/mentions/perception`, with the filters as query parameters. A correction is `POST /api/mcp/mentions/<id>/sentiment-override` with `{ "sentiment": "negative", "note": "…" }`.
+
+```bash
+curl "http://localhost:3000/api/mcp/mentions/summary?brand_id=<brand_id>&platform=gemini-web" \
+  -H "Authorization: Bearer getcito_..."
+```
+
+### Topics & prompts
+
+| Tool | What it does | Writes |
+| --- | --- | --- |
+| `list_topics` | Topics on a brand with prompt counts — for coverage audits before drilling into prompts. | |
+| `list_prompts` | Tracked prompts with text, topic, platforms, models, regions, and active flag; filter by topic or active/inactive (`is_active`). | |
+| `list_topic_suggestions` | Pending AI-generated topic suggestions awaiting accept or dismiss. | |
+| `accept_topic_suggestion` | Accept one pending suggestion: creates a topic and marks the suggestion added. | **yes** (admin, manager) |
+| `dismiss_topic_suggestion` | Dismiss one pending suggestion so it does not reappear in future batches. | **yes** (admin, manager) |
+| `list_prompt_suggestions` | Pending AI-generated prompt suggestions with source details, expiry and a stale flag. Does not generate new suggestions. | |
+| `accept_prompt_suggestion` | Create a tracked prompt from one pending suggestion using the brand's default engines and plan/location checks. | **yes** (admin, manager) |
+| `dismiss_prompt_suggestion` | Dismiss one pending prompt suggestion so it no longer appears in future lists. | **yes** (admin, manager, analyst) |
+| `get_prompt_volumes` | Per-prompt Google and estimated AI search demand and competition for prompts that already have analysis, with `measured_demand`: the real signs people ask it (Search Console, Google Trends, People Also Ask, YouTube) and their level, or `null` until any was read. | |
+| `get_prompt_locations` | Each tracked prompt in each location side by side, as the **Locations** view shows it: AI Visibility Score, mentions, citations, average position and runs per prompt and country, US state or city, with each location's averages and the view's cards (weakest and strongest location, the prompt that differs most). Up to 12 `locations` (codes it can't compare come back in `ignored_locations`); paged by prompt, `limit` up to 100. REST: `GET /api/mcp/prompt-locations?brand_id=<brand_id>&locations=US,DE`. | |
+| `get_prompt_usage` | Tracked-prompt usage against the plan: the brand's active and paused prompts, and the account's active prompts, brands, prompt locations used and location limit. | |
+
+### Content opportunities
+
+| Tool | What it does | Writes |
+| --- | --- | --- |
+| `list_content_opportunities` | Content gaps ranked by opportunity score — where the brand is losing visibility. | |
+| `get_content_plan` | The Content plan, as **Content → Plan** ranks it by the Priority Score: what to create, optimize or protect next, why, the score's parts, the draft already being written and the rows marked a priority. Over 7, 30 or 90 days; optional `card`. | |
+| `get_content_opportunity` | Full details for one opportunity, including metrics, intent, competitors, and any existing brief. | |
+| `generate_content_brief` | Generate or overwrite an AI content brief for an opportunity (LLM cost/latency). | **yes** (admin, manager) |
+| `update_opportunity_status` | Move an opportunity through workflow states (`new`, `reviewed`, `sent`, `in_progress`, `done`, `dismissed`). Dismissing one, or moving a dismissed one back, needs an admin or a manager. | **yes** |
+
+The plan is also available over REST with the same `getcito_` key: `GET /api/mcp/content-plan?brand_id=<brand_id>&days=30`, with `card` as an optional query parameter.
+
+### Content Editor
+
+Drafts are read and written as a person would in the editor. GetCito never puts a page on your site, and a suggestion isn't applied until a person accepts it. None of these tools calls an LLM: the assistant writes the drafts and suggestions itself.
+
+The MCP never sends a page to a CMS: GetCito's own **Send to CMS** stays in the product. To publish from your assistant, read the draft with `get_content_draft_package` (the page as **Send to CMS** would send it), put it on your CMS with the assistant's own CMS connector, then call `mark_content_draft_published` with the address it went live at, so GetCito measures it. Over REST: `GET /api/mcp/content-drafts/<id>/package`, then `POST /api/mcp/content-drafts/<id>/published` with `{ "url": "…" }`.
+
+| Tool | What it does | Writes |
+| --- | --- | --- |
+| `list_content_drafts` | The brand's drafts, latest changed first (up to 100), with status, method (`create` or `optimize`), author, open suggestions and the editor path; filter by `status`. Each says where it was last sent (`last_send`: status, target, when, the error, where it went live) and whether its shopping links still sell (`shopping_links`). | |
+| `get_content_draft` | One draft: its HTML, its numbered passages (`locked` ones AI answers quote today), where and since when the page is live, its Action Center action, the open suggestions and the only pages a suggestion may link to; with `last_send`, `shopping_links` and, on an online shop's page, its `shopping_path` (the category pages and products it should link). | |
+| `get_content_sources` | What the draft draws on over 30 days, as the Sources tab shows it: prompts, AI searches (fan-outs), cited pages, Search Console queries and the person's choices. | |
+| `get_content_impact` | What the draft's live page earns (citations, AI visits, Google clicks, the prompts citing it) against the period before, as the Live page tab reads it. Only for a draft of a live page. | |
+| `create_content_draft` | Write a new draft as the agent (`create`, or `optimize` a page on the brand's domains); it goes to the Library's In review. | **yes** |
+| `add_content_source` | Add a prompt, a cited page or a Search Console query to the draft's sources. | **yes** |
+| `suggest_content_changes` | Leave up to 20 suggestions (replace or insert, each with a reason) for a person to accept or reject. Refused on a published draft, while open suggestions wait, or while the Content Agent writes it. | **yes** |
+| `get_content_draft_package` | A draft as a page ready for a CMS, exactly as **Send to CMS** would send it: title, slug, meta title and description, the HTML ready to paste (as **Copy HTML** gives it, with the byline line and no H1; HTML blocks are passed as written, scripts and iframes included, as Copy HTML and Send to CMS pass them), its JSON-LD, the author, the qualified reviewer (`reviewer`: name and credential, null when none; once the page's text names them, the JSON-LD carries a WebPage with them as `reviewedBy`) and the featured image. GetCito doesn't send it: put it on your CMS with your assistant's own CMS connector, then call `mark_content_draft_published`. A page that can't go yet says why. | |
+| `mark_content_draft_published` | Mark a draft Published at the address it went live at, as the editor's **Mark published** does, once your own CMS connector has put it there. GetCito then measures that address, and a linked action's Publish task completes once every page it names is live. | **yes** |
+| `set_content_draft_ready` | Set a draft ready, as the editor's Mark ready does, without its Before you publish check; a linked action's writing task completes once every page it names has a ready draft. A draft in review waits for a person. | **yes** |
+
+### Site audit
+
+| Tool | What it does | Writes |
+| --- | --- | --- |
+| `get_site_audit_quota` | Monthly Site Audit allowance (`used`, `running`, `limit`, `remaining`) before starting a run. Audits still running are already taken out of `remaining`. | |
+| `list_site_audits` | Recent audits for a brand (id, url, status, score) to find a past run without the id. | |
+| `run_site_audit` | Start an AEO/GEO page audit for a URL (consumes a monthly credit; poll `get_site_audit` for results). A page with an audit already running returns that audit (`alreadyRunning: true`) and uses no credit. A page audited in the last 10 minutes returns status `recently_audited` with that audit's id and starts nothing; pass `force: true` to audit it again (uses a credit). Over REST: `POST /api/mcp/site-audits` with `{ "brand_id": "…", "url": "…", "force": true }`, which answers 202 for a started or running audit and 200 for a recent one. | **yes** |
+| `get_site_audit` | Fetch one audit by id — status, scores, signals, and fix recommendations (read-only). | |
+
+### Shopping
+
+Shopping analytics comes with the Growth plan and above. On Starter, `list_shopping_cards`, `get_product_visibility`, `get_shopping_shelf`, `get_shopping_readiness` and `get_product_ai_says` answer `plan_limit`. The catalog tools read on: on Starter, `list_catalog_products` lists the products with their `readiness`, Merchant Center issues and AI visits, orders and revenue as `null`.
+
+| Tool | What it does | Writes |
+| --- | --- | --- |
+| `list_shopping_cards` | Shopping cards surfaced in AI commercial contexts; filter by role, platform, and region. | |
+| `get_product_visibility` | Aggregate visibility for one product title across platforms, regions, and dates. | |
+| `get_catalog_sources` | Where the product catalog is read from (feed URLs, uploads, or a Google Merchant Center account where the server offers it) and how each last sync went: status, error, what it read and its products in the catalog now. | |
+| `list_catalog_products` | The live catalog products, by title, as Product Visibility reads them: price, stock, GTIN, `readiness` for AI shopping (`score` 0–100, the checks `missing`, and the `unknown` ones that can't be made), Merchant Center issues by severity (each issue once per product), and the AI visits, orders and revenue (`revenue_30d`) their pages brought over 30 days. Optional `search`; paged with `limit` (max 200) and `offset`. | |
+| `get_shopping_shelf` | Product Visibility's Shelf: for each shopping question and AI channel, the first 10 products the latest answer showed, in order (`products_total` counts them all), the brand's best place on it (`own_rank`) and its last 7 days there; on a shelf the brand isn't on, `why_not_you` names its catalog product the question asks for most, with its readiness. Optional `period` (7d, 30d, 90d, all), `platform`, `market` (us, europe), `absent_only`; paged with `limit` (default 10, max 50) and `offset`. | |
+| `get_shopping_readiness` | Product Visibility's Readiness: the checklist scored 0–100, each check's state (pass, warn, fail, unknown), its text as the page writes it and where its fix starts, and each AI channel's state (showing, notShowing, notTracked). Optional `period` and `market`. | |
+| `get_product_ai_says` | What AI says about one catalog product: how many answers showed it, up to 5 quotes where they name it, and the pages they cited most. Optional `period`. | |
+
+The catalog is also available over REST: `GET /api/mcp/catalog/sources?brand_id=<brand_id>` and `GET /api/mcp/catalog/products?brand_id=<brand_id>&search=<text>&limit=50&offset=0` (`search` optional).
+
+The Shelf, Readiness and What AI says need a plan with Product Visibility (Growth or Enterprise), as on the page, which a workspace whose trial or subscription ended still reads; on another plan they answer `plan_limit`, as `list_shopping_cards` does (REST: 403 with the same body). Over REST: `GET /api/mcp/product-visibility/shelf?brand_id=<brand_id>&period=30d&platform=<id>&market=us&absent_only=true&limit=10&offset=0`, `GET /api/mcp/product-visibility/readiness?brand_id=<brand_id>&period=30d&market=us` and `GET /api/mcp/product-visibility/ai-says?brand_id=<brand_id>&product_id=<product_id>&period=30d` (all but the IDs optional).
+
+### Action Center
+
+| Tool | What it does | Writes |
+| --- | --- | --- |
+| `list_actions` | Recommended actions for a brand with priority (0–100 score, level and reasons), status, impact, assignee, due date, and task progress. Highest priority first; `sort: "updated"` lists the most recently updated first. | |
+| `get_action` | One action in full: priority, payload, triggering signals, tasks (`mode`, `permission`), event trail, and once closed `net_of_control` and `dismiss_reason`. `format: "markdown"` or `"csv"` returns it as the dashboard's **Copy Data** and **Export CSV** write it instead. | |
+| `list_signals` | Detected changes (visibility, citations, traffic), each with `where` (prompt, topic, platforms, locations, domain, competitor), `change` (labelled figures with unit and period), `evidence` (detection dates, app links) and `used_by_actions`. | |
+| `list_action_history` | Closed actions with measured outcomes and before/after validation results, each with `net_of_control` (its change net of the brand's prompts it didn't touch, so a market-wide swing doesn't read as its effect) and `dismiss_reason` (`not_relevant`, `already_done`, `wrong_data` or `not_now`). | |
+| `get_action_scorecard` | What each kind of action did at the brand, as the History tab's scorecard shows it: completed and their results, `success_rate` (from three verdicts), `median_change_percent`, and dismissals by reason. Optional `date_from`. | |
+| `update_task_status` | Record progress on a task (`in_progress`, `completed`, `skipped`, `failed`); does not execute the task. | **yes** |
+| `list_task_reviews` | Tasks waiting for review, as the **Needs review** tab shows them: tasks an AI writer gave without the exact page, the change, Done when or how it is checked, each with `missing` (the fields to fill). Admins and managers only. | |
+| `approve_task_review` | Approve one onto its action's task list, as the tab's **Approve** does: the fields given (`url`, `change`, `done_when`, `check`, and optionally `title`, `where`, `why`, `how`) replace what was written, and all four must be filled. | **yes** (admin, manager) |
+| `dismiss_task_review` | Dismiss one, as the tab's **Dismiss** does: it never reaches its action. | **yes** (admin, manager) |
+| `create_improve_action` | Send a prompt's Improve suggestions to Action Center as a `prompt_improve` action (needs a generated suggestion set for the range and a plan with Improve; idempotent on `idempotency_key`). | **yes** (admin, manager) |
+
+The scorecard is also available over REST: `GET /api/mcp/action-scorecard?brand_id=<brand_id>&date_from=2026-09-01`.
+The review queue is also available over REST: `GET /api/mcp/task-reviews?brand_id=<brand_id>`, and `POST /api/mcp/task-reviews/<id>/approve` (the fields as JSON) or `/dismiss`.
+
+#### Export an action
+
+`get_action` takes an optional `format`:
+
+- `json` (default): the fields above.
+- `markdown`: everything the action's tabs show, ready to paste into a doc, a ticket or another agent. This is the same text as **Copy Data** in the dashboard.
+- `csv`: a row per affected item, task and signal, with a `section` column. This is the same file as **Export CSV**.
+
+Labels are in English and dates in UTC. The same export is available over REST with the same `getcito_` key. The CSV comes as a download (`action-AC-52.csv`) that Excel opens as UTF-8.
+
+```bash
+curl "http://localhost:3000/api/mcp/actions/<action_id>?format=markdown" \
+  -H "Authorization: Bearer getcito_..."
+```
+
+New tools may ship between releases — see `server.ts` and the [GetCito changelog](https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/blob/main/CHANGELOG.md).
+
+## Try it
+
+Ask your client things like:
+
+- _"List my GetCito brands."_
+- _"What's my visibility score on ChatGPT for the last 7 days?"_
+- _"Are my topics balanced?" / "Which topic has the most prompts?"_
+- _"Show me the prompts in my pricing topic."_
+- _"Who are my top 5 competitors by mention count this month?"_
+- _"Why did our sentiment drop on Gemini?"_
+
+The model picks the right tool, fills in the brand id and filters, and
+answers in plain English using the returned data.
+
+## Roles
+
+A key acts as the person who created it, with their role in the
+organization. `get_me` returns it. Day-to-day work is open to every role:
+reading, drafts and suggestions in the Content Editor, Site Audits, task
+progress and an opportunity's progress. Adding prompts or topics, reviewing
+tasks, dismissing, and work that costs AI (briefs and Improve actions) are for
+admins and managers. Dismissing a prompt suggestion is open to analysts too. The tools marked with roles above refuse anyone else before
+they change anything. The call fails with text like this:
+
+```text
+Only an admin or a manager can do this. This API key acts as an analyst: ask an admin or a manager of the organization to do it.
+```
+
+The REST routes under `/api/mcp/…` answer the same refusal with `403`:
+
+```json
+{ "error": "forbidden", "code": "role_required", "message": "Only an admin or a manager can do this. …" }
+```
+
+## When the plan has ended
+
+In cloud mode, a workspace without an active plan is read-only (see
+[What happens when my plan ends?](/faq)). Its API keys keep working for
+reading:
+
+- `list_` and `get_` tools run as usual.
+- Every other tool (each one marked **writes** above) is refused before it
+  runs. The call fails with this text:
+
+  ```json
+  {
+    "error": "plan_limit",
+    "code": "subscription_inactive",
+    "message": "This workspace's plan isn't active (its free trial ended or it was canceled), so it is read-only: reading still works, but nothing can be changed, run or generated until an admin chooses a plan in Settings › Billing."
+  }
+  ```
+
+- The REST routes under `/api/mcp/…` answer a `POST`, `PUT`, `PATCH` or
+  `DELETE` with `402` and the same body.
+
+Retrying doesn't help: an admin has to choose a plan first. New API keys
+can still be created; on a read-only workspace they only read. A self-hosted
+instance is never read-only.
+
+## Reading and writing per plan
+
+In cloud mode, every plan reads over MCP and the REST routes, the free
+trial included. Writing, running and spending (each tool marked **writes**
+above) need the Growth plan or above, paid: on Starter and in the free trial
+those tools stay listed, so the assistant can tell the user why, but every
+call is refused before it runs with this text:
+
+```json
+{
+  "error": "plan_limit",
+  "code": "plan_required",
+  "required_plan": "growth",
+  "message": "On Starter and in the free trial, GetCito's MCP tools and API can read. Changes, runs and anything that uses credits need the Growth plan or above: an admin can upgrade in Settings › Billing."
+}
+```
+
+The REST routes answer a `POST`, `PUT`, `PATCH` or `DELETE` with `402` and
+the same body. The rule is the same for every client (Claude, ChatGPT,
+Cursor and the others). The demo brand's refusal comes first, then a plan
+that has ended (`subscription_inactive`), then this one. A self-hosted
+instance can do everything.
+
+## Revoking access
+
+If a key leaks or you stop using a client, open **Settings → MCP & API Keys** and
+click the trash icon. Clients using that key lose access immediately.
+
+## Transport
+
+The server speaks the
+[MCP Streamable HTTP](https://modelcontextprotocol.io/specification/2025-03-26/basic/transports#streamable-http)
+transport in stateless mode — every request is self-contained, no session
+state is kept between calls. This makes it work cleanly behind any HTTP
+load balancer and on serverless runtimes.

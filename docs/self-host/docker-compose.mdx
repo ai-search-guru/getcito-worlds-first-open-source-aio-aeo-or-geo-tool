@@ -1,0 +1,95 @@
+---
+title: "Docker Compose setup"
+description: "Run the full GetCito stack on your own server in 10 minutes."
+---
+
+## Stack overview
+
+The repo ships with two services in `docker-compose.yml`:
+
+- **web** — Next.js 16 dashboard, port `3000`
+- **server** — Express API + workers, port `80`
+
+Plus an external dependency:
+- **Supabase project** — database, auth, storage. You provide URL + keys.
+
+## Prerequisites
+
+- Linux host with Docker 24+ and Docker Compose v2
+- Open ports `80` (API) and `3000` (web) — or front them with a reverse proxy
+- A Supabase project ([free tier](https://supabase.com/) works fine)
+- API keys for at least one AI provider (OpenAI, Anthropic, Google Gemini)
+
+## Steps
+
+<Steps>
+  <Step title="Clone the repo">
+    ```bash
+    git clone https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool.git getcito
+    cd getcito
+    ```
+  </Step>
+  <Step title="Apply database migrations">
+    Either use the Supabase CLI:
+    ```bash
+    npx supabase link --project-ref YOUR_PROJECT_REF
+    npx supabase db push
+    ```
+    Or paste each `.sql` file in `supabase/migrations/` into the Supabase SQL editor in order.
+  </Step>
+  <Step title="Configure env files">
+    ```bash
+    cp frontend/.env.example frontend/.env.local
+    cp backend/.env.example backend/.env
+    ```
+    Fill in Supabase URL/keys, AI provider keys, and (optional) DataForSEO + Cloro credentials.
+    See [Env variables](/self-host/env-variables) for the full reference.
+  </Step>
+  <Step title="Start the stack">
+    ```bash
+    docker compose up -d --build
+    docker compose logs -f
+    ```
+    The images are built locally as `getcito-web:9.0.0` and `getcito-server:9.0.0`.
+    Web is now on `http://localhost:3000`, API on `http://localhost`.
+  </Step>
+  <Step title="Create your first user">
+    Open `http://localhost:3000/sign-up` and register. The first user becomes org admin automatically.
+  </Step>
+</Steps>
+
+## Production hardening
+
+For a real deployment behind a domain (e.g. `app.example.com` + `api.example.com`):
+
+- Front both services with **Cloudflare** (proxied) or **Caddy/Nginx** for HTTPS
+- Use **AWS Security Groups** / firewall rules to restrict origin ports to known IPs
+- Set `NEXT_PUBLIC_API_URL=https://api.example.com` and `ALLOWED_ORIGINS=https://app.example.com` accordingly
+- Mount logs to a persistent volume or ship to a logging service
+
+<Tip>
+Use HTTPS between your reverse proxy and the API server as well as between visitors and the proxy.
+</Tip>
+
+## Updating to a new release
+
+```bash
+cd getcito
+git pull
+docker compose up -d --build
+```
+
+Migrations under `supabase/migrations/` run forward-only — re-running `supabase db push` is idempotent.
+
+## Splitting web and server across hosts
+
+Common setup: web on Vercel, server + workers on a VM.
+
+1. Don't run `docker compose up` for web — deploy `frontend/` to Vercel directly via Git integration
+2. On the VM, run only the server: `docker compose up -d --build server`
+3. In Vercel, set `NEXT_PUBLIC_API_URL=https://api.your-domain.com`
+4. In server's env, set `ALLOWED_ORIGINS=https://your-vercel-domain.com`
+
+<Card title="Continue: Supabase setup" icon="arrow-right" href="/self-host/supabase-setup">
+  Detailed Supabase project preparation (schema, RLS, triggers).
+</Card>

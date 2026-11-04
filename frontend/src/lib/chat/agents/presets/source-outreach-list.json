@@ -1,0 +1,23 @@
+{
+  "id": "source-outreach-list",
+  "goal": "citations",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [
+    "brand"
+  ],
+  "skills": [
+    "listings"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "month_first",
+      "time": "09:00"
+    }
+  ],
+  "mode": "ask_first",
+  "connections": [],
+  "status": "ready",
+  "needs": []
+}

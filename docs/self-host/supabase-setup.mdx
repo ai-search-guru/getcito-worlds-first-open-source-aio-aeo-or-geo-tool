@@ -1,0 +1,73 @@
+---
+title: "Supabase setup"
+description: "Prepare a Supabase project for GetCito — schema, RLS, auth triggers."
+---
+
+## Create the project
+
+1. Go to [supabase.com](https://supabase.com/) and create a new project
+2. Pick a region close to your server (latency matters for DB-heavy operations)
+3. Save the database password somewhere safe
+4. From **Project Settings → API**, copy:
+   - `Project URL`
+   - `anon public` key → goes into `NEXT_PUBLIC_SUPABASE_ANON_KEY` and `SUPABASE_ANON_KEY`
+   - `service_role` key → goes into `SUPABASE_SERVICE_ROLE_KEY` (keep this secret — it bypasses RLS)
+
+## Apply migrations
+
+The repo ships SQL migrations under `supabase/migrations/`, plus a generated `supabase/schema.sql` (every migration in one file) for a one-paste fresh install.
+
+<Tabs>
+  <Tab title="Supabase CLI (recommended)">
+    ```bash
+    # Run from the repository root.
+    npx supabase link --project-ref YOUR_PROJECT_REF
+    npx supabase db push
+    ```
+  </Tab>
+  <Tab title="Manual via dashboard">
+    1. Open Supabase dashboard → SQL Editor
+    2. Paste the contents of `supabase/schema.sql` (the full schema in one file) → Run
+    3. Verify all tables created under **Database → Tables**
+  </Tab>
+</Tabs>
+
+<Note>
+  `supabase/schema.sql` is a generated convenience for **fresh** installs. The numbered files under `supabase/migrations/` stay the source of truth and the **upgrade** path — an existing install applies only the new migration(s) (or `supabase db push`). Regenerate the consolidated file after adding a migration with `bash supabase/build-schema.sh`.
+</Note>
+
+## What the migrations create
+
+- 16 tables (`organizations`, `profiles`, `brands`, `prompts`, `prompt_results`, `topics`, `competitors`, `content_opportunities`, `prompt_suggestions`, `ai_traffic_logs`, `webhook_configs`, etc.)
+- RLS (Row-Level Security) policies for multi-tenant isolation by `organization_id`
+- An auth trigger that auto-creates a `profile` row when a new user signs up
+- The `user_role` enum (`admin`, `manager`, `analyst`, `agency_partner`)
+- Index optimization for analytics-heavy queries (per-brand, per-day windows)
+
+## Demo data (local only)
+
+For local development, the repo ships `supabase/seed.sql` — a small idempotent fixture (one demo organization, brand, prompts, ~120 prompt results across all tracked engines, competitors, content opportunities, AI traffic logs). The Supabase CLI runs it automatically the next time you do:
+
+```bash
+npx supabase db reset
+```
+
+Sign in with **`demo@getcito.local` / `demo123`** to land on a populated dashboard. The seed only runs against a local Supabase via the CLI; hosted projects are never touched by it.
+
+## Auth configuration
+
+In Supabase dashboard → **Authentication → URL Configuration**:
+- **Site URL**: your web app URL (`http://localhost:3000` for dev, `https://getcito.com` for the GetCito deployment)
+- **Redirect URLs**: add `<site_url>/auth/callback`
+
+For GetCito authentication emails, configure the SMTP sender address as `support@getcito.com` and the sender name as **GetCito** under **Authentication → Email → SMTP Settings**. Product emails sent through Resend use the same address in `RESEND_FROM_EMAIL`.
+
+Optionally enable OAuth providers (Google, GitHub) under **Authentication → Providers** if you want social sign-in.
+
+## Storage (optional)
+
+If you'll let users upload brand logos, create a public storage bucket called `brand-logos`. The web app handles upload/access automatically once it exists.
+
+<Card title="Continue: Env variables" icon="arrow-right" href="/self-host/env-variables">
+  Full reference for every env var in `frontend/.env.local` and `backend/.env`.
+</Card>

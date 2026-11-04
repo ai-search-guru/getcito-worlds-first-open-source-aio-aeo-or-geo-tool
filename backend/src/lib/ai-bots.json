@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "changes": [
+    {
+      "version": 1,
+      "date": "2026-10-19",
+      "summary": "OpenAI, Anthropic and Perplexity: their training crawlers, search crawlers and user fetchers, each verified against the operator's published IP ranges."
+    }
+  ],
+  "bots": [
+    {
+      "key": "gptbot",
+      "name": "GPTBot",
+      "operator": "OpenAI",
+      "type": "training",
+      "userAgent": "GPTBot",
+      "ranges": "https://openai.com/gptbot.json"
+    },
+    {
+      "key": "oai-searchbot",
+      "name": "OAI-SearchBot",
+      "operator": "OpenAI",
+      "type": "search",
+      "userAgent": "OAI-SearchBot",
+      "ranges": "https://openai.com/searchbot.json"
+    },
+    {
+      "key": "chatgpt-user",
+      "name": "ChatGPT-User",
+      "operator": "OpenAI",
+      "type": "user",
+      "userAgent": "ChatGPT-User",
+      "ranges": "https://openai.com/chatgpt-user.json"
+    },
+    {
+      "key": "claudebot",
+      "name": "ClaudeBot",
+      "operator": "Anthropic",
+      "type": "training",
+      "userAgent": "ClaudeBot",
+      "ranges": "https://claude.com/crawling/bots.json"
+    },
+    {
+      "key": "claude-searchbot",
+      "name": "Claude-SearchBot",
+      "operator": "Anthropic",
+      "type": "search",
+      "userAgent": "Claude-SearchBot",
+      "ranges": "https://claude.com/crawling/bots.json"
+    },
+    {
+      "key": "claude-user",
+      "name": "Claude-User",
+      "operator": "Anthropic",
+      "type": "user",
+      "userAgent": "Claude-User",
+      "ranges": "https://claude.com/crawling/bots.json"
+    },
+    {
+      "key": "perplexitybot",
+      "name": "PerplexityBot",
+      "operator": "Perplexity",
+      "type": "search",
+      "userAgent": "PerplexityBot",
+      "ranges": "https://www.perplexity.com/perplexitybot.json"
+    },
+    {
+      "key": "perplexity-user",
+      "name": "Perplexity-User",
+      "operator": "Perplexity",
+      "type": "user",
+      "userAgent": "Perplexity-User",
+      "ranges": "https://www.perplexity.com/perplexity-user.json"
+    }
+  ]
+}

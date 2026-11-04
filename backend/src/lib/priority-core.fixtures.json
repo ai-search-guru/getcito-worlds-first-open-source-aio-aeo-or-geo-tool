@@ -1,0 +1,489 @@
+{
+  "_note": "Cases checked against backend/src/lib/priorityCore.js and its web twin, frontend/src/lib/priorityCore.ts (learning D4). Regenerate from the server file when a piece changes on purpose.",
+  "logScale": [
+    {
+      "value": 0,
+      "fullAt": 10000,
+      "result": 0
+    },
+    {
+      "value": 1,
+      "fullAt": 10000,
+      "result": 0.07525668186780549
+    },
+    {
+      "value": 10,
+      "fullAt": 10000,
+      "result": 0.26034534476721444
+    },
+    {
+      "value": 100,
+      "fullAt": 10000,
+      "result": 0.5010749033660213
+    },
+    {
+      "value": 1000,
+      "fullAt": 10000,
+      "result": 0.7501003756656575
+    },
+    {
+      "value": 10000,
+      "fullAt": 10000,
+      "result": 1
+    },
+    {
+      "value": 250000,
+      "fullAt": 10000,
+      "result": 1
+    },
+    {
+      "value": -5,
+      "fullAt": 10000,
+      "result": 0
+    },
+    {
+      "value": 37,
+      "fullAt": 1000,
+      "result": 0.5265183489530272
+    },
+    {
+      "value": 1000,
+      "fullAt": 1000,
+      "result": 1
+    },
+    {
+      "value": 3,
+      "fullAt": 20,
+      "result": 0.455340497393906
+    },
+    {
+      "value": 20,
+      "fullAt": 20,
+      "result": 1
+    },
+    {
+      "value": 45000,
+      "fullAt": 1000000,
+      "result": 0.7755369713075567
+    },
+    {
+      "value": null,
+      "fullAt": 10000,
+      "result": 0
+    },
+    {
+      "value": "not a number",
+      "fullAt": 10000,
+      "result": 0
+    }
+  ],
+  "round": [
+    {
+      "n": 0.125,
+      "digits": 2,
+      "result": 0.13
+    },
+    {
+      "n": 0.135,
+      "digits": 2,
+      "result": 0.14
+    },
+    {
+      "n": 12.345,
+      "digits": 1,
+      "result": 12.3
+    },
+    {
+      "n": 0.6666666666666666,
+      "digits": 2,
+      "result": 0.67
+    },
+    {
+      "n": 99.95,
+      "digits": 1,
+      "result": 100
+    },
+    {
+      "n": -1.005,
+      "digits": 2,
+      "result": -1
+    }
+  ],
+  "weightedScore": [
+    {
+      "factors": {
+        "impact": 1,
+        "demand": 0.4,
+        "severity": 0.85,
+        "businessValue": 0.5,
+        "confidence": 0.3,
+        "recoverability": 1,
+        "recency": 0.93
+      },
+      "weights": {
+        "impact": 20,
+        "demand": 20,
+        "severity": 20,
+        "businessValue": 15,
+        "confidence": 10,
+        "recoverability": 10,
+        "recency": 5
+      },
+      "scale": 1,
+      "result": {
+        "total": 70.15,
+        "parts": [
+          {
+            "key": "impact",
+            "value": 1,
+            "weight": 20,
+            "points": 20
+          },
+          {
+            "key": "demand",
+            "value": 0.4,
+            "weight": 20,
+            "points": 8
+          },
+          {
+            "key": "severity",
+            "value": 0.85,
+            "weight": 20,
+            "points": 17
+          },
+          {
+            "key": "businessValue",
+            "value": 0.5,
+            "weight": 15,
+            "points": 7.5
+          },
+          {
+            "key": "confidence",
+            "value": 0.3,
+            "weight": 10,
+            "points": 3
+          },
+          {
+            "key": "recoverability",
+            "value": 1,
+            "weight": 10,
+            "points": 10
+          },
+          {
+            "key": "recency",
+            "value": 0.93,
+            "weight": 5,
+            "points": 4.65
+          }
+        ]
+      }
+    },
+    {
+      "factors": {
+        "demand": 66.7,
+        "visibilityGap": 87.3,
+        "competitorGap": 41.9,
+        "intent": 95
+      },
+      "weights": {
+        "demand": 40,
+        "visibilityGap": 30,
+        "competitorGap": 20,
+        "intent": 10
+      },
+      "scale": 100,
+      "result": {
+        "total": 70.75,
+        "parts": [
+          {
+            "key": "demand",
+            "value": 66.7,
+            "weight": 40,
+            "points": 26.68
+          },
+          {
+            "key": "visibilityGap",
+            "value": 87.3,
+            "weight": 30,
+            "points": 26.19
+          },
+          {
+            "key": "competitorGap",
+            "value": 41.9,
+            "weight": 20,
+            "points": 8.38
+          },
+          {
+            "key": "intent",
+            "value": 95,
+            "weight": 10,
+            "points": 9.5
+          }
+        ]
+      }
+    },
+    {
+      "factors": {
+        "severity": 0.6,
+        "opportunity": 0.82,
+        "pageValue": 0.5,
+        "citations": 0.37
+      },
+      "weights": {
+        "severity": 40,
+        "opportunity": 30,
+        "pageValue": 20,
+        "citations": 10
+      },
+      "scale": 1,
+      "result": {
+        "total": 62.3,
+        "parts": [
+          {
+            "key": "severity",
+            "value": 0.6,
+            "weight": 40,
+            "points": 24
+          },
+          {
+            "key": "opportunity",
+            "value": 0.82,
+            "weight": 30,
+            "points": 24.599999999999998
+          },
+          {
+            "key": "pageValue",
+            "value": 0.5,
+            "weight": 20,
+            "points": 10
+          },
+          {
+            "key": "citations",
+            "value": 0.37,
+            "weight": 10,
+            "points": 3.7
+          }
+        ]
+      }
+    }
+  ],
+  "pastSuccessOf": [
+    {
+      "track": null,
+      "settings": {
+        "prior": 0.5,
+        "pseudoCount": 5,
+        "swing": 20
+      },
+      "result": {
+        "rate": 0.5,
+        "points": 0,
+        "improved": 0,
+        "results": 0
+      }
+    },
+    {
+      "track": {
+        "improved": 0,
+        "results": 0
+      },
+      "settings": {
+        "prior": 0.5,
+        "pseudoCount": 5,
+        "swing": 20
+      },
+      "result": {
+        "rate": 0.5,
+        "points": 0,
+        "improved": 0,
+        "results": 0
+      }
+    },
+    {
+      "track": {
+        "improved": 3,
+        "results": 4
+      },
+      "settings": {
+        "prior": 0.5,
+        "pseudoCount": 5,
+        "swing": 20
+      },
+      "result": {
+        "rate": 0.6111111111111112,
+        "points": 2.222222222222223,
+        "improved": 3,
+        "results": 4
+      }
+    },
+    {
+      "track": {
+        "improved": 10,
+        "results": 10
+      },
+      "settings": {
+        "prior": 0.5,
+        "pseudoCount": 5,
+        "swing": 20
+      },
+      "result": {
+        "rate": 0.8333333333333334,
+        "points": 6.666666666666668,
+        "improved": 10,
+        "results": 10
+      }
+    },
+    {
+      "track": {
+        "improved": 0,
+        "results": 12
+      },
+      "settings": {
+        "prior": 0.5,
+        "pseudoCount": 5,
+        "swing": 20
+      },
+      "result": {
+        "rate": 0.14705882352941177,
+        "points": -7.0588235294117645,
+        "improved": 0,
+        "results": 12
+      }
+    },
+    {
+      "track": {
+        "improved": 7,
+        "results": 3
+      },
+      "settings": {
+        "prior": 0.5,
+        "pseudoCount": 5,
+        "swing": 20
+      },
+      "result": {
+        "rate": 0.7916666666666666,
+        "points": 5.833333333333332,
+        "improved": 7,
+        "results": 7
+      }
+    },
+    {
+      "track": {
+        "improved": "2",
+        "results": "9"
+      },
+      "settings": {
+        "prior": 0.5,
+        "pseudoCount": 5,
+        "swing": 20
+      },
+      "result": {
+        "rate": 0.32142857142857145,
+        "points": -3.571428571428571,
+        "improved": 2,
+        "results": 9
+      }
+    }
+  ],
+  "levelOf": [
+    {
+      "score": 100,
+      "cutoffs": {
+        "critical": 90,
+        "high": 75,
+        "medium": 50
+      },
+      "result": "critical"
+    },
+    {
+      "score": 90,
+      "cutoffs": {
+        "critical": 90,
+        "high": 75,
+        "medium": 50
+      },
+      "result": "critical"
+    },
+    {
+      "score": 89.9,
+      "cutoffs": {
+        "critical": 90,
+        "high": 75,
+        "medium": 50
+      },
+      "result": "high"
+    },
+    {
+      "score": 75,
+      "cutoffs": {
+        "critical": 90,
+        "high": 75,
+        "medium": 50
+      },
+      "result": "high"
+    },
+    {
+      "score": 50,
+      "cutoffs": {
+        "critical": 90,
+        "high": 75,
+        "medium": 50
+      },
+      "result": "medium"
+    },
+    {
+      "score": 49,
+      "cutoffs": {
+        "critical": 90,
+        "high": 75,
+        "medium": 50
+      },
+      "result": "low"
+    },
+    {
+      "score": 75,
+      "cutoffs": {
+        "critical": 75,
+        "high": 55,
+        "medium": 40
+      },
+      "result": "critical"
+    },
+    {
+      "score": 74.9,
+      "cutoffs": {
+        "critical": 75,
+        "high": 55,
+        "medium": 40
+      },
+      "result": "high"
+    },
+    {
+      "score": 55,
+      "cutoffs": {
+        "critical": 75,
+        "high": 55,
+        "medium": 40
+      },
+      "result": "high"
+    },
+    {
+      "score": 40,
+      "cutoffs": {
+        "critical": 75,
+        "high": 55,
+        "medium": 40
+      },
+      "result": "medium"
+    },
+    {
+      "score": 39.9,
+      "cutoffs": {
+        "critical": 75,
+        "high": 55,
+        "medium": 40
+      },
+      "result": "low"
+    }
+  ]
+}

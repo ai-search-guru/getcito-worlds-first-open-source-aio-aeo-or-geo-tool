@@ -1,0 +1,15 @@
+{
+  "id": "ticket-loop",
+  "goal": "tasks",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [],
+  "triggers": [],
+  "mode": "auto",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "jira_linear"
+  ]
+}

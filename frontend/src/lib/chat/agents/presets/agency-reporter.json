@@ -1,0 +1,28 @@
+{
+  "id": "agency-reporter",
+  "goal": "reporting",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "report"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "month_first",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [
+    {
+      "key": "google_search_console",
+      "required": false
+    }
+  ],
+  "status": "soon",
+  "needs": [
+    "brand_access"
+  ]
+}

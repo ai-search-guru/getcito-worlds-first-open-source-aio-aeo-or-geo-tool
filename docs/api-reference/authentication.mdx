@@ -1,0 +1,78 @@
+---
+title: "Authentication"
+description: "How to authenticate API requests to the GetCito server."
+---
+
+## API keys (Public Metrics API)
+
+The versioned `/api/v1/*` endpoints on the **web app** authenticate with long-lived GetCito API keys (prefix `getcito_`), created under **Settings → MCP & API Keys** in the dashboard:
+
+```bash
+curl "http://localhost:3000/api/v1/brands" \
+  -H "Authorization: Bearer getcito_..."
+```
+
+This is the right choice for external integrations — Looker Studio, Sheets, scripts, and the [MCP server](/guides/mcp-server). See the [Metrics API reference](/api-reference/metrics) for the endpoint list.
+
+The example uses a local web app. Replace `http://localhost:3000` with your deployed web app's HTTPS URL when connecting a remote integration.
+
+## Bearer token
+
+All `/api/*` endpoints on the GetCito server require a Supabase JWT bearer token in the `Authorization` header:
+
+```bash
+curl https://api.your-domain.com/api/health \
+  -H "Authorization: Bearer <SUPABASE_JWT>"
+```
+
+## Getting a token
+
+The cleanest way is via the Supabase JS client in your own backend code:
+
+```ts
+import { createClient } from "@supabase/supabase-js";
+
+const supabase = createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+const {
+  data: { session },
+} = await supabase.auth.signInWithPassword({
+  email,
+  password,
+});
+
+const token = session.access_token;
+```
+
+The web app does this automatically — every server action and fetch attaches the current session token transparently.
+
+## Cron endpoints
+
+A handful of internal endpoints under `/api/internal/*` (used by Vercel Cron and the Stripe success callback) authenticate via a shared `CRON_SECRET` instead of user tokens:
+
+```bash
+curl -X POST https://api.your-domain.com/api/internal/daily-tracking \
+  -H "Authorization: Bearer $CRON_SECRET"
+```
+
+The same secret must be configured on both sides (Vercel env + server env).
+
+## Public endpoints
+
+Three endpoints don't require any auth:
+
+- `GET /t.js` — tracking pixel script
+- `POST /track/{trackingCode}` — tracking pixel beacon (the tracking code identifies the brand; rate-limited)
+- `GET /` — basic uptime check, returns `{ "status": "ok", "service": "aeo-server", "mode": "cloud" | "self-hosted", "timestamp": "..." }`
+
+<Note>
+  The `/api/health` endpoint IS auth-protected — by design, it returns the
+  authenticated user's ID. For uptime monitoring, use `GET /` instead.
+</Note>
+
+<Card
+  title="Continue: Brands API"
+  icon="arrow-right"
+  href="/api-reference/brands"
+>
+  CRUD endpoints for managing brands programmatically.
+</Card>

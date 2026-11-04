@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: Documentation
+    url: https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/tree/main/docs
+    about: Setup, self-hosting, and usage guides.
+  - name: Questions & Ideas
+    url: https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/discussions
+    about: Ask a question or propose an idea in Discussions.

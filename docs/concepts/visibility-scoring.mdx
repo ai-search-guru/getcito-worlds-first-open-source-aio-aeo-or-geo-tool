@@ -1,0 +1,64 @@
+---
+title: "Visibility scoring"
+description: "How GetCito computes a 0–100 visibility score per brand, prompt, and platform."
+---
+
+## The score in one sentence
+
+The **AI Visibility Score** (0–100) blends three things over the answers in your date range and filters: how many answers name your brand, how many cite a page of yours, and how early you're named.
+
+A score of **0** means no answer names or cites you. The closer every answer comes to naming you first and citing you, the closer the score gets to **100**.
+
+## How it's computed
+
+<Steps>
+  <Step title="Mention rate (60%)">
+    The share of answers that name your brand.
+  </Step>
+  <Step title="Citation rate (25%)">
+    The share of answers that cite a page of yours.
+  </Step>
+  <Step title="Position (15%)">
+    How early you're named, in the answers that name you: being named first counts 1, second ½, third ⅓, and so on, averaged. While only a few answers name you, this part counts for less, so one lucky first place can't lift the score on its own.
+  </Step>
+</Steps>
+
+The score is 100 × (0.6 × mention rate + 0.25 × citation rate + 0.15 × position), to one decimal. All three parts read the same answers, so the filters you set apply to each of them.
+
+## A single answer's score
+
+Each answer also gets its own 0–100 score, shown with that answer: up to 40 points for naming you (10 per mention), up to 30 for citing you (15 per citation), up to 15 for your share of the answer's citations, and up to 15 for its tone (15 when positive, 7 when neutral and you're named).
+
+## Comparing periods
+
+The change shown beside a score (green or red) compares your date range with the period before it, **vs previous period**, on the prompts answered in both, so the comparison is like for like.
+
+## What moves your score
+
+| Action | Effect |
+|---|---|
+| Publish a citation-friendly comparison page | + over 1–4 weeks as LLMs re-index |
+| Earn coverage on a major review/listicle site | + within 2–7 days, often immediately |
+| Lose a press citation (article retracted) | – within a week |
+| A competitor outpaces you with better structured data | – relative score declines |
+| Add new prompts to your tracked set | Score may dip until those prompts mature |
+
+## What does NOT move your score
+
+- Pure PageRank / backlinks without on-page content
+- Frequency of social posts (LLMs heavily underweight social vs. published content)
+- Time spent on traditional SEO without addressing AEO content patterns
+
+<Tip>
+**Healthy growth target**: a 5–10% relative improvement per month is realistic for a focused AEO program in a competitive category. Anything faster usually requires either a major press placement or a structural content investment (e.g. publishing 30+ comparison pages in a quarter).
+</Tip>
+
+## Where to see it
+
+- **Brand Visibility**: the brand's score, its trend and the change vs the previous period
+- **Prompts › Tracked Prompts**: each prompt's score
+- **Competitors**: each tracked competitor's score beside yours
+
+<Card title="Continue: Topics and Prompts" icon="arrow-right" href="/concepts/topics-and-prompts">
+  How prompts cluster into topics and why that matters.
+</Card>

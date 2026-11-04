@@ -1,0 +1,76 @@
+---
+title: "Reports"
+description: "Immutable snapshot reports with an AI executive summary, ready-made templates and vector PDF export."
+---
+
+## What a report is
+
+The **Reports** page (`/dashboard/reports`) generates point-in-time snapshots of your brand's AI visibility. Unlike the live dashboards, a report is **immutable**: the numbers are captured at generation time and never change afterwards, even as new tracking results arrive. That makes reports the right tool for anything you need to stand behind later — a monthly review deck, a client deliverable, or a before/after comparison around a campaign.
+
+Every report includes an **AI executive summary** on top of the sections you pick, and compares each metric against the **previous period of equal length** (a 30-day report is compared to the 30 days before it).
+
+## Generating a report
+
+Click **Generate Report** and pick a template. A template is a default section set — you can toggle any section on or off before generating.
+
+| Template | Default sections | Default range |
+|---|---|---|
+| **Weekly Visibility Summary** | KPIs, Trend, Share of Voice | Last 7 days |
+| **Monthly Executive Report** | Every section | Last 30 days |
+| **Competitor Benchmark** | KPIs, Share of Voice, Competitors, Topics | Last 30 days |
+| **Citation & Sources Report** | Citations, Citation Evidence | Last 30 days |
+
+Then set:
+
+- **Report title** — optional; a name for the library list.
+- **Brand** — the brand to snapshot.
+- **Date range** — `7d`, `30d`, `90d` presets or a custom from/to range.
+- **Sections** — the full picker offers: KPIs, Trend, Share of Voice, Competitors, Topics, Prompts, Mention Evidence, Fan-out, AI Traffic, Product Visibility, Audit Score, Citations and Citation Evidence.
+
+<Note>
+The **Product Visibility** section only appears for brands with Shopping mode enabled. The AI executive summary is always included — it isn't a pickable section.
+</Note>
+
+Generated reports land in the library list on the same page, newest first.
+
+## Reading a report
+
+Open a report to see:
+
+- **AI executive summary** — a short narrative of what changed versus the previous period: the headline visibility movement, mention/citation growth, sentiment and competitor shifts. It is generated once, from the same frozen snapshot the cards render.
+- **Per-section cards** — one card per section you selected, in a fixed order. Sections you left out are simply absent.
+- **Deltas** — KPI cards carry change badges against the previous period of equal length. Percentage deltas render as `+X%`; percentage-point deltas (visibility, sentiment) as `+X pts`.
+
+Because the snapshot is frozen, a report's numbers can legitimately differ from the live dashboards — the dashboards keep moving, the report doesn't.
+
+## PDF export
+
+**Download PDF** renders the report as a vector PDF — text stays selectable and sharp at any zoom, and the file is small enough to attach to an email. The PDF contains the same sections as the web view, including the executive summary.
+
+## White label
+
+Agencies can send clients reports under their own brand. **Settings › White label** (Growth, Enterprise and self-hosted installs) keeps the workspace's kit:
+
+- **Logo** — PNG, SVG or JPG, up to 1 MB, saved as soon as it is uploaded.
+- **Company name** — the agency's name.
+- **Main color** — a hex color; a light one is darkened wherever text is set in it, so it stays readable on white paper.
+- **Report footer** — one line at the bottom of each page, or none.
+
+Each brand can also have its **client logo**, set in **Brand settings › General**.
+
+With the kit in use, a report carries it on the page and in the PDF:
+
+- **Cover** — the agency's logo (or its name), **Prepared for {brand}** and the client logo, above the report.
+- **Color** — the main color on the rules, bars and trend line; text set in it is darkened if needed.
+- **Footer** — the kit's footer line on each PDF page instead of "Generated with GetCito", or none.
+- **PDF properties and file name** — the company name as author and creator, and `acme-agency_{brand}_report_{date}.pdf` instead of `getcito_…`.
+
+The kit reaches the app's other downloads too: CSV, Excel and Word exports (Prompts, Topics, Insights, Citations, Competitors, Mentions, Action Center actions and signals, AI Traffic, content opportunities, the Content Editor and the Library) start their file names with the company slug instead of `getcito`, and Word files name the company as author and last editor. Excel files carry no author either way. If the kit can't be read for a download, the file is named with neither, rather tha GetCito's. E-mails are not white-labelled yet.
+
+If the kit can't be read when you click **Download PDF**, no PDF is made (you are asked to try again), so a file in GetCito's look never goes to a client by mistake.
+
+The kit is used only when the plan has white label **and** the kit has a company name or a logo. Otherwise — no kit yet, or a plan that no longer includes white label — everything keeps GetCito's look, and the kit stays saved. Only admins change the kit; admins and managers set a brand's client logo. Logos are kept in private storage and shown through short-lived links.
+
+<Card title="Continue: Looker Studio" icon="arrow-right" href="/guides/looker-studio">
+  Pull GetCito metrics into your own dashboards and reporting stack.
+</Card>

@@ -1,0 +1,5 @@
+﻿ID,Title,Description,Link,Image Link,Price,GTIN,Brand,Availability
+B-1,Summit Backpack 30L,"Roomy, light and
+rain-proof: ""ready for anything"".",https://shop.example/summit-30,https://shop.example/img/summit.jpg,"1,249.90 TRY",8690000000017,Acme,in stock
+B-2,Summit Backpack 45L,No price on this one,https://shop.example/summit-45,https://shop.example/img/summit45.jpg,,,Acme,in stock
+B-3,Day Pack,Small daily pack,https://shop.example/day-pack,,EUR 39,,Acme,In Stock

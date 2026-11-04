@@ -1,0 +1,68 @@
+---
+title: "FAQ"
+description: "Common questions about GetCito."
+---
+
+<AccordionGroup>
+  <Accordion title="Is GetCito really fully open source?">
+    The GetCito code in this [public repository](https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool) is available under the MIT license. See its LICENSE file for the original and GetCito copyright notices.
+  </Accordion>
+
+  <Accordion title="What does self-hosting cost?">
+    The software is MIT-licensed. You pay for your infrastructure and the AI, search and scraping providers you configure. Costs depend on the number of prompts, tracking frequency, providers and response lengths.
+  </Accordion>
+
+  <Accordion title="What happens when my plan ends?">
+    In cloud mode, a workspace becomes **read-only** when a cancelled plan or free trial reaches its end, or when a payment fails (the first charge after the trial too), until the payment method is updated. Everything you set up stays.
+
+    This behavior applies only when the deployment operator has enabled cloud mode and billing. Check the terms and any trial offer shown in that deployment's checkout. The default self-hosted setup does not require a plan.
+
+    While it's read-only:
+
+    - Everyone can still sign in, open every page and read everything.
+    - Adding, running, writing and AI open a dialog: **Choose a plan to keep going**, or **Update your payment method to keep going** after a failed payment. Admins choose a plan or update the payment method from it; other members are asked to turn to an admin.
+    - These still work: **Billing** and choosing a plan, your own profile and signing out; stopping a tracking job that is running and stopping the Content Agent; disconnecting Search Console, Analytics, Webflow, an AI-bot log or a store; removing your own AI provider key; deleting an Agent Chat conversation; deleting API keys, removing members, revoking invitations and accepting an invitation; creating API keys (the [MCP server](/guides/mcp-server) only reads for this workspace); and deleting a brand.
+    - Nothing runs on its own: no tracking, scraping or AI, no agents, no syncs with outside services, no new signals, actions or suggestions. AI-bot logs, the tracking snippet's visits and [webhook](/api-reference/webhooks) callbacks are answered but not stored.
+
+    Once an admin chooses a plan, the workspace works as before. Self-hosted installs are never read-only. Setup is unchanged: a new workspace that has never had a plan goes through setup and its plan step as before. Setup suggests its topics, prompts and competitors with three suggestion requests, and a workspace can make 20 suggestion requests a day in all.
+  </Accordion>
+
+  <Accordion title="Why don't you scrape ChatGPT/Gemini directly?">
+    For programmable AI engines (OpenAI, Anthropic, Google Gemini API), GetCito uses official APIs — most reliable, well-priced, and TOS-compliant. For *web* AI engines that don't have public APIs (like ChatGPT.com search results), GetCito uses Cloro as a managed scraping backend. Cloro handles browser fingerprinting, captcha bypass, and rate-limiting at scale.
+
+    These are two distinct fetchers: **Cloro** scrapes the AI answer engines, while **Scrape.do** (via `SCRAPEDO_API_KEY`) fetches your *own* pages for the **Site Audit** feature (proxy + JS render). Self-hosters who want Site Audit need a Scrape.do key.
+  </Accordion>
+
+  <Accordion title="How often does tracking run?">
+    Default schedule is once per day per brand. You can configure per-platform frequency under brand settings (e.g. ChatGPT daily, Perplexity 3x/week, Gemini weekly) to manage AI provider costs.
+  </Accordion>
+
+  <Accordion title="My visibility score is 0. Did setup go wrong?">
+    Probably not. Brand-new brands or those in non-English-language niches commonly start at 0 across most prompts. The score reflects what AI engines *currently* cite — closing that gap with content + earned media is exactly what AEO is for.
+  </Accordion>
+
+  <Accordion title="Can I see the actual AI responses, not just metrics?">
+    Yes. Click any prompt or platform cell on the Insights page; the drill-down sheet shows the full LLM response, parsed citations, sentiment, and detected competitor mentions.
+  </Accordion>
+
+  <Accordion title="How do I get help?">
+    - **Bugs / feature requests**: [GitHub Issues](https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/issues)
+    - **Deployment help**: contact the person who runs your instance
+  </Accordion>
+
+  <Accordion title="Is my data private?">
+    Your deployment stores application data in the Supabase project you configure. Tracking, AI, search, scraping and other integrations send the data they need to their configured providers. Review those providers and your deployment settings before choosing what data to process.
+  </Accordion>
+
+  <Accordion title="Can I run GetCito without a subscription?">
+    Yes. The default [self-hosted setup](/self-host/docker-compose) does not use subscription billing. Your infrastructure and external providers may charge for their services. For local sample data, see [Supabase setup](/self-host/supabase-setup).
+  </Accordion>
+
+  <Accordion title="Does GetCito work for non-English brands?">
+    Yes — 13 languages and 18 regions supported. AI engines respond in the language of the prompt; GetCito's mention/citation parsing is language-agnostic.
+  </Accordion>
+
+  <Accordion title="How do I contribute?">
+    Open an issue or pull request in the [repository](https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool). We welcome PRs for: new AI engine adapters, additional citation classifiers, language packs, UI polish, and bug fixes. For larger features, open an issue first to align.
+  </Accordion>
+</AccordionGroup>

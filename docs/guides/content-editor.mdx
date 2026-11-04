@@ -1,0 +1,235 @@
+---
+title: "Content Editor"
+description: "Plan what to write next, start a page yourself or with the Content Agent, write it to AEO rules, and keep it in the Library."
+---
+
+## The Content section
+
+**Content** in the sidebar has four pages:
+
+- **Opportunities** (`/dashboard/content`): the content opportunities GetCito finds in your visibility gaps. See [Content Optimization](/guides/content-optimization).
+- **Plan** (`/dashboard/content/plan`): what to create, optimize or protect next, ranked.
+- **Editor** (`/dashboard/content/editor`): back to the draft you last opened in the editor for this brand, in this browser. With none, or if that draft was deleted or archived, it opens **New content** to start a page.
+- **Library** (`/dashboard/content/library`): every page you and the Content Agent wrote or changed in GetCito.
+
+Pages are written in the **editor** (`/dashboard/content/editor/<id>`). It opens from the Library, from the Plan, or when you start a page in **New content**.
+
+## Plan
+
+The **Content plan** lists the work for the last 7, 30 or 90 days. Pick the period at the top right.
+
+### Cards
+
+| Card         | What it counts                                                                                                            |
+| ------------ | ------------------------------------------------------------------------------------------------------------------------- |
+| **Create**   | New pages AI needs: open opportunities with no page on your site yet.                                                     |
+| **Optimize** | Pages losing ground, and opportunities to improve a page you already have.                                                |
+| **Protect**  | Your top pages (cited at least 5 times in the period and not losing ground, up to 5), and opportunities to defend a page. |
+| **Priority** | Rows your team marked as a priority.                                                                                      |
+
+Click a card to filter the list to it; click it again to clear the filter.
+
+A page is **losing ground** when it is cited at least 20% less per tracked answer than in the period before, from at least 3 citations. Because the comparison is per tracked answer, a week with fewer runs, or prompts added or removed, doesn't move a page. If tracking began during the earlier period, a note above the list says so.
+
+### Priority list
+
+Each row shows:
+
+- the **Priority Score**;
+- the **Page**: its title, its page type, and its path, or **New page**;
+- the **Action**: Create, Optimize or Protect;
+- **Why** for the period, for example "Acme cited · you aren't", "Citation rate −35% on ChatGPT" or "Top page · 12 citations · 40 AI visits", tagged with where it comes from (**Opportunity**, **Citations** or **Protect**);
+- **Who** is on it: You, Agent, a teammate, or the person it is assigned to;
+- a button: **Create**, **Optimize** or **View** opens [New content](#new-content) on that row, and **Open draft** opens the draft already being written.
+
+Rows marked as a priority come first; the rest are ranked by score. The list shows up to 50 rows, for the whole plan or for a card.
+
+### Priority Score
+
+The score runs from 0 to 100 and is built from four factors:
+
+- **Severity**: how urgent the row is. A page losing citations counts most, more so the bigger the drop or the more citations it lost. Then come a new page AI needs, an existing page to improve, and a page to protect.
+- **Opportunity**: the score of the content opportunity behind the row. A row without one counts as neutral.
+- **Page value**: the page's AI visits in the period. With conversions on, once the listed pages have some, it also weighs the conversions from AI journeys through the page, more as they come in. A new page, or a brand with no AI traffic data, counts as neutral rather than zero.
+- **Citations**: how often AI answers cited the page in the period. A new page has none yet.
+
+Hover over the score, or focus it, to see **How this score is worked out**: each factor with the points it gave, and the total. The badge's level (critical, high, medium or low) uses the Plan's own cut-offs, and only a page losing citations can reach critical.
+
+<Note>
+  This score ranks the Plan only. The Action Center scores its tasks on its own:
+  see [Action Center](/guides/action-center).
+</Note>
+
+### Row menu
+
+- **Assign to…**: for a row with a draft, pick a teammate and the draft goes to the Action Center as a task for them. For a row without a draft, New content opens with **Team** chosen, so you pick the page type and the assignee there.
+- **Mark as priority** / **Remove priority** (admins and managers): the row moves to the top of the list, tagged **Priority**, and counts under the Priority card. **Send to Plan** on an opportunity does the same.
+- **Hide from the plan** (admins and managers): the row leaves the list and the counts. Undo it from the message that appears, or later from **hidden rows · Show** under the list, then **Show again**.
+
+### What AI cites in your topics
+
+Above the list, a line shows what visitors from AI assistants did on your site in the period: visits, and, with [Google Analytics](/guides/ai-traffic-analytics) connected, key events, orders and revenue. With [conversions from AI visits](/guides/ai-traffic-analytics#conversions-from-ai-visits) on, it adds the goals the snippet followed those visitors to, up to four, the most first (orders read **orders from journeys**, apart from Google Analytics' orders), and a **Top journey** line: the AI assistant, the pages, the goal and how many conversions took that way, among the period's latest 2,000 conversions.
+
+The **What AI cites in your topics** section opens with **Show**. For each page type it compares two shares: how much of the AI citations in your tracked answers go to that type of page, and how much of your own cited pages' citations it holds. A type AI cites 10 points or more beyond your own mix is marked as a **Gap**. Click a row to filter the priority list to that page type; click it again, or **Clear**, to remove the filter.
+
+The shares cover only the cited addresses whose type can be read. Forums, encyclopedias, news and the long tail of less cited pages are left out, and a line under the section says what share of the period's citations is covered.
+
+<Tip>
+  The page types follow your brand's **Site type** (B2B SaaS, E-commerce, B2C
+  or Mobile app) in the brand settings: feature and comparison pages for B2B
+  SaaS; product and category pages for e-commerce; destination and help pages
+  for B2C; feature, pricing and help pages for a mobile app. When you
+  add a brand, GetCito detects its site type from your home page, and a brand
+  that adds a product catalog becomes E-commerce. Pick another type in the brand
+  settings if it's wrong; a type you choose is never changed for you.
+</Tip>
+
+### Shopping opportunities
+
+For an online shop whose product catalog (**Settings › Integrations › Product catalog**) has categories, **Shopping opportunities** above the priority list shows the pages that lead readers, and AI answers, to your category pages and products:
+
+- **Buying guide · New**: a category with at least 3 products in stock that no page of yours guides shoppers to yet (no draft's shopping path holds it, and no draft's title names it). Why says how many of your tracked prompts ask about it, and whether it has a category page to link. **Create** starts the draft, "How to choose …" as a buying guide, from the first of those prompts, and opens it in the editor. A draft already being written for the category shows **Open draft** instead.
+- **Existing post · Fix**: a published post whose last check, after a catalog sync, found it links a product that no longer sells, or not each of its shopping path's category pages. **Optimize** opens it in the editor.
+
+Rows are ranked on the Plan's Priority Score scale. A guide scores as a new page, more for the prompts asking and the products in stock; a post scores more the more products it links that no longer sell.
+
+## New content
+
+**New content** opens from the Plan and the Library, from a Plan row's button, from **Send to Editor** on an opportunity, and from **Create content** in a prompt's menu on [Tracked Prompts](/guides/prompts).
+
+<Steps>
+  <Step title="Pick how to start">
+    **Create from scratch** writes a new page from:
+    - a **Content Opportunity**;
+    - a **Prompt**: prompts where AI already names or cites you in the last 30 days aren't listed, as they need no new page;
+    - a **Topic** that has tracked prompts.
+
+    **Optimize content** works on a page you already have:
+    - **Page URL**: a page on your brand's site (its domains are in the brand settings). **Import** brings in its main text, headings, links and schema; menus and footers stay out.
+    - **Paste text** from Word, Google Docs or a web page. Headings, lists, links and tables are kept.
+    - **Upload file**: Word, Markdown, HTML or text, up to 10 MB.
+
+  </Step>
+  <Step title="Pick the page type">
+    Click **Continue**. GetCito picks a **Page type** from the title, the content, the page or the opportunity, and says which. Pick another if it's wrong; you can also change it later in the editor.
+
+    For a new page, **Overview** lists your pages AI already cites for the same prompts, with how many of those prompts each one answers, its AI citations and its Google position. You can choose **Optimize *page* instead**, or **Create a new page**.
+
+  </Step>
+  <Step title="Choose who does it">
+    | Who does it | What happens |
+    |---|---|
+    | **Me** (default) | **Open editor** opens the draft for you to write. |
+    | **Agent** | **Start the agent**: the Content Agent writes a new page, or suggests changes to an existing one, in the background. The editor opens showing it at work; you can leave, and the draft waits in **Library › In review**. It uses this month's AI usage. |
+    | **Team** | **Send to Action Center**: the draft is saved in the Library and sent to the Action Center as an action. Pick a teammate in **Assign to**, or leave it unassigned. |
+  </Step>
+</Steps>
+
+If the agent can't start, for example because this month's AI usage is spent or the agent is already writing another of your team's drafts, the draft stays in the Library for you to write.
+
+## The editor
+
+The header shows the title (click it to rename it in the page) and whether your changes are saved. Under them come the page type, the method and status, a **Rules** chip with how many rules the page meets now (click it to open the rules), and, on a page that optimizes a live one, how many cited passages are kept. The page saves as you write. On the right are the month's AI usage and the buttons **History**, **Copy HTML**, **Export**, **Send to CMS** (the paper-plane icon, admins and managers) and **Mark ready**, and a button to show or hide the side panel.
+
+The page starts with its H1, which is also its title. A page has one H1: the toolbar won't add a second one. A paste is cleaned on the way in: headings, lists, links and tables stay; fonts, colors and styles go. Press ⌘/Ctrl + Shift + V to paste plain text. **Attach a file** inserts Excel, CSV, Word, Markdown, HTML or text, up to 10 MB each; a sheet comes in as a table.
+
+The Content Agent looks up the facts a page needs itself (a price, a plan's limits, a statistic, a date, a feature), with a few web searches charged to the month's AI usage, and links each one to the page it came from: the company's own pricing or docs page or an official source first, then news and analysts, never a forum, a social post or a "best of" list. A fact no trusted page has is left out, and its sentence is written without it. A number the agent wrote without a source is checked the same way, and a number the page already has, in any unit, stays as written. Only the facts' own words change, so a sentence keeps its links and bold.
+
+What the agent couldn't look up (the month's AI usage is spent, the search failed or timed out, or a page had more than ten facts to find) is never taken out: it is left in square brackets for you, as a placeholder. So is a fact only your brand has, such as your customer count or your own results, three at most on a page. A product's specs come from your catalog only: a sentence asking for one the catalog doesn't have is left out. Each is tinted amber in the page, and **Your input needed** in the toolbar counts those left to fill. Click the count or the arrows beside it to go to the next or the previous one, already selected, so you type over it. A placeholder in an image's alt text, the JSON-LD or an HTML block isn't in the page's text: it's counted too, and **Show in HTML** selects it in the HTML view. Send to CMS waits until none is left. With [Quality](#quality) on, Export asks first: **Fill now**, or **Export without them**, which leaves the sentences with a placeholder out (one in the title or a heading has to be filled).
+
+### Side panel
+
+The panel's tabs are **Instructions · Sources · Live page**. **Instructions** holds what the Content Agent follows: **Brief** and **Rules**, and **Quality** when it's on, switched at its top. The panel opens on **Instructions**, on **Rules**. While the panel is closed, its tabs run down the editor's right edge: click one to open the panel there.
+
+- **Rules**: the rules the page is written to, for its page type. They come in five groups: page type rules, length and structure, fan-outs and keywords, links and sources, and style. Most rules can be turned on or off, and many have a value you can change; its status is read from the page as you write. Rules marked **AI check** are judged by the Content Agent and aren't counted yet. Changes apply to this draft only: **Save as my rules** (admins and managers) keeps them for your workspace's next drafts of this type, and **Reset** goes back to the default set. Under **Your text rules**, write a rule in your own words, or **Paste many** from a style guide. **Run Agent** sits at the top: see [Run Agent](#run-agent).
+- **Brief**: the page type, target URL, goal, audience, length, outline and keywords. **Edit brief** to change it. With no brief yet, **Run Agent** writes the goal, audience and outline from your sources; once there is one, the button reads **Rebuild brief**. Either writes the outline from the sources you keep, each H2 answering a search AI ran for your prompts (a fan-out). If you edited the brief, rebuilding asks first: **Rebuild anyway** or **Keep my brief**. A draft started from an opportunity with a brief starts with that brief's outline and keywords. Building the brief also reads a few of the pages AI cited: their typical length shows beside **Length**, and **Cited pages have** lists what Site Audit's checks find on at least half of them (an FAQ schema, tables, statistics…). The Content Agent then writes the page toward what its text can carry (tables, statistics, quotes…), not its schema, dates or byline, which your site sets. Once the brief has an outline, **Rewrite from brief** (a new page) or **Suggest changes from brief** (an existing page) hands the page to the Content Agent; the page you have now stays in History.
+- **Sources**: what the draft is built from: **Prompts**, **Fan-outs**, **Cited pages** (what AI quotes today) and **Search Console** queries. Each source shows where the draft uses it. Uncheck one to leave it out, or **Add source** (a prompt, a page URL or a Search Console query), then **Rebuild with selection**.
+- **Live page**: for a draft that optimizes a live page, how that page does now: **Citations**, **AI visits**, **Google clicks** and **Prompts cited**, over 7 days to a year, against the period before. It is not a forecast of what the draft will get. Prompts that stopped citing the page are marked **Lost**, and **Use the lost prompts in this draft** adds them to the sources and rebuilds the brief. **Results from AI visits** shows the AI visits that landed on the page and, with Google Analytics connected, their key events, orders and revenue, by AI source. **Your other pages for these prompts** lists your other pages cited for the same prompts. A new page has nothing to measure until it's marked published with its live address.
+
+On the **Live page** tab, **Conversions from AI journeys** shows what the journeys through the page brought in, from [conversions from AI visits](/guides/ai-traffic-analytics#conversions-from-ai-visits). A conversion counts when its journey landed on the page, went through it or ended on it, credited to the AI assistant of its first visit. The cards follow your brand's **Site type**: signups and demo forms for B2B SaaS; orders, revenue and units sold for e-commerce; bookings, revenue and newsletter signups for B2C; signups and newsletter signups for a mobile app; then any other goal reached. Under them come the conversions per AI source and the **Top journeys**, with the page marked **This page** (a long journey is shortened, with this page kept in view). The journeys are the latest 2,000 conversions', each with its latest 100 pages; the counts take every conversion. While conversions are off, the section says where to turn them on, and keeps showing what was counted before.
+
+Building the brief and running the Content Agent use your workspace's monthly AI usage.
+
+### Run Agent
+
+**Run Agent**, at the top of **Rules**, asks the Content Agent to suggest small, reviewable changes for the rules the page doesn't meet yet (**Fix open rules**). Its **▾** menu also offers **Rewrite the whole page**: one new version written to every rule in the set, with the cited passages kept, which uses more AI usage. The menu marks it **Recommended** when the page is far off its Length or many rules are open; pick it, and the button reads **Rewrite page**. A rewrite comes back as one change: **Compare** it with your page, then **Accept** or **Reject**; your page before it stays in History. It isn't offered once the page is ready or published.
+
+The small changes appear in the page, each with **Accept** and **Reject**, under a bar with **Accept all** and **Reject all**. What you accept and reject teaches it: for a rule whose suggestions this brand has mostly rejected over the last 90 days (at least five decided, on two pages or more, seven in ten rejected), it keeps its changes as small as the rule allows, and while it works its card says which rules. Only its small changes count: a rejected **Rewrite the whole page** doesn't. On a draft that optimizes a live page, it is also told how that page does now, as the **Live page** tab shows it over 30 days: how often AI answers cite it and the prompts it lost. It keeps the answers and facts AI engines cite, answers a lost prompt's question where a rule's change can, and its card says what it kept in mind. Quality's **Hand off** isn't affected.
+
+- A decided suggestion can be taken back with **Undo** or **Restore**; **Undo all** brings every one back to review.
+- One run makes at most 8 changes. Run it again for the rules still open.
+- Accept or reject the open suggestions before you run the agent again or edit the page as HTML.
+- The agent doesn't change heading levels: turn extra H1s into H2s in the toolbar yourself.
+- The agent only changes drafts, not published pages.
+
+### Passages AI cites are locked
+
+When a draft optimizes a live page, brought in by its URL, the passages AI answers quoted in the last 30 days are marked in green, for example "✓ Cited by ChatGPT 3× and Perplexity 1× in 30 days · keep wording". A chip in the header counts them.
+
+The Content Agent never changes these passages. If you edit one, the editor asks first: **Keep wording**, or **Edit anyway**. Changing a quoted passage may cost the page those citations.
+
+### Quality
+
+Quality is turned on per installation; where it's off, what this section describes doesn't show. With it on, **Instructions** has a third segment, **Quality**, and the header a **Quality** chip with the page's score.
+
+Quality scores the page from 0 to 100 on **E-E-A-T**, **Trust** and **Readability**: 80 and up is **Strong**, 60 to 79 **Can improve**, under 60 **Needs work**. The scores are GetCito's estimates from Google's published quality signals, not a Google score. At the bottom, **Site trust** (out of 5) comes from Site Audit's checks of your site, with **Fix in Site Audit** when some are missing.
+
+- **Your to-dos** are what only you can do: pick the page's author, add your own experience or data, link the proof for a claim, fill the placeholders.
+- **What would raise it** lists the checks still open, each with the points it would add to a score and, where it has one, a button such as **Show** or **Add source**.
+- **Hand off** asks the Content Agent to fix the open suggestions in one run, as changes for you to review; your to-dos stay yours. In **Settings › Content**, admins and managers can have each brand's new pages handed off on their own when they're first opened in the editor.
+
+With Quality on, the header also has:
+
+- **Next step**: the page's next step (plan the page, write the first draft, fix open rules, add proof and author, check and mark ready), with a button to take it, **Skip this step** and **All steps**.
+- the page's author, picked from **Settings › Authors** (real people only: the Content Agent can't add or invent authors), and, for a page that advises on health, money or the law, the qualified person who reviewed it.
+- **Before you publish**, which **Mark ready** opens first: placeholders, alt text and links; the author; visible dates; the schema (JSON-LD) to paste if your CMS doesn't add it; and a warning when Trust is under 60. **Send to CMS** opens it only when it has something to ask about (see [Send to CMS](/guides/send-to-cms)).
+
+### History, HTML, Export and Mark ready
+
+- **History** keeps earlier versions for 90 days: the live page as imported, the page before agent changes, each Mark ready and publish, each Hand off, and the page before a restore. **Restore** makes a new version, so nothing is lost.
+- **Copy HTML** copies the whole page as HTML, HTML blocks and schema included, to paste into your CMS.
+- **Export** downloads the page as **Word**, **Excel**, **CSV**, **HTML** or **Markdown**. Excel and CSV hold the page as one row, for a CMS's import. Only the HTML file carries the schema (JSON-LD). With Quality on, **Export** opens a dialog instead: the same files, and under **Platforms** a copy of the page to paste into Webflow, WordPress, Shopify or Google Docs.
+- **Add HTML** in the toolbar adds an HTML block: an embed, a widget or a form, kept exactly as written. GetCito never runs it. **Edit as HTML** shows the page's source; scripts, iframes and inline styles are removed when you switch back.
+- **Products** (the bag in the toolbar, or **Add › Products** on an empty line), on an online shop's draft, adds products from your catalog: search by name, pick 1 to 4 that are in stock, and **Insert**. One shows as a card, more as a grid, each with its picture, name and price (in stock before low stock, then its cheapest variant there; a sale price when it's lower), linked to its page. It goes in as an HTML block; Webflow's rich text and Framer's formatted text have no grid, so there it's a list, a product a line. A product no longer in stock by the time you insert is left out, and the editor says so. When the Content Agent writes a new buying guide, best-of list, comparison or alternatives page with a shopping path, it adds the same grid of the path's products in stock (two or more), at the end of the section that links them most.
+- **Send to CMS** (admins and managers) sends the page to the brand's Webflow or Framer collection as a draft item, to its WordPress site or its Wix site's Blog as a draft post, or to your workflow tool through the brand's webhook, for it to create the post in your CMS. See [Send to CMS](/guides/send-to-cms).
+- **Mark ready** saves the page, sets it to **Ready** and keeps a version in History. If the draft was sent to the Action Center, it also completes its task there. GetCito doesn't publish the page: copy or export it to your site, or send it to your CMS. With Quality on, **Mark ready** opens **Before you publish** first (see [Quality](#quality)). On a page with a shopping path, Before you publish also names the product cards whose price has changed in your catalog since they went in. A card keeps its price: to show today's, replace the card by deleting it and adding the product again (**Add › Products**).
+- **Mark published** (the Library's **Status** menu, or the header's **Next step** once the page is ready, when Quality is on): once the page is live, tell GetCito where. It asks for the live address, starting from the page it optimizes or your site with the page's slug, and the **Live page** tab measures that address from then. If the draft came from the Action Center, its Publish task is completed once all the action's work is live. On a published page, the header's **Published** button changes the address. A page your CMS reports live, or one published in Webflow, WordPress, Framer or Wix, gets its address on its own. An archived page is restored first.
+- Click **Ready** in the header to move the page back to **In review**. A task that Mark ready completed is open again (**In Progress**), unless someone changed it in the Action Center since or the action is closed.
+
+## Library
+
+The **Library** lists the drafts by status, each tab with its count:
+
+| Tab             | What's in it                                                                  |
+| --------------- | ----------------------------------------------------------------------------- |
+| **All**         | Every draft that isn't archived.                                              |
+| **In progress** | Drafts being written.                                                         |
+| **In review**   | Drafts the Content Agent wrote, waiting for a person.                         |
+| **Ready**       | Drafts marked ready.                                                          |
+| **Published**   | Drafts marked published, by you or your CMS.                                  |
+| **Archived**    | Drafts sent to the archive. They keep their status for when they're restored. |
+
+The columns are Content, Type, Method (Create or Optimize), By (you, the Content Agent or a teammate), Status, Created and Updated. Click a row to open the draft in the editor. The **Created** filter narrows the list to the last 7, 30 or 90 days. Once a page has been sent to your CMS, a **Last send** filter lists the pages by how their last send went: never sent, sending, sent, failed or published (see [Send to CMS](/guides/send-to-cms)).
+
+For an online shop, a **Shopping path** column shows what the last check found for each draft with a shopping path. After each catalog sync, every such draft is read again: the live page once it's published, else the draft. A live page off your site, too short to be the page, or linking none of its shopping path while its draft does, is read from the draft. A draft needs attention when it links a product that is sold out, refused by Merchant Center (when a Merchant Center account is connected) or gone from your catalog; hover the mark for the products and how many of its category pages and products it links. The **Shopping path** filter narrows the list to drafts that need attention, are fine, or have none.
+
+When a published page links a product that no longer sells, the check also opens a **Fix** action in the [Action Center](/guides/action-center), "Best rain jackets for 2026: 2 products are sold out", with one task: swap them for products that sell, its shopping path's in-stock products named. **Swap in the editor** opens the draft. The next catalog sync's check, or **Check now** on the task, closes the task, and the action, once the live page links none of them. A dismissed action isn't opened again for the same products.
+
+### Row menu
+
+- **Status**: set the draft to In progress, In review, Ready or Published. Ready works like the editor's Mark ready. **Published** asks for the page's live address, as the editor's **Mark published** does (not for archived drafts). Moving a ready or published draft back to In progress or In review opens its task again, as the editor's **Ready** does; a published one also opens the action's Publish task again and stops its Live page being measured for the action.
+- **Export Word**, **Export Excel**, **Export CSV**, **Export HTML** or **Export Markdown** for that draft.
+- **Send to CMS** (admins and managers, not for archived drafts). Beside each row's status, an icon shows its last send: on its way, sent, failed or published. Tick several rows to send up to 25 at once. See [Send to CMS](/guides/send-to-cms).
+- **Send to Archive** or **Restore** (admins and managers).
+- **Delete** (admins and managers): the draft leaves the Library for good, with its versions and suggestions. An Action Center task it was sent as stays.
+
+### Export
+
+**Export** in the header downloads the drafts listed, that is the current tab within the **Created** range and the **Last send** filter, with their pages:
+
+- **Export CSV** and **Export Excel**: one row per draft, with its title, status, method, page type, author, dates, page URL, length and text.
+- **Export Word**: one document, each draft starting on a page of its own.
+
+<Card title="Continue: Site Audit" icon="arrow-right" href="/guides/site-audit">
+  Score a page for AI search readiness and get fixes you can paste.
+</Card>

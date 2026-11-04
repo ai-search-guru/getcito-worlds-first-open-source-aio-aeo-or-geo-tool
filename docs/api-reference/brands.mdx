@@ -1,0 +1,68 @@
+---
+title: "Brands"
+description: "List, create, and manage brands programmatically."
+---
+
+<Note>
+Most brand CRUD lives in the **web** app's server actions, not the standalone Express server. The endpoints below describe the public-facing patterns; the underlying tables live in Supabase and are accessible via the Supabase REST/RPC API directly with appropriate RLS-protected keys.
+</Note>
+
+## List brands
+
+```http
+GET /rest/v1/brands?select=*,brand_domains(*),competitors(*)
+Authorization: Bearer <SUPABASE_JWT>
+apikey: <SUPABASE_ANON_KEY>
+```
+
+Returns brands the authenticated user's organization can see (RLS-filtered).
+
+## Create a brand
+
+```http
+POST /rest/v1/brands
+Content-Type: application/json
+Authorization: Bearer <SUPABASE_JWT>
+apikey: <SUPABASE_ANON_KEY>
+
+{
+  "organization_id": "uuid",
+  "name": "Acme Corp",
+  "slug": "acme-corp",
+  "industry": "SaaS",
+  "region": "US",
+  "language": "en"
+}
+```
+
+After creation, you'll typically follow up with:
+- `POST /rest/v1/brand_domains` — register the primary domain
+- `POST /rest/v1/competitors` — add competitor records
+- `POST /rest/v1/prompt_sets` + `POST /rest/v1/prompts` — set up the tracked prompt list
+
+## Update a brand
+
+```http
+PATCH /rest/v1/brands?id=eq.<uuid>
+Content-Type: application/json
+Authorization: Bearer <SUPABASE_JWT>
+
+{ "industry": "B2B SaaS" }
+```
+
+## Delete a brand
+
+```http
+DELETE /rest/v1/brands?id=eq.<uuid>
+Authorization: Bearer <SUPABASE_JWT>
+```
+
+Cascade-deletes all related rows: prompts, results, citations, suggestions, traffic logs.
+
+## Schema reference
+
+See [Supabase setup → schema](/self-host/supabase-setup) for the full table definitions and relationships.
+
+<Card title="Continue: Tracking API" icon="arrow-right" href="/api-reference/tracking">
+  Trigger and inspect AI tracking jobs.
+</Card>

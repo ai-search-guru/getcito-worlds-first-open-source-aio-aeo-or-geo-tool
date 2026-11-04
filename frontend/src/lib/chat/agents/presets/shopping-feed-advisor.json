@@ -1,0 +1,23 @@
+{
+  "id": "shopping-feed-advisor",
+  "goal": "shopping",
+  "businessTypes": [
+    "ecommerce"
+  ],
+  "industries": [],
+  "roles": [],
+  "skills": [],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "MO",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "catalog_read"
+  ]
+}

@@ -1,0 +1,263 @@
+---
+title: "Send to CMS"
+description: "Send Content Editor pages to Webflow or Framer as draft items, to WordPress or Wix as draft posts, or to your CMS through your workflow tool, and see where they went."
+---
+
+**Send to CMS** sends a Content Editor page to your CMS in one of five ways:
+
+- **Webflow:** the page goes straight into a collection of your brand's Webflow site as a **draft item**. You publish it in Webflow.
+- **WordPress:** the page goes straight to your brand's WordPress site as a **draft post**. You publish it in WordPress.
+- **Framer:** the page goes straight into a CMS collection of your brand's Framer project as a **draft item**. You publish it in Framer.
+- **Wix:** the page goes straight to your brand's Wix site's Blog as a **draft post**. You publish it in Wix.
+- **Your workflow:** the page goes to your brand's webhook as a content package (the page ready to publish, its title, slug, meta title, meta description, author and featured image). Your workflow tool (n8n, Make, Zapier or your own endpoint) turns it into a post or page in your CMS, and decides whether it lands as a draft or goes live.
+
+GetCito never publishes on its own. When your workflow tells GetCito where the page went live, or once you publish the item in Webflow or Framer or the post in WordPress or Wix, the draft becomes **Published** and its address shows in the Library.
+
+## Connect Webflow
+
+1. Get a site token in Webflow, as the **Webflow** card's steps say:
+   1. Go to **Site settings › Apps & Integrations › API access** and click **Generate API token**.
+   2. Enter a token name (4–80 characters), for example "GetCito connector".
+   3. Under **Permissions**, set **CMS** to **Read and write** and **Sites** to **Read-only**. Leave everything else on **No access**.
+   4. Click **Generate token** and copy the token. Webflow shows it only once.
+2. In GetCito, open **Settings → Integrations** with the brand selected, and paste the token in the **Webflow** card. It's checked with Webflow and kept by the configured connector service. It's never shown again, and GetCito's database doesn't hold it. Only **admins and managers** can connect Webflow, pick the collection, replace the token or disconnect; members see where the brand's pages go.
+3. Pick the **collection** your pages go to (your blog's, for example), then which of its fields takes what:
+
+   | Part of the page | Webflow field type | |
+   |---|---|---|
+   | Page content | Rich text | Required |
+   | Meta title | Plain text | Optional |
+   | Meta description | Plain text | Optional |
+   | JSON-LD (structured data) | Plain text | Optional |
+   | Date (the day it's first sent) | Date/Time | Optional |
+
+   The page's title and slug always go to the item's **Name** and **Slug**. GetCito suggests fields from their names (`post-body`, `post-summary`, `seo-title`…); change them if they're wrong, and **Save**. A collection that requires a field GetCito doesn't fill can't be saved: **Save** names the field. Make it optional in Webflow first. A page sent again keeps its item's date; an item that has none (sent before you mapped a date field) gets the day it's sent again.
+4. To use the JSON-LD field, add an **Embed** to the collection template that puts the field inside a `<script type="application/ld+json">` tag.
+
+A site token is one site's, so each brand connects its own. **Replace token** changes it (the collection and fields stay when it's the same site), and **Disconnect** removes it. If Webflow refuses the saved token, the card says so and asks for a new one.
+
+<Note>
+**Self-hosting:** Webflow goes through Composio. Set `COMPOSIO_API_KEY` and `COMPOSIO_WEBFLOW_AUTH_CONFIG_ID` (a Composio auth config of the Webflow toolkit with API-key auth) on the API server. Without them, the card says Webflow isn't set up, and pages go to your workflow only.
+</Note>
+
+## Connect WordPress
+
+1. In WordPress, sign in as the user pages should be written by. A separate user with the **Author** role is enough, since GetCito writes drafts only. Open **Users → Profile**, type a name under **Application Passwords** (`GetCito`, for example) and click **Add New Application Password**. Copy the password WordPress shows: 24 letters and digits, in groups of four. It's shown once. Application Passwords come with WordPress 5.6 and later.
+2. In GetCito, open **Settings → Integrations** with the brand selected. In the **WordPress** card, enter the **Site address**, the **User** and the **Application Password**, and click **Connect**.
+   - Type the address as you visit the site. `https://` is added, and `/wp-admin` or `/wp-json` copied with it is taken off. A site in a folder (`example.com/blog`) keeps it. WordPress takes an Application Password over https only, and GetCito reaches the standard port only: an `http://` address, or one with a port, isn't taken.
+   - Paste the Application Password, not the user's own password. **Connect** stays off for a password too short to be one.
+
+Before anything is kept, GetCito checks that the site answers as WordPress, takes Application Passwords, and that the user can write posts. The password goes to the site only once it answers as WordPress, or when the site keeps its REST API from visitors. The API server encrypts it before it's kept in GetCito's database, and it's never shown again. Only **admins and managers** can connect WordPress, change the sign-in or disconnect; members see where the brand's pages go.
+
+If the check fails, a toast says why:
+
+| The toast says | What to do |
+|---|---|
+| WordPress refused the user or the Application Password | Check the user name, and paste the Application Password, not the user's own password. |
+| There's no WordPress REST API at that address | Check the address. In WordPress, set **Settings → Permalinks** to anything but **Plain**. |
+| Application Passwords are turned off | Update WordPress to 5.6 or later. A security plugin may turn them off: allow them. WordPress also turns them off when it doesn't see its own https, behind a proxy or a CDN: ask your host. |
+| The server didn't pass the sign-in on | Save **Settings → Permalinks** once, or ask your host to pass the `Authorization` header. On Apache: `SetEnvIf Authorization "(.*)" HTTP_AUTHORIZATION=$1` in `.htaccess`. |
+| The site hides its users | A security plugin hides users from the REST API. Let signed-in users reach `/wp-json/wp/v2/users/me`. |
+| The site refused the request | A firewall or a security plugin blocks the REST API. Allow it. |
+| The site sends `/wp-json/` on to another address | Use the address it goes to, with or without `www`. If it isn't a WordPress site, there's no WordPress there to connect. |
+| This user can't write posts | Use an Author, an Editor or an Administrator. |
+
+Each brand connects its own site. **Change sign-in** takes a new password, user or site address, and revokes the old Application Password where the site allows it. After a switch to another site, pages sent again make new posts there, and posts on the old site are no longer checked. **Disconnect** removes the sign-in, and revokes the Application Password where the site allows it (WordPress 5.7 and later); when it can't, the toast says to delete it in WordPress under **Users → Profile**. Posts already sent stay in WordPress. If WordPress refuses the saved sign-in (the password revoked, or the user removed), the card says **Sign-in refused** and asks for a new password.
+
+<Note>
+**Self-hosting:** WordPress sign-ins are encrypted with `CONNECTOR_CREDENTIALS_KEY` on the API server, the same key as the product catalog's store connections: 32 bytes in base64 (`openssl rand -base64 32`). Without it, the card says WordPress isn't set up, and pages go to Webflow or your workflow only. Changing the key makes saved sign-ins unreadable until they're entered again. The API server reaches the site over public https.
+</Note>
+
+## Connect Framer
+
+1. In Framer, open the project's **Site Settings → General** and make an **API key**. The key works as the user who makes it, so make it as a user who can edit the CMS, and copy it.
+2. In GetCito, open **Settings → Integrations** with the brand selected. In the **Framer** card, paste the **Project address** as your browser shows it in Framer (`https://framer.com/projects/…`), or the project's id, and the **API key**, and click **Connect**.
+3. Pick the **collection** your pages go to, then which of its fields takes what:
+
+   | Part of the page | Framer field type | |
+   |---|---|---|
+   | Title | Plain text | Required |
+   | Page content | Formatted text | Required |
+   | Meta title | Plain text | Optional |
+   | Meta description | Plain text | Optional |
+   | JSON-LD (structured data) | Plain text | Optional |
+
+   GetCito suggests the fields: the title goes to the field the collection's slugs are made from when it's plain text, the page content to a formatted text field named like Content or Body, else the first one, and the rest by their names. Change them if they're wrong, and **Save**. A required text field must take the title, page content, meta title or meta description (not JSON-LD), or **Save** stays off. Only the project's own collections are listed: a plugin's collections can't be written to. A collection with a required field Send to CMS can't fill (an image or a date, say), or with no plain text field for the title or no formatted text field for the page, is marked in the list and can't be saved. Make that field optional in Framer, or add the missing one, first.
+4. To use the JSON-LD field, put it inside a `<script type="application/ld+json">` tag on the collection's page in Framer.
+
+Before anything is kept, GetCito opens the project with the key. The API server encrypts the key before it's kept in GetCito's database, and it's never shown again. Framer doesn't say whether the key's user can edit the CMS, so a key that can only view the project shows up at the first send. Only **admins and managers** can connect Framer, pick the collection, replace the key or disconnect; members see where the brand's pages go.
+
+Each brand connects its own project. **Replace key** takes a new key (the collection and fields stay when it's the same project). **Disconnect** removes the key from GetCito. Framer has no way for GetCito to revoke a key, so delete it in the project's **Site Settings → General** too. If Framer refuses the saved key, the card says **Key refused** and asks for a new one.
+
+<Note>
+**Self-hosting:** Framer's API keys are encrypted with `CONNECTOR_CREDENTIALS_KEY`, as WordPress sign-ins are. The API server needs Node.js 22 or later (the Docker image runs 24) and reaches Framer at `wss://api.framer.com`. Framer's client prints its own warnings to the console; set `FRAMER_API_LOG_LEVEL=silent` to quiet it. Without `CONNECTOR_CREDENTIALS_KEY`, the card says Framer isn't set up. Changing the key makes saved keys unreadable: the card says **Key refused** until a new one is entered.
+</Note>
+
+## Connect Wix
+
+1. In Wix, the site's owner makes an API key: open **Account Settings → API Keys Manager**, click **Generate API Key**, name it (`GetCito`, for example), pick the site, give it the permissions below, and copy the key. It's shown once.
+   - **Manage Blog** (under **Wix Blog**): to write the draft posts.
+   - **Manage Ricos Document** (under **Ricos**): Wix's converter, which turns the page into the post's text.
+   - **Read Members** (under **Members**), only while the Blog has no post: to find a member to write the posts. Or write one post on the Blog first.
+2. The site's id is the long code after `manage.wix.com/dashboard/` in the address of the site's dashboard.
+3. In GetCito, open **Settings → Integrations** with the brand selected. In the **Wix** card, paste the **Site id** (or the whole dashboard address) and the **API key**, and click **Connect**.
+
+The site needs the **Wix Blog**: pages go there as draft posts. Before anything is kept, GetCito opens the site's Blog with the key, tries Wix's converter on a line of text (nothing is written to the site), and finds the member the posts are written by: the author of the Blog's newest post, else the site's first member. A Blog with no post and a site with no member can't be connected yet: write one post on the Blog as the site's owner first. The API server encrypts the key before it's kept in GetCito's database, and it's never shown again. Only **admins and managers** can connect Wix, replace the key or disconnect; members see where the brand's pages go.
+
+If the check fails, a toast says why:
+
+| The toast says | What to do |
+|---|---|
+| Wix refused the API key | Check that you pasted the whole key, and that it's for this site. |
+| The API key isn't allowed to write the site's Blog | Give the key **Manage Blog** (under **Wix Blog**) in the API Keys Manager. |
+| The key needs the Ricos permission | Add **Manage Ricos Document** to the key in the API Keys Manager, then connect again. |
+| This site has no Wix Blog | Add the Blog to the site in Wix first. |
+| Wix needs a site member to own the posts | Write one post on the Blog as the site's owner, then connect again. |
+
+Each brand connects its own site. **Change API key** takes a new key, or another site. **Disconnect** removes the key from GetCito. Wix has no way for GetCito to revoke a key, so delete it in the **API Keys Manager** too. Posts already sent stay in Wix. If Wix refuses the saved key, the card says **API key refused** and asks for a new one.
+
+<Note>
+**Self-hosting:** Wix API keys are encrypted with `CONNECTOR_CREDENTIALS_KEY`, as WordPress sign-ins are. Without it, the card says Wix isn't set up. Changing the key makes saved keys unreadable: the card says **API key refused** until a new one is entered. The API server reaches Wix at `https://www.wixapis.com`.
+</Note>
+
+## Set up your workflow
+
+1. Open **Content → Opportunities → Webhook Settings**.
+2. Enter your workflow's webhook URL.
+3. Set a **Secret key**. GetCito sends it with every request, signs each page with it, and your workflow needs it to report where a page went live.
+4. Tick **Content page sent**. It is off by default, so a workflow built for opportunities doesn't receive pages it doesn't expect.
+5. Save.
+
+Only **admins and managers** can send pages.
+
+## Choose where pages go
+
+Once the brand's Webflow collection is ready, its WordPress site is connected, its Framer collection is ready or its Wix site is connected, the Send dialog offers them beside **Your workflow**: Webflow, WordPress, Framer, Wix, then your workflow. Your choice, and where you last sent, is remembered for the brand in your browser. With nothing remembered, or the one remembered no longer connected, the first one ready is picked.
+
+A CMS connected but not ready shows but can't be picked, with what to fix, so a page doesn't go to your workflow unnoticed. Webflow isn't ready when its token is refused or no collection is picked; WordPress isn't ready when its sign-in is refused; Framer isn't ready when its key is refused or no collection and fields are picked; Wix isn't ready when its key is refused. If you chose that CMS before, the page goes to your workflow, never to another CMS.
+
+If the dialog can't check Webflow, WordPress, Framer or Wix just then, it leaves that one out. If you chose it before, the page goes to your workflow and the dialog says so, with **Try again**.
+
+## Send one page
+
+- **From the editor:** click the paper-plane icon in the header. **Before you publish** opens first only when it has something to ask about: Trust under 60, something missing (an author, placeholders, alt text, broken links) or checks still being read. Check it and click **Continue to send**. Its JSON-LD is folded away here; **Show the JSON-LD** opens it for a CMS that doesn't add one.
+- **From the Library:** open a row's **…** menu and pick **Send to CMS**.
+
+The dialog fills the fields from the page, and you can change them before sending:
+
+| Field | Filled from |
+|---|---|
+| **Slug** | The live page's address for an optimized page, else the title: without a leading "the" or "a", cut at a word near 60 characters, never ending on a word such as "to" or "across". Letters, digits, dots, `-` and `_`, up to 200 characters. |
+| **Meta title** | The title. A long one gives its first part when it has one ("AEO tools compared side by side for marketing teams: a 2026 guide to the best" gives "AEO tools compared side by side for marketing teams") and that says enough, else it's cut at a word near 60 characters, never ending on a word such as "to" or "across". |
+| **Meta description** | The page's first paragraph. |
+
+The slug and meta you send are kept on the draft, so the next send starts from them.
+
+**To Webflow**, the page becomes a draft item in the collection. Sending it again **updates** the same item (a new one is made if it was deleted in Webflow, or after you switch collections); a live item's changes wait for your next publish in Webflow. The item's slug is the page's slug in the form Webflow takes: lowercase letters, digits, `-` and `_`, with accents dropped and dots turned into `-`, so the live address can differ slightly from the slug in the dialog. Webflow's rich text has no tables and GetCito doesn't upload images yet, so:
+
+- a table goes as a list, one item a row ("Header: cell · …");
+- images aren't sent: add them in Webflow;
+- a meta description left empty goes as the page's opening words.
+
+The toast says whether the item was made or updated, and what changed on the way.
+
+Once you publish it in Webflow, the page becomes **Published** at its address on your site: `/{collection}/{slug}` on the custom domain the site was last published to, or on its `webflow.io` address when it has none. GetCito checks when you open the Library and once a day, for sends from the last 60 days. A page published in Webflow later than that stays "In Webflow as a draft item"; sending it again starts the check over. A page sent again stays sent until Webflow publishes it again, and a page whose item you deleted in Webflow reads "Removed in Webflow"; send it again to make a new item.
+
+**To WordPress**, the page becomes a draft post on the site, written by the connected user: the title, the slug, the page as its content, and the meta description as its excerpt.
+
+- The meta title isn't sent. Set it in your SEO plugin (Yoast, Rank Math…).
+- JSON-LD is left out: WordPress keeps a `<script>` only for users allowed unfiltered HTML, and shows the others' as text in the post. Add schema with your SEO plugin.
+- Tables go as tables. Images keep their addresses: GetCito doesn't upload them to your Media Library.
+- No featured image or category is set: pick them in WordPress.
+- WordPress may adjust the slug: lowercase, accents dropped and dots turned into `-`. If another post has it when the post is published, WordPress adds `-2` (or the next free number).
+
+Sending the page again **updates** the same post while it's still a draft or pending review. WordPress has no draft of a published post: whatever is written to it goes live at once. So a page whose post is published, scheduled or private goes as a **new draft post**. Move the text over in WordPress; published as it is, its slug gets `-2`. A post in the trash, or deleted, gets a new one.
+
+The toast says whether the draft post was made or updated, whether the post was already published or scheduled, and when JSON-LD was left out.
+
+Once you publish the post in WordPress, the page becomes **Published** at the post's address. GetCito checks when you open the Library and once a day, for sends from the last 60 days. A post published later than that stays "In WordPress as a draft post"; sending the page again then makes a new draft post, as for a published one. A post moved to the trash or deleted reads "Removed in WordPress"; send the page again to make a new post. A site that stops answering as WordPress (moved, or its permalinks set to Plain) closes nothing.
+
+**To Framer**, the page becomes a **draft item** in the collection, so it stays off the site until you publish it in Framer: the title, the slug, the page as formatted text, and the meta title, meta description and JSON-LD in the fields you picked.
+
+- Tables go as tables. Images aren't sent yet: add them in Framer.
+- A meta description left empty goes as the page's opening words. A JSON-LD field is emptied when the page has none.
+- The item's slug is the page's slug with lowercase letters, digits and `-`: accents are dropped, and dots and `_` turned into `-`, so the live address can differ slightly from the slug in the dialog.
+- Another item in the collection with the same slug stops the send: change the page's slug, or that item's. If the page has no item there yet and that item is a draft with the page's title, it's taken as the page's own (a send cut off before it finished) and updated.
+
+Sending the page again **updates** the same item and keeps its state: a draft stays a draft, and a published item's changes go live with your next publish of the site. A new item is made if the item was deleted in Framer, or after you switch collections.
+
+The toast says whether the item was made or updated, how many images were left out, and, for an item that isn't a draft, that the change goes live with your next publish of the site.
+
+Once you take the item out of draft and publish the site, the page becomes **Published** at its address: the site's address and the path of the collection's page in Framer, with the item's slug (`/blog/{slug}`, for example). GetCito checks when you open the Library and once a day, for sends from the last 60 days. An item changed in Framer after the site's last publish waits for the next one, and a page sent again stays sent until the site is published again. An item published later than 60 days stays "In Framer as a draft item"; sending the page again starts the check over. A collection with no page in Framer gives its items no address, so they don't become Published. A page whose item you deleted in Framer reads "Removed in Framer"; send it again to make a new item.
+
+**To Wix**, the page becomes a **draft post** on the site's Blog, written by the connected member: the title, the slug, the page as the post's text, the meta description as its excerpt, and the meta title, meta description and JSON-LD as the post's SEO settings.
+
+- Images aren't sent: Wix shows only images in its Media Manager. Add them in Wix; the toast says how many stayed out.
+- Wix turns the page into its own rich text: headings, lists, links, tables and code go as they are.
+- No cover image or category is set: pick them in Wix.
+
+Sending the page again **updates** the same post. A published post keeps a draft version in Wix: sending the page again writes that draft, and the post people read stays as it was until you publish the changes in Wix. A post deleted in Wix gets a new one. Sending again replaces the post's text, so images you added to it in Wix are removed: add them after your last send.
+
+Once you publish the post in Wix, the page becomes **Published** at the post's address. GetCito checks when you open the Library and once a day, for sends from the last 60 days. A published post whose changes from a later send aren't published yet waits until they are. A post deleted in Wix reads "Removed in Wix"; send the page again to make a new post.
+
+The page goes as **Export** makes it: the HTML without its H1 (your CMS's title field carries it), with the byline line if your brand adds the byline to its content. GetCito holds the send while:
+
+- a placeholder such as `[figure, source]` is still open: **Fill now** selects the first one, in the page or, when it's in an image's alt text, the JSON-LD or an HTML block, in the HTML view. The editor's toolbar counts those left and steps through them;
+- the page has no title, or nothing under its title;
+- the slug can't be used.
+
+## Send several pages
+
+In the **Library**, tick the rows to send (up to 25 at once) and click **Send to CMS** in the bar above the table. The dialog lists each page as **Ready**, or says why it can't go. A page that can't go is left out; fix it in the editor. Each page goes with the slug and meta of its last send, or the page's own.
+
+The pages are sent one after another in the background, with a short pause between them so your CMS isn't flooded. The dialog follows them and says how many went, and you can close it at any time: the Library keeps following them. Very long pages go in more than one request, each once the one before has gone; closing the dialog while one waits stops the rest, and it says how many didn't go.
+
+A workspace can send **200 pages in 24 hours**, to Webflow, WordPress, Framer, Wix and your workflow together. A page already on its way to Webflow, WordPress, Framer or Wix can't be sent there again until it has gone. To WordPress, a page whose post is published or scheduled goes as a new draft post, as for one page. To Framer, a page whose item isn't a draft is updated there, and the change goes live with your next publish of the site. To Wix, a page whose post is published updates the post's draft version, as for one page.
+
+## See how a send went
+
+Beside each row's status, the Library shows its last send:
+
+| Icon | Meaning |
+|---|---|
+| Clock | On its way. |
+| Paper plane | Your workflow took it (it answered with a 2xx status), it's a draft item in Webflow or Framer, or it's a draft post in WordPress or Wix. |
+| Red warning | It failed. Hover it to see what your workflow answered or reported, or why it couldn't be reached. |
+| Blue link | Published. Click it to open the live page. |
+
+To list only some of them, use the **Last send** filter beside **Created**: **Never sent**, **Sending**, **Sent**, **Failed** or **Published**. It shows once a page of the brand has been sent. The filter is kept in the page's address (for example `?sent=failed`), and **Export** exports the rows it lists.
+
+## Build the workflow
+
+Every workflow has the same three steps:
+
+1. **Receive** the `content_draft.sent` package with a webhook trigger. Check the `X-Webhook-Secret` header, or the `X-GetCito-Signature` header, against your secret.
+2. **Create** the post in your CMS from `page`, for example:
+
+   | CMS field | Package field |
+   |---|---|
+   | Title | `page.title` |
+   | Body / content | `page.html` |
+   | Slug | `page.slug` |
+   | SEO title | `page.metaTitle` |
+   | SEO / meta description | `page.metaDescription` |
+   | Author | `page.author` |
+   | Featured image | `page.featuredImage.src` (alt text in `page.featuredImage.alt`) |
+   | Schema / head code | `page.jsonLd` |
+
+   Create it as a **draft** if someone should review it in the CMS first. When `page.method` is `optimize`, the page was made from the live page at `page.sourceUrl`: update that post instead of creating a new one.
+3. **Report** how it went: when the post is published, send `POST` to the package's `callback_url` with `{ "status": "published", "url": "https://www.example.com/blog/pour-over" }` and your secret in the `X-Webhook-Secret` header. If your CMS refused it, send `{ "status": "failed", "reason": "…" }` instead.
+
+   If the post is published later, run this step from your CMS's "post published" trigger. Keep the package's `delivery.id`, or the `callback_url` itself, with the post so the trigger can find it.
+
+Answer the webhook quickly, within 15 seconds, and do slow work afterwards. GetCito sends each page once and doesn't retry, so a failed send is sent again from the Library.
+
+<Tip>
+**n8n:** Webhook node → your CMS node (WordPress, Webflow, Ghost…) or an HTTP Request node → HTTP Request node to `{{$json.body.callback_url}}`.
+
+**Make:** Custom webhook → your CMS module → HTTP "Make a request" module to the callback URL.
+
+**Zapier:** Webhooks by Zapier "Catch Hook" → your CMS action → Webhooks by Zapier "POST" to the callback URL.
+</Tip>
+
+The package's fields, the signature and the callback are described in [Webhooks](/api-reference/webhooks).

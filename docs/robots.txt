@@ -1,0 +1,129 @@
+# ============================================
+# GetCito Docs Robots.txt
+# ============================================
+
+# Add the absolute sitemap URL after choosing a documentation host.
+
+User-agent: *
+Disallow: /cdn-cgi/
+Disallow: /_next/
+Allow: /_next/image
+Allow: /
+
+# --------------------------------------------
+# OpenAI
+# --------------------------------------------
+
+User-agent: GPTBot
+Allow: /
+
+User-agent: OAI-SearchBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+# --------------------------------------------
+# Google
+# --------------------------------------------
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Google-Extended
+Allow: /
+
+User-agent: GoogleOther
+Allow: /
+
+# --------------------------------------------
+# Microsoft / Copilot
+# --------------------------------------------
+
+User-agent: Bingbot
+Allow: /
+
+User-agent: AdIdxBot
+Allow: /
+
+# --------------------------------------------
+# Anthropic
+# --------------------------------------------
+
+User-agent: ClaudeBot
+Allow: /
+
+User-agent: Claude-SearchBot
+Allow: /
+
+User-agent: Anthropic-ai
+Allow: /
+
+# --------------------------------------------
+# Perplexity
+# --------------------------------------------
+
+User-agent: PerplexityBot
+Allow: /
+
+User-agent: Perplexity-User
+Allow: /
+
+# --------------------------------------------
+# Apple
+# --------------------------------------------
+
+User-agent: Applebot
+Allow: /
+
+User-agent: Applebot-Extended
+Allow: /
+
+# --------------------------------------------
+# Common Crawl
+# --------------------------------------------
+
+User-agent: CCBot
+Allow: /
+
+# --------------------------------------------
+# Exa
+# --------------------------------------------
+
+User-agent: ExaBot
+Allow: /
+
+# --------------------------------------------
+# Firecrawl
+# --------------------------------------------
+
+User-agent: FirecrawlAgent
+Allow: /
+
+# --------------------------------------------
+# Amazon
+# --------------------------------------------
+
+User-agent: Amazonbot
+Allow: /
+
+# --------------------------------------------
+# Meta
+# --------------------------------------------
+
+User-agent: Meta-ExternalAgent
+Allow: /
+
+# --------------------------------------------
+# ByteDance
+# --------------------------------------------
+
+User-agent: Bytespider
+Allow: /
+
+# --------------------------------------------
+# You.com
+# --------------------------------------------
+
+User-agent: YouBot
+Allow: /

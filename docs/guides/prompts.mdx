@@ -1,0 +1,323 @@
+---
+title: "Prompts"
+description: "Manage tracked prompts, read their estimated AI search volume, and turn a prompt into content."
+---
+
+## Four tabs
+
+The **Prompts** page (`/dashboard/prompts`) has four tabs. The **Prompts** item in the sidebar opens onto the same views: Tracked Prompts, Prompt Suggestions, Topics, Query Fan-outs and Insights.
+
+- **Prompts** — your prompt list. A switch above the filters picks **Tracked Prompts** (`/dashboard/prompts/tracked`) or **Prompt Suggestions** (`/dashboard/prompts/suggestions`)
+- **Topics** (`/dashboard/prompts/topics`) — your tracked prompts grouped by theme
+- **Query Fan-out** (`/dashboard/prompts/fan-outs`) — the searches AI engines ran behind their answers. Copilot and Perplexity share them when they search; ChatGPT's are sampled one day a week for each prompt (see [ChatGPT fan-out](#chatgpt-fan-out))
+- **Insights** (`/dashboard/prompts/insights`) — estimated AI search volume, intent and the highest-demand prompts
+
+The date range (24h, 7d, 30d, 90d or custom) applies to Prompts, Topics and Query Fan-out, and carries over when you switch tabs. Insights has no range: volume estimates aren't tied to a period.
+
+## Topics
+
+Topics is a tab of the Prompts page. The old `/dashboard/topics` address, and a topic's old `/dashboard/topics/<id>` page, redirect to `/dashboard/prompts/topics`. The tab uses the page's date range and opens on the last 24 hours. It has no Location selector, because topics aren't split by location.
+
+To delete a topic, admins and managers open the **…** menu at the end of its row and choose **Delete topic**: its prompts aren't deleted but keep their tracking and results as prompts without a topic, and the delete can be undone for 10 seconds.
+
+What each column means, and how to use topics for planning, is in the [Topics](/guides/topics) guide.
+
+## Query Fan-out
+
+The Query Fan-out tab lists the searches an AI engine ran before it answered, as they came with the answers tracking stores. Google AI Overviews, AI Mode and Gemini don't share them.
+
+### ChatGPT fan-out
+
+ChatGPT's default interface stopped sharing its searches on 30 September 2026. Its older desktop interface still shares them, but asking for them costs extra on every ChatGPT answer, and our data provider calls that interface temporary. So each prompt's ChatGPT answer in the nightly run asks for its searches one day a week, on the same weekday every week, with prompts spread across the week. That day's answer is the one tracked as usual: nothing runs twice. A run you start yourself, or a new prompt's first run, doesn't ask.
+
+Over 7 days or more, every prompt tracked daily has had its day. A 24-hour range shows only the prompts whose day it was. Not every ChatGPT answer has searches even then, because ChatGPT doesn't search for every prompt.
+
+Self-hosted instances turn this on with `CLORO_CHATGPT_FANOUT` (off unless set; see [Environment variables](/self-host/env-variables)). The extra cost is per ChatGPT task, and a prompt has one task per location: a prompt tracked in 3 locations pays it 3 times on its day. The day is the UTC day the nightly run starts, so with a schedule close to midnight UTC a prompt can be asked 0 or 2 times in a week.
+
+### API models' fan-out
+
+A prompt tracked with an OpenAI model (an AI model, not the ChatGPT platform) shares the searches that model ran, from the same answer: they show as **ChatGPT API**, at no extra cost. The model doesn't search for every prompt, so some answers have none. We don't capture Claude and Gemini models' searches yet.
+
+## Adding prompts
+
+Three ways:
+
+1. **Manual** — click `+ Add prompt`. On the **Single** tab, type the query and pick its topic, platforms, AI models and location
+2. **Bulk import** — the **Bulk import** tab of the same dialog takes a list of prompts, one per line
+3. **Prompt Suggestions** — add one suggestion with `+`, or every listed one with **Add All** (see below)
+
+## Prompt status
+
+Each row in **Tracked Prompts** has a status:
+
+- **New** (amber) — added in the last 24 hours. New prompts lead the table until you sort by a column; after a day they read as Active.
+- **Active** — tracked on its schedule.
+- **Paused** — kept, but not tracked.
+
+A new prompt has no results until it's first asked. **Add prompt** and **Bulk import** start analyzing new prompts right away when they can; a prompt added from Prompt Suggestions, or one whose analysis couldn't start, gets its first results with the next daily run. Until then, for its first two days, the row says **Within 24h** in its first figure column, such as Visibility (**Paused** for a paused prompt when the Status column is hidden). An older prompt with no results in the range, such as days without a run, shows a dash, as does a range that ended before today.
+
+The table opens on Active + New. The **Status** filter, or the cards above the table, show one status or all of them. The **Added** column shows when each prompt was added; click it to sort by it. **Track** on a suggestion in the Brand Visibility page's Opportunities opens Tracked Prompts in a new tab, with the new prompts on top.
+
+Click a prompt's text to open its own page, with its visibility, mentions, citations and per-platform results.
+
+## Columns
+
+**Columns**, beside the search box, picks the table's columns: tick one to show or hide it, and drag it (or use its arrows) to move it. **Prompt** always shows. Your columns are saved for you on this brand; nobody else's table changes.
+
+Admins and managers can tick **Share with everyone on <brand>**: their columns become the brand's view, which everyone without columns of their own sees. Anyone can still change their own, and **Reset** goes back to the brand's view, or to the default columns when the brand has none.
+
+### Location columns and the Locations view
+
+A prompt tracked in several locations (countries or US states) has figures for each one. In **Columns**, **Add a location column** adds a metric in one location, such as *Visibility · Türkiye*, as its own column.
+
+**View: Table | Locations**, above the table, switches to the **Locations** view:
+
+- one row per prompt and one column per location your prompts track, the most-tracked first (12 at most);
+- **Visibility**, **Position**, **Mentions** or **Citations**, shaded light to dark as in Brand Visibility's Topics vs competitors (for Position, named earlier is darker);
+- an **All prompts · average** row, and a **Gap** column: the best location minus the worst, for the metric shown;
+- three cards: the weakest location, the strongest one, and the prompt that differs most between locations.
+
+Click a cell to open the prompt's Positions panel for that location. A location the prompt isn't tracked in shows **+ Track** for admins and managers. The date range and filters work as in the table, and a location's numbers equal the table filtered to it.
+
+### Adding locations
+
+**+ Add location** in the Locations view, **+ Track** in a cell, or **Locations › Add locations** in the bar that shows when you select prompts opens **Track in more locations**:
+
+1. Pick one or more countries, US states or cities (50 major cities). The countries are the ones the AI engines answer from, read from the tracking provider every day: a country one engine doesn't answer from says so ("not on Copilot"), and that engine is skipped there while the others run.
+2. Choose which prompts to ask there: the one you clicked, the selected ones, a topic, or every prompt shown.
+3. Check **Plan usage**. Every prompt in every location counts once on your plan's prompt locations; for example, 50 prompts in two more places use 100 more. Paused prompts don't count.
+
+**US states** are asked by every engine from the state itself: ChatGPT, Perplexity, Copilot and Gemini through the provider's state setting, Google AI Mode and Google AI Overview by the state's name as Google knows it ("California, United States"), and the API models (OpenAI, Claude) by its region. Google's engines asked a state country-wide until October 2026: their answers from before then stay in the country's column.
+
+**Cities** are asked by the engines that can answer from a city: Google AI Mode, Google AI Overview and the API models (OpenAI, Claude). ChatGPT, Perplexity, Copilot, Gemini and Grok answer per country, so they skip a city, and their answers stay in the country's column; track the country too to see them. A city column in the Locations view says *AI Mode · AIO · APIs*. A city counts as one location on your plan, like a country, on every plan. If none of the chosen prompts runs one of those engines, the dialog says so and adds nothing.
+
+If the choice would pass your plan's limit, the dialog says how many it needs and how many are left, and saves nothing. Pick fewer prompts or places, or:
+
+- **Starter**: upgrade, or contact us for a custom plan;
+- **Growth**: contact us for a custom plan;
+- **Enterprise**: contact us to raise your limit.
+
+A location you just added has no answers yet. Until the next daily run asks it, its cells (in the Locations view and in a location column) say:
+
+- **Within 24h**: it's tracked there, and the first results come with the next daily run (**Arriving now** while a new brand's first tracking runs: that tracking is asking it);
+- **Paused**: the prompt is paused, so it isn't asked anywhere until you resume it;
+- **No engine here**: none of the prompt's engines answers from that place; add an engine that does, or [remove the location](#removing-locations).
+
+**Within 24h** shows while the prompt is new (added in the last two days) or has answers in another location in the range. An older prompt with no answers anywhere in the range, such as days without a run, shows a dash.
+
+When your plan's prompt locations are used up, **+ Track** reads **Limit reached**. It still opens the dialog, which shows your plan's way to track more.
+
+### Removing locations
+
+To stop asking prompts from a place, open the same dialog in **Remove** mode:
+
+- in the Locations view, the **…** menu on a location's column › **Stop tracking in** *location*, for the prompts shown (or the selected ones);
+- the **×** that shows when you point at a tracked cell (**Stop tracking here**), for that one prompt, when it's tracked somewhere else too;
+- **Locations › Remove locations** in the bar that shows when you select prompts;
+- or **Remove** at the top of **Track in more locations**.
+
+Pick the locations to stop (the ones the prompts you choose track, with how many of them track each) and the prompts, as when adding. The dialog shows how many tracked locations it removes and how many it frees on your plan; a paused prompt's locations go too, but free nothing, because paused prompts don't count.
+
+A prompt needs at least one location, so one tracked only in the locations you stop keeps them, and the dialog says how many do. The rest change.
+
+Past results stay: the prompt is no longer asked there from the next daily run, and the answers already collected there aren't deleted. When no prompt shown is tracked in a location any more, its column leaves the Locations view.
+
+## Performance
+
+The **Performance** filter groups prompts by where your brand is named in their AI answers over the selected range, across every platform the prompt tracks:
+
+- **Best** — named in the first third of the brands an answer lists
+- **Good** — named in the middle third
+- **Late** — named in the last third
+- **Missing** — named in fewer than half the answers
+
+Late and Missing list the furthest behind first. A prompt with no answers in the range, such as a new one, has no performance yet. The dots in the **Positions** column show each platform on its own.
+
+## Prompt Suggestions
+
+Open **Prompts → Prompt Suggestions**. Each refresh writes up to 25 prompt ideas, each with a topic label and a one-line reason. They come from four sources, and the **Source** filter shows one at a time:
+
+- **GetCito Agents** — written by AI from your brand and tracking data. Each shows an estimated monthly AI volume as a grey range (see [Estimated AI search volume](#estimated-ai-search-volume)).
+- **Google Search Console** — queries people already search, with their impressions a month.
+- **Google Analytics (GA4)** — pages that earn revenue or conversions, or already get AI visits, with that evidence on the row.
+- **Your catalog** — for an online shop with a product catalog, the questions a shopper asks before buying in its categories, using their price bands ("best hiking backpacks under $150"). Hover the badge for the category; the **Shopping** filter lists them.
+
+When Search Console or Analytics is connected, a share of each refresh is drawn from their data, and a few shopping questions from the catalog when the brand has one. Use **Search prompts…** to narrow the list, `+` to add a suggestion, `×` to dismiss it and **New** to generate a fresh list. **Clear All** dismisses the AI suggestions listed; Search Console and Analytics suggestions are kept, so dismiss those one by one.
+
+### Add All
+
+**Add All** adds every suggestion listed to Tracked Prompts, and the added ones leave the list. Like Clear All, it acts on what's listed, so a source filter or a search narrows it. Each prompt passes the same plan check as a single `+`.
+
+When your plan's prompt limit stops it partway, an amber note sits above the list, for example:
+
+> **15 suggestions couldn't be added**
+> 10 were added before your plan's prompt limit was reached. Upgrade your plan, or pause 15 prompts in Tracked Prompts first and try again.
+
+On Growth and Enterprise the note says "Contact us to raise your limit" instead of "Upgrade your plan". **Go to Tracked Prompts** opens the list where you can pause prompts; the note's other buttons upgrade the plan or contact us. Pausing as many prompts as the note names frees enough room for the rest. Self-hosted installs have no prompt limit, so everything listed is added.
+
+### How AI suggestions are written
+
+The suggestion engine considers five signals:
+
+1. Brand context (name, description, language)
+2. Existing tracked prompts (so it doesn't duplicate)
+3. Existing topics (so it reuses your topic labels when relevant)
+4. Top 12 competitors cited in your last 200 tracked AI responses
+5. The estimated volumes of your tracked prompts (so its own estimates stay in proportion)
+
+<Tip>
+Suggestions have a 48-hour TTL. Click **New** to regenerate when you've made content changes or want fresh ideas.
+</Tip>
+
+## Estimated AI search volume
+
+AI assistants don't publish how often people ask them something, so every AI search volume in GetCito is an **estimate**. It is shown as a range, such as **540–2k**, never as a single number, and carries a dashed **Estimate** badge.
+
+### How it's estimated
+
+The method note reads:
+
+> The median monthly Google searches for this prompt's related keywords × the share of Google searches that now get an AI answer (45%).
+
+- When a prompt's volume is analyzed, GetCito picks five short Google keywords for its category and reads their monthly Google searches. Keywords Google has no data for are left out, and the median of the rest is the prompt's Google volume (**Google Vol.**).
+- The share of Google searches that get an AI answer is 45% by default. The Insights tab shows it as **AI Adoption Rate**; a self-hosted server can change it with `AI_VOLUME_MULTIPLIER` (see [Environment variables](/self-host/env-variables)).
+- The range is the AI share of the middle half of the keywords, kept within half to twice the estimate and at least 25% either side of it. With only one keyword to go by, the range is half to twice the estimate.
+
+### Confidence
+
+| Confidence | When |
+|---|---|
+| **High** | At least 3 of the prompt's keywords have Google search data, and the middle half of them are within 4× of each other |
+| **Medium** | At least 2 have data, within 15× of each other |
+| **Low** | Anything else, including an estimate of 0 |
+
+Volumes fetched over six months ago count one level less; **Refresh Volumes** on the Insights tab gets newer ones.
+
+A low-confidence estimate is grey, its badge reads **Estimate · low confidence**, and it isn't used to rank on its own: **High Opportunity Prompts** leaves it out, and sorting Tracked Prompts by **Volume** puts it after the confident estimates, before prompts with no volume.
+
+### Reading a range
+
+Hover or focus a range or its badge (it is keyboard-reachable) to open the method note. It says how the estimate was built, how many of the related keywords have Google search data, the sources and their month, and the confidence with its date.
+
+**Measured numbers never carry the badge** — for example your visibility, mentions and citations, Search Console clicks and impressions, or a suggestion's Analytics sessions. If a number has no Estimate badge, it was counted, not estimated.
+
+Some estimates are built differently, and their note says so:
+
+- **Totals and averages** (Insights' **Total Est. AI Volume** and **Avg. AI Volume**, Similar Topics' **Est. AI Volume**) — the sum of the lows to the sum of the highs. The total is high-confidence when at least 80% of its volume is high-confidence, low when more than half is low-confidence, and medium otherwise. The note gives the mix, such as "2 high, 3 medium, 1 low".
+- **One keyword** (each row of Similar Topics) — the keyword's Google volume is measured and only the AI share is assumed, so it is Medium with a ±25% range (Low without volume data, or over six months old).
+- **An AI's guess** (Prompt Suggestions from GetCito Agents, and the Brand Visibility page's Opportunities) — no keyword behind it is measured yet, so it is always Low: grey, half to twice the guess. Track the prompt to get an estimate from its keywords' Google searches.
+
+### Where you see estimates
+
+- **Tracked Prompts** — the **Volume** column
+- **A prompt's page** — an **AI searches a month** card, when the prompt has a volume. The **Demand** card beside it is measured, not estimated (see [Real demand](#real-demand))
+- **Insights** — **Total Est. AI Volume**, **Avg. AI Volume**, the **Prompt Volumes** table's **Est. AI Vol.** column, **High Opportunity Prompts**, and the Prompt Volumes chart's tooltip
+- **Similar Topics** — the Insights card's **See all** page (`/dashboard/prompts/similar-topics`)
+- **Prompt Suggestions** — each AI suggestion's `/mo` range
+- **Outside Prompts** — the Action Center's affected prompts and topic opportunities, the Brand Visibility page's Opportunities, and a content opportunity's **Est. AI Volume**
+
+### Estimates in exports
+
+Exports mark estimated volumes, so a spreadsheet doesn't read them as counts:
+
+- **Tracked Prompts → Export CSV** adds `volume_type` (`estimate`), `volume_confidence`, `est_ai_volume_low`, `est_ai_volume_high` and `volume_date` after `est_ai_volume`. `est_ai_volume` stays the single point estimate that sorting and totals use.
+- **Action Center → Export CSV / Export Excel** gives the volume as a range, followed by `volume_type` and `volume_confidence`.
+- **A content opportunity's Copy All Data and exports** give **Est. AI volume** as a range, with **Volume type** and **Volume confidence**.
+- The [MCP server](/guides/mcp-server)'s `get_prompt_volumes` returns `est_ai_volume_low`, `est_ai_volume_high`, `volume_confidence` and `volume_type` with each row.
+
+## Real demand
+
+The estimate says how many AI searches a prompt might get. A prompt's page also shows whether people really ask it, under **Demand · is this asked for real?**: four measured signals, each with its source and the day it was read.
+
+| Signal | What it shows | Read |
+|---|---|---|
+| **Search Console** | Impressions and clicks over the last 28 days for your Google queries that match the prompt, how many queries matched and the most seen one | Every night |
+| **Google Trends** | A 12-month line for the prompt's keyword: **Rising**, **Steady** or **Falling**, and the change on a year ago | About once a week |
+| **People Also Ask** | The related questions Google shows for the keyword | About once a week |
+| **YouTube** | The views across YouTube's top videos for the keyword, and the most viewed one | About once a week |
+
+Google Trends, People Also Ask and YouTube are read for the keyword with the most Google searches in the prompt's [volume analysis](#volume-analysis-insights-tab), with its location and language, so a prompt needs its volume analyzed first. A query matches a prompt when most of its words are in the prompt, the same rule the Action Center uses for Search Console signals.
+
+<Note>
+The weekly reads (Google Trends, People Also Ask and YouTube) are off by default: each one is a paid DataForSEO task. A self-hosted server turns them on with `DEMAND_SIGNALS` (see [Environment variables](/self-host/env-variables)). Until then their cards say **Weekly reads aren't turned on yet**. Search Console is read every night either way.
+</Note>
+
+When a signal isn't there, its card says why: **Connect Search Console to see real clicks** (with a **Connect** button for admins and managers), a Search Console property to pick for the brand, the first sync still running, **Analyze volume first**, a keyword Google has no searches for, being read, or not read yet.
+
+**Track a question.** Each People Also Ask question has a **+ Track** button: one click adds it as a tracked prompt in the prompt's topic, within your plan's prompt limit. A question your brand already tracks, however it's written (case, accents and punctuation aside), shows **Tracked** instead and isn't added twice.
+
+### Demand level
+
+The signals read come to a **demand level**, shown in the prompt's KPI row as **Demand · High** with how many of the four signals were read, for example **3 of 4 signals**. It carries a **Measured** badge, never **Estimate**.
+
+Each signal read gives 2 points when it's strong, 1 when there is some, 0 otherwise:
+
+- **Search Console**: 1,000 impressions or more is strong, 100 or more is some
+- **Google Trends**: rising is strong, steady is some; falling or too little data gives nothing
+- **People Also Ask**: 4 questions or more is strong, 1 or more is some
+- **YouTube**: 100,000 views or more is strong, 5,000 or more is some
+
+The level is the share of the points the signals read could give: **High** at 60% or more with at least two signals read, **Medium** at 30% or more, **Low** below. A signal that was read and found nothing counts; one never read doesn't.
+
+### Demand and the Priority Score
+
+The level feeds the [Priority Score](/guides/action-center#the-priority-score) of the Action Center's actions about the prompt. **High** raises its demand to at least what about 2,500 monthly AI searches would give, **Medium** to about 160; **Low** leaves it as it is, because signals that found little don't prove nobody asks. When a prompt's level changes, the brand's open actions are scored again that night, and **Why this priority?** names a High or Medium level, for example *measured demand High*. Low isn't named, since it doesn't change the score.
+
+## Volume Analysis (Insights tab)
+
+Volumes come from an analysis you run: **Analyze Volumes** the first time, **Analyze New Prompts** for prompts added since, **Refresh Volumes** for newer Google data, and **Re-analyze Keywords** to analyze every prompt again, keywords included. Each analysis counts against a monthly quota on plans in cloud mode; the toolbar shows how many are left. Tracked Prompts also warns when some prompts haven't been analyzed yet.
+
+For analyzed prompts you'll see:
+
+- **Estimated monthly AI volume**, as a range with its confidence (above)
+- **Intent** — Comparison, How-to, What is, Best / Top, vs. / Review, Recommendation, Problem Solving or Other
+- **Similar Topics** — the most-searched keyword clusters across your prompts
+
+## Create content from a prompt
+
+Each row in **Tracked Prompts** has a **…** menu: Edit, Pause tracking, Improve position…, Suggest content, **Create content** and Delete.
+
+<Steps>
+  <Step title="Click Create content">
+    It opens **New content** at its Start step, titled with the prompt (for example **Create: best espresso machine for beginners**).
+  </Step>
+  <Step title="Pick a page type">
+    GetCito picks one from the title; change it if it's wrong. You can also change it later in the editor.
+  </Step>
+  <Step title="Check the overlap">
+    Start reads your pages AI already cites for the prompt. If one already answers it, you can choose **Optimize** that page instead of **Create a new page**.
+  </Step>
+  <Step title="Choose who does it">
+    **Me** opens the Content Editor, **Agent** writes a draft for you to review, and **Team** sends it to the Action Center.
+  </Step>
+</Steps>
+
+If a draft that isn't published yet already covers the prompt — one started from the prompt, its topic or an opportunity — the menu shows **Open draft** instead, so you don't start a second page.
+
+### From the Improve tab
+
+**… → Improve position…** opens the prompt's positions panel. Its **Improve** tab starts with a content step, decided from the answers in the panel's period:
+
+| What the answers show | Step |
+|---|---|
+| No answer mentions or cites your brand | **Create content** — start a new page |
+| Your brand is named in under 20% of the answers, with 5 or more answers | **Optimize content** |
+| Your average position is worse than #3, over 3 or more answers that name you | **Optimize content** |
+| Anything else | No content step |
+
+**Optimize content** opens Start on the page of yours AI engines cite most for the prompt. When none is cited, Start lists your pages that answer the prompt so you can pick one. When a draft already covers the prompt, the step offers **Open draft**.
+
+The tab's suggestions per platform are written from the answers' evidence and from this brand's last two Improve actions on the prompt for the same region: which of their suggestions were done or skipped, and how each platform moved since. They build on what moved, and don't suggest again what was done on a platform that didn't, or what your team skipped. An action sent less than a week ago is too early to tell either way. Only this brand's own actions are read.
+
+When the Action Center's **Analyze competitor content** has read the pages cited for the prompt in the last month, the tab's suggestions also see what Site Audit's checks found on them: which checks each competitor page passes, and which they have that your cited page doesn't. They build on what was seen there, not a guess.
+
+## Best practices
+
+- Aim for **20–80 active prompts** per brand. Below 20 you miss coverage; above 80 noise drowns insights.
+- Mix prompt types: comparison, how-to, best-of, recommendation, alternative, problem-solving
+- Read volumes as ranges: compare prompts by their confidence as well as their size, and prefer high-confidence estimates when you prioritize
+- Re-evaluate quarterly: archive prompts that consistently score 0 and bring nothing actionable
+
+<Card title="Continue: Citations" icon="arrow-right" href="/guides/citations">
+  See which third-party URLs AI engines trust to talk about your brand.
+</Card>

@@ -1,0 +1,134 @@
+{
+  "$schema": "https://mintlify.com/schema.json",
+  "name": "GetCito",
+  "logo": {
+    "light": "/logo/light.png",
+    "dark": "/logo/dark.png",
+    "href": "https://getcito.com"
+  },
+  "favicon": "/favicon.png",
+  "metadata": {
+    "og:title": "GetCito Docs",
+    "og:description": "Open-source AI Visibility & AI Search Optimization Platform \u2014 track ChatGPT, Gemini, Perplexity, Claude, Copilot brand mentions.",
+    "twitter:card": "summary"
+  },
+  "colors": {
+    "primary": "#003934",
+    "light": "#98ec65",
+    "dark": "#003934",
+    "anchors": {
+      "from": "#003934",
+      "to": "#008066"
+    }
+  },
+  "topbarLinks": [
+    {
+      "name": "Support",
+      "url": "mailto:support@getcito.com"
+    },
+    {
+      "name": "GitHub",
+      "url": "https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool"
+    }
+  ],
+  "topbarCtaButton": {
+    "name": "GetCito website",
+    "url": "https://getcito.com"
+  },
+  "anchors": [
+    {
+      "name": "GitHub",
+      "icon": "github",
+      "url": "https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool"
+    },
+    {
+      "name": "Changelog",
+      "icon": "list",
+      "url": "https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/releases"
+    }
+  ],
+  "tabs": [
+    {
+      "name": "Guides",
+      "url": "guides"
+    },
+    {
+      "name": "Self-host",
+      "url": "self-host"
+    },
+    {
+      "name": "API Reference",
+      "url": "api-reference"
+    }
+  ],
+  "navigation": [
+    {
+      "group": "Get Started",
+      "pages": [
+        "introduction",
+        "quickstart"
+      ]
+    },
+    {
+      "group": "Concepts",
+      "pages": [
+        "concepts/what-is-aeo",
+        "concepts/visibility-scoring",
+        "concepts/topics-and-prompts"
+      ]
+    },
+    {
+      "group": "Platform Guides",
+      "pages": [
+        "guides/add-your-first-brand",
+        "guides/demo-brand",
+        "guides/action-center",
+        "guides/answer-engine-insights",
+        "guides/topics",
+        "guides/prompts",
+        "guides/mentions",
+        "guides/citations",
+        "guides/ai-traffic-analytics",
+        "guides/competitors",
+        "guides/content-optimization",
+        "guides/content-editor",
+        "guides/send-to-cms",
+        "guides/site-audit",
+        "guides/reports",
+        "guides/daily-pulse",
+        "guides/menu-access",
+        "guides/mcp-server",
+        "guides/looker-studio"
+      ]
+    },
+    {
+      "group": "Self-host",
+      "pages": [
+        "self-host/docker-compose",
+        "self-host/supabase-setup",
+        "self-host/env-variables",
+        "self-host/upgrading"
+      ]
+    },
+    {
+      "group": "API Reference",
+      "pages": [
+        "api-reference/authentication",
+        "api-reference/metrics",
+        "api-reference/brands",
+        "api-reference/tracking",
+        "api-reference/webhooks"
+      ]
+    },
+    {
+      "group": "Help",
+      "pages": [
+        "faq"
+      ]
+    }
+  ],
+  "footerSocials": {
+    "github": "https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool",
+    "website": "https://getcito.com"
+  }
+}

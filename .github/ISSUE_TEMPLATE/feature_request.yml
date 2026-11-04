@@ -1,0 +1,30 @@
+name: Feature request
+description: Suggest an idea or improvement
+title: "feat: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for suggesting an improvement! For open-ended ideas you can also start a thread in [Discussions](https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/discussions/categories/ideas).
+  - type: textarea
+    id: problem
+    attributes:
+      label: Problem / motivation
+      description: What problem does this solve? What's the use case?
+    validations:
+      required: true
+  - type: textarea
+    id: solution
+    attributes:
+      label: Proposed solution
+      description: What would you like to happen?
+    validations:
+      required: true
+  - type: textarea
+    id: alternatives
+    attributes:
+      label: Alternatives considered
+      description: Any alternative solutions or features you've considered.
+    validations:
+      required: false
