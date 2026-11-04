@@ -1,0 +1,64 @@
+{
+  "products": [
+    {
+      "name": "accounts/123456789/products/de~DE~TB-42-BRN",
+      "offerId": "TB-42-BRN",
+      "contentLanguage": "de",
+      "feedLabel": "DE",
+      "productAttributes": {
+        "title": "Wanderstiefel",
+        "link": "https://shop.example/de/boots/trail?color=brown",
+        "price": { "amountMicros": "119000000", "currencyCode": "EUR" },
+        "availability": "IN_STOCK"
+      },
+      "productStatus": {
+        "itemLevelIssues": [
+          {
+            "code": "image_too_small",
+            "severity": "DEMOTED",
+            "resolution": "merchant_action",
+            "attribute": "image link",
+            "reportingContext": "SHOPPING_ADS",
+            "description": "Bild zu klein",
+            "applicableCountries": ["DE", "US"]
+          },
+          {
+            "code": "landing_page_error",
+            "severity": "DISAPPROVED",
+            "resolution": "merchant_action",
+            "attribute": "link",
+            "reportingContext": "SHOPPING_ADS",
+            "description": "Unavailable landing page",
+            "applicableCountries": ["DE"]
+          }
+        ]
+      }
+    },
+    {
+      "name": "accounts/123456789/products/en~US~SOCK-1",
+      "offerId": "SOCK-1",
+      "contentLanguage": "en",
+      "feedLabel": "US",
+      "productAttributes": {
+        "title": "Wool Sock",
+        "link": "https://shop.example/socks/wool",
+        "availability": "IN_STOCK",
+        "gtins": ["4006381333931"]
+      },
+      "productStatus": {
+        "itemLevelIssues": [
+          {
+            "code": "missing_price",
+            "severity": "DISAPPROVED",
+            "resolution": "merchant_action",
+            "attribute": "price",
+            "reportingContext": "SHOPPING_ADS",
+            "description": "Missing value [price]",
+            "applicableCountries": ["US"]
+          },
+          { "code": "unknown_thing", "severity": "SEVERITY_UNSPECIFIED" }
+        ]
+      }
+    }
+  ]
+}

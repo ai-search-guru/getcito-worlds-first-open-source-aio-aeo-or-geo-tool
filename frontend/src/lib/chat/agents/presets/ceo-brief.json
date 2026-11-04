@@ -1,0 +1,33 @@
+{
+  "id": "ceo-brief",
+  "goal": "reporting",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [
+    "leaders"
+  ],
+  "skills": [
+    "report",
+    "gaps"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "MO",
+      "time": "08:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [
+    {
+      "key": "google_search_console",
+      "required": false
+    },
+    {
+      "key": "google_analytics",
+      "required": false
+    }
+  ],
+  "status": "ready",
+  "needs": []
+}

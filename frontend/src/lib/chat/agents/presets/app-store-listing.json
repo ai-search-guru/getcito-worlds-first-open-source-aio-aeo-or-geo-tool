@@ -1,0 +1,23 @@
+{
+  "id": "app-store-listing",
+  "goal": "citations",
+  "businessTypes": [
+    "app"
+  ],
+  "industries": [],
+  "roles": [],
+  "skills": [],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "TH",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "app_store_data"
+  ]
+}

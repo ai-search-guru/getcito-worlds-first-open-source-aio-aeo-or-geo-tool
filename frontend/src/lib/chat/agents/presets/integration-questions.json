@@ -1,0 +1,24 @@
+{
+  "id": "integration-questions",
+  "goal": "content",
+  "businessTypes": [
+    "b2b"
+  ],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "questions",
+    "faq"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "TH",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "ready",
+  "needs": []
+}

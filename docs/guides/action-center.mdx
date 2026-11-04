@@ -1,0 +1,240 @@
+---
+title: "Action Center"
+description: "Turn what changed in AI search into a ranked list of work: actions, their tasks and the Priority Score."
+---
+
+## What this module does
+
+The **Action Center** (`/dashboard/action-center`) is where GetCito turns signals into prioritized work. It is the first page you see after you sign in, and it has four tabs:
+
+- **Actions** (`/dashboard/action-center/actions`) — what to do now, ranked by Priority Score
+- **Signals** (`/dashboard/action-center/signals`) — what changed across your AI visibility data
+- **KPIs** (`/dashboard/action-center/kpis`) — the goals you track for the brand
+- **History** (`/dashboard/action-center/history`) — what was done, and what it moved
+
+Everything is per brand: switch brands to see another brand's actions. While a new brand's first tracking runs, a thin **First tracking running** line sits under the tabs, with its checks done, the time left and **Details**; actions, signals and KPIs fill in once it finishes.
+
+## Getting started
+
+A new brand starts with **Getting started**: a fixed list of 17 steps on the Actions tab. While it runs, the **Getting started** category opens first and lists the steps in a table with their **Stage**, **Status** and **Ready** time, and a **Getting started** card shows how many are done. Click **All** or another category to see your actions.
+
+The steps unlock when their data is ready, not on a schedule:
+
+| Stage | Steps | Ready |
+|---|---|---|
+| **Set up** | Set your KPIs · Add at least 3 competitors · Add at least 3 topics · Add 3 prompts per topic · Connect Google Search Console · Connect Google Analytics · Add the AI Traffic snippet | Now |
+| **Explore** | See where you stand in Brand Visibility · Read your first AI answers · Track high-value prompt suggestions · Check what AI says about you · See who AI quotes · See visits from AI | When the first AI answers are in (usually within an hour). The high-value prompts step waits about 24 hours after you connect Search Console or Analytics. |
+| **Act** | Pick content from suggestions · Create your first content · Optimize a page | When the first content suggestions are in (about 24 hours) |
+| **Ready** | You're ready | After every step above is done or skipped |
+
+Click a step to open its card: why it matters, how to do it, and when it counts as done. The card's button opens the step's page in a new tab. Most steps are checked automatically from your data (three competitors saved, a first AI visit detected, a draft marked ready), so the step updates when you come back to the Action Center tab. A step still waiting for its data says when it opens.
+
+**Connect Google Search Console** and **Connect Google Analytics** are optional. Admins and managers can **Skip** them; a skipped step counts as complete, and you can still connect later from Settings. Without either one, prompt and content suggestions are less accurate.
+
+### Start and skip
+
+Admins and managers see **Get Started** or **Skip Get Started** at the top right of the Actions tab:
+
+- **Skip Get Started** puts the actions list back to normal. Steps you finished stay done, and you can start again any time from the same button.
+- **Get Started** appears after a skip, and for an existing brand whose setup looks incomplete: fewer than 3 competitors or topics, no Search Console, or no content in the last 30 days.
+- A brand added to an organization that already has one asks first: **Run Getting started for [brand]?** Choose **Run Getting started** or **Skip**.
+
+Getting started's steps are not actions: they have no Priority Score and never go through the signal engine.
+
+## Actions
+
+An **action** is one piece of work with an outcome, built from the evidence behind it. GetCito consolidates many signals into one action: six valuable pages with no AI traffic become one "Capture AI traffic" action with six linked signals, not six rows. Actions are generated after the daily tracking run, at most five new ones per brand per day, so the list stays short enough to act on.
+
+Each action belongs to a category:
+
+| Category | What it is for |
+|---|---|
+| **Growth** | Ground you could win: demand, topics, platforms or pages where you could appear more |
+| **Protect** | Ground you hold that is starting to slip |
+| **Recover** | Ground you held and lost: visibility, citations, mentions or traffic |
+| **Fix** | Issues on your own site, such as low audit scores, blocked crawlers or broken links AI sends people to |
+| **Compete** | Places where competitors lead you |
+
+### The Actions tab
+
+The cards at the top count and filter the list. Click one to narrow the table to exactly what it counts, and click it again to clear it:
+
+- **Top Actions** — the five highest-priority open actions
+- **At Risk** — open Recover and Fix actions
+- **Opportunities** — open Growth actions
+- **In Progress** — actions someone is working on
+- **Highest Priority** — the highest level among open actions
+
+Below them, filter by category, **Priority**, **Status** and **Assignee**, or search. **Sort** by Priority (the default), Newest, Due date or Recently updated. Filters live in the URL, so a filtered view can be shared.
+
+For an online shop, a **From Products** chip beside the categories lists only the actions sent from **Products** (a product to get on the AI shelf, or a category to win), whatever the category. Click it again to clear it. Once one is **Completed**, Products shows what it did 7 days on, on the product's page and under the category's name: the shelves of its shopping questions in the week after it was done beside the week before.
+
+An action's status is **New**, **In Progress**, **On Hold**, **Completed** or **Dismissed**. The row menu sets In Progress, Completed or Dismiss without opening the action. Dismissing, from the row menu or the action's status, asks why: it doesn't matter to us, it's already done, the data behind it is wrong, or not now (or none). History shows the reason. **Delete** (admins and managers only) removes it for everyone, and it won't come back on its own the next day.
+
+### Inside an action
+
+Click a row to open the action. Under its title you set **Status**, **Assignee** and **Due date**. The tabs are:
+
+- **Overview** — *Why this priority?*, *Why this action?* with the signals that support it, the **Goal** (what done looks like, with a date), and the **KPIs** it is linked to. An action sent from another page also shows where it came from.
+- **Affected** — the prompts, pages, topics, competitors or platforms it is about, with each prompt's demand.
+- **Tasks** — the work, step by step (see below).
+- **Signals** — the evidence behind it. Click one to open it on the Signals tab.
+- **History** — every change: created, new signals linked, status and assignee changes, tasks updated or sent.
+
+### Tasks
+
+Each action comes with tasks: concrete steps such as "Refresh content for these prompts" or "Add structured data to these pages". Open a task to see its details: **What**, **URL** (the exact page), **Where**, **Why**, **Change** (the text before and after, or the text to add), **How** (one step per line), **Done when**, **How we check** (Automatic: we fetch the page again; Re-run: the prompts run again; Manual: you confirm it), **Type** (Content, On-page, Technical, Outreach, PR or Product), **Effort** and **Role**. Click **Edit** to change any of them. A task from the Action Center's own plan comes with its **Done when**, with **How we check** for most of them (not for a task measured over a GA4 or Search Console window), and with its **URL** when it changes a page and the action is about one page.
+
+A task checked **Automatic** is checked on its page, fetched again (up to 200 tasks a night, at most 20 of one brand's, the least recently tried first, and when you click **Check now**), by what it changes:
+
+- **A broken page:** the page answers again.
+- **Publishing:** the page answers where it wasn't before. A page already live at the first check passes once it changes.
+- **Structured data:** the audit checks that raised the action now pass on the page, such as a FAQ schema with at least two questions. When the action was raised by another check (the brand's entity, say), the page's structured data must be valid, after a check found it wasn't: a page that had valid structured data all along says so, and you mark the task done once it's fixed.
+- **Crawler access:** robots.txt lets the AI crawlers in, and the page isn't noindex. Only when the audit raised it; a page found uncrawled in the bot logs isn't checked here.
+- **Optimizing, refreshing:** the page has changed since it was first checked, by more than a date, a price or a rotating quote moving. On a short page that takes more than a new short review: about a rewritten paragraph. A sidebar, testimonials, the latest or popular posts and similar blocks that change by themselves aren't counted.
+- **A task written with its new text:** that text is on the page, and the text it replaces is gone.
+
+Only pages on the brand's own site are read. One that passes is completed by itself, and History says so; one that doesn't shows **Last check** with what is still missing. A task you reopen after it passed stays open: its checks still show what they find, the nightly check leaves it, and the call is yours. Site Audit fixes are checked by your next audit.
+
+A task's status is **To Do**, **In Progress**, **Completed** or **Skipped** (with a reason). Skipped tasks leave the count, so they don't hold an action short of done. Use **Add task** for work of your own, and delete tasks you don't need.
+
+From a task you can also:
+
+- **Create content** or **Optimize page** — open a draft in the [Content Editor](/guides/content-editor) for this task. **Open draft** returns to it, and marking the draft ready completes the task. Moving the draft back from Ready opens the task again, unless someone changed the task since or the action is closed.
+- **Send to Content** — send a content task to Content as an opportunity, where a brief can be written for it.
+- **Send to webhook** — post the task to the brand's webhook, for a workflow outside GetCito. The webhook is set up under **Content → Webhook Settings**, with the **Action Center task sent** event selected.
+
+Where AI task writing is on for your workspace, **Regenerate tasks** writes the action's tasks again from its evidence. It writes them in your brand's terms, by its **Site type** in the brand settings: product and category pages for an online shop; feature and comparison pages for B2B software; destination and help pages for a consumer service; feature, pricing and help pages for a mobile app. Done, under-way and hand-added tasks stay. It uses your plan's monthly AI allowance. The AI also reads this brand's last three closed rounds of the same action: which tasks were done and what the result read, or why a round was dismissed. It builds on what improved results here and doesn't hand out again a task that was done without effect. Only this brand's own actions are read.
+
+A task the AI writes without its **URL**, its **Change**, **Done when** or **How we check** doesn't reach your list. It waits on the **Needs review** tab, which admins and managers see, with what it misses. Click **Edit**, fill the missing fields and click **Approve** to add it after the action's other tasks, or **Dismiss** it.
+
+Some tasks that only read data, such as checking a page's traffic in your connected Analytics, can be carried out by GetCito itself overnight. The action's History says so. Nothing that would change something outside GetCito runs without your approval: such a task waits as **Waiting Approval**.
+
+**Analyze competitor content** is one of the tasks GetCito carries out itself. Overnight, it reads the pages AI answers cited for the action's prompts in the last two weeks: up to three, your competitors' pages first, then pages cited in answers that don't name your brand. It reads your own page cited there too, and runs Site Audit's checks on them all (structure, FAQ, schema, statistics, dates, length). The task then says which checks at least half of their pages pass that yours doesn't; it takes at least two of their pages to compare. Where the action names no prompts, it reads its topic's prompts, or for an action about competitors or sources, the prompts you track. Pages are read for free from their public address, at most 12 a day for a brand, never from a site whose robots.txt keeps crawlers out, and only what the checks found is kept, never the page's text. When there is nothing to compare (no prompts, no page cited, or none could be read), the task stays open for you with the reason, and GetCito tries again a week later.
+
+**Find what sets your winning pages apart** is another. It's part of **Scale Proven AI Landing Pages** (your AI landing pages that convert well above your site) and **Strengthen Emerging Content** (prompts whose visibility is rising), on brands with Site Audits. Overnight, it takes up to three winning pages, the action's landing pages or your pages cited in its prompts' answers in the last two weeks, and compares them with up to 30 of your other pages that Site Audit checked in the last 90 days. It lists the checks most of your winning pages pass and most of your other pages don't (FAQ, tables, statistics, author, dates, length…), and up to five of your pages missing the most of them: where what works on your site can go next. Your other pages are read from their audits only, never fetched again. A winning page without a recent audit is read from its public address within the same 12 reads a day, and only what the checks found is kept. Nothing is compared with another brand's pages. With fewer than three of your other pages audited, the task stays open for you with the reason, and GetCito tries again a week later. Actions opened before this task existed keep their tasks; new ones get it.
+
+### Assigning work
+
+An action with no one on it belongs to **Everyone** in the workspace until someone takes it. Pick a teammate in the action's **Assignee** field, and set a **Due date** if it has one. The **Assignee** filter on the Actions tab shows one person's actions, or **Everyone** for the unassigned ones.
+
+### Export
+
+- **Export CSV** on the Actions tab downloads the actions in the current view, as filtered, with their priority, status, assignee, due date, task progress and affected items.
+- Inside an action, **Copy Data** opens the whole action as Markdown to paste into a doc or ticket, and **Export** downloads it as **Export CSV** or **Export Excel**. The Excel file has one sheet each for the action, its affected items, tasks, signals and history.
+
+## The Priority Score
+
+Every action has a **Priority Score** from 0 to 100: how soon to work on it beside the others. Impact says how much an action could matter; priority weighs impact together with the evidence behind it. The score sets the default order of the Actions tab and the Top Actions card.
+
+| Level | Score |
+|---|---|
+| **Critical** | 90 and above |
+| **High** | 75–89 |
+| **Medium** | 50–74 |
+| **Low** | Below 50 |
+
+### What goes into it
+
+The score weighs seven things:
+
+- **Impact** — the action's impact grade: high, medium or low.
+- **Demand** — how much the prompts, search queries or pages it is about are searched or visited. Only the most demanded few count, so a long list of low-demand prompts doesn't outrank a handful that people actually search for. A prompt's measured [demand level](/guides/prompts#demand-level) raises it: High more, Medium a little, Low not at all.
+- **Severity** — what kind of change it is. A loss ranks above a sharp drop, a drop above a slip, and a slip above a gap or a site issue. Room to grow and gains rank lowest.
+- **Business value** — how commercial the searches are, or what a page is worth to the business (revenue, transactions or key events, from Google Analytics).
+- **Confidence** — how many independent kinds of finding and data sources agree. Ten signals repeating one finding count as one.
+- **Recoverability** — ground you held and lost is nearer at hand than ground you never held. Fixes on your own site count as within reach too.
+- **Recency** — newer evidence counts more. Its weight halves roughly every ten days.
+
+Demand or business value that nothing measures counts as neutral: it neither raises nor lowers the score.
+
+On top of these, **past success** nudges the score: how this brand's own earlier actions of the same kind turned out over the last six months, as the History scorecard counts them. A kind that improved results here sits up to 10 points higher, one that rarely did up to 10 lower. A few results barely move it, and a kind with no results yet doesn't move at all. Other brands' results are never used. When it moves the score by a point or more, **Why this priority?** says so, for example *3 of 4 earlier actions of this kind improved results here*.
+
+An action sent from another page has no detection signals, so it is scored from what it carries: the prompt's platforms for an Improve action, the prompts of a content opportunity or draft, the pages sent from AI Traffic.
+
+### When it changes
+
+An action is scored when it is created, and again every night from that night's evidence: its open signals, how recent they are, and the demand behind them. When you resolve or dismiss a signal, the actions it supports are scored again right away. An action not scored yet shows a dash and sorts after the scored ones.
+
+### Why this priority?
+
+The action's **Overview** tab starts with **Why this priority?**: one sentence written from the facts the score rests on. It says what changed, on what, how recently, and what makes it matter, for example:
+
+> Lost ground on 7 high-demand prompts 2 days ago — measured demand High, commercial intent, previously visible, confirmed by 2 sources.
+
+<Note>
+The Content Plan has its own Priority Score, which ranks the Plan's pages. The two are worked out separately. See [Content Editor](/guides/content-editor).
+</Note>
+
+## Signals
+
+The **Signals** tab lists what changed: a visibility drop, a lost citation, a competitor gaining, a page with no AI traffic, a site issue. Signals are detected after your daily tracking runs, and they are the evidence actions are built from.
+
+- **Cards** — Total, Important (high impact), New and Resolved signals, and the average signal impact, for the selected range (7, 30 or 90 days) against the range before.
+- **Filters** — by category (Visibility, Citation, Mention, Traffic, Technical, Competitor), **Impact**, **Status**, **Source** (AI Results, Google Analytics, Google Search Console, Site Audit) and **Platform**, plus search.
+- **Status** — **New**, **Acknowledged**, **Resolved** or **Dismissed**. The row menu sets them, and **Reopen** brings one back.
+
+Click a signal to see **Where** it was found, **What changed** (before and after, with the periods compared), **Evidence and links**, **Related KPIs**, and **Used by actions**. Copies of one finding (the same prompt text tracked as several prompts) are grouped into one row and counted once.
+
+Many of the same changes also appear in the [Daily Pulse](/guides/daily-pulse) email.
+
+## KPIs
+
+The **KPIs** tab tracks the goals you set for the brand. Each KPI shows its **Value**, **Change**, **Trend (7D)**, **Goal**, progress **vs Goal**, and a **Status**:
+
+| Status | When |
+|---|---|
+| **Goal Reached** | 100% of the goal or more |
+| **On Track** | 70% or more, and not moving the wrong way |
+| **At Risk** | 40–69%, or moving the wrong way before the goal is reached |
+| **Off Track** | Under 40% |
+
+The KPIs you can track are AI Visibility, Citations, Mentions, Share of Voice, AI Referral Traffic, Positive Sentiment and Lead over top competitor. A brand that never had KPIs starts with a suggested set, each aiming 20% above its last 30 days. It is saved the first time an admin or manager opens the tab.
+
+**Edit KPIs** (or **Configure KPIs**) opens the framework: pick a template (**AI Search Visibility**, **Brand Monitoring** or **Custom Framework**), a time period (Weekly, Monthly or Quarterly), and a target for each KPI, then **Save & Apply**. Only admins and managers can change KPIs. An action's Overview lists the KPIs it is linked to.
+
+## History
+
+The **History** tab lists actions once they are In Progress, On Hold, Completed or Dismissed, with what they were meant to do and what has been measured since. Filter by range (7d, 30d, 90d, All), **Status**, **Type**, **Priority** and **Source**, and sort by Newest, Oldest or Priority. The cards count total, completed, in-progress, no-improvement and dismissed actions in the window.
+
+Click an action to see **What was the goal?**, **What happened?** (the signals it was built from), its affected items and tasks, and the **Result**:
+
+- A completed action's metrics are read three times: over the week ending 7, 14 and 30 days after it closed, each against the 7 days before it was raised. Until the reading on day 30, which is final, the result reads *so far*, and the drawer lists each reading. The result reads **Improved**, **Mixed**, **No meaningful change** or **Declined**, judged by the action's main metric (the first one it names): **Mixed** when another metric it names moved the other way, or, without the main one measured, when the ones it names moved both ways. Other metrics show beside but don't count. It is measured after the action, not proven to be caused by it. An action that names its prompts or pages is measured on them, with the brand-wide figures over the same days beside; when they can't show its main metric (citations, for prompts), it is measured brand-wide. Positive Sentiment on its prompts is the positive share of their answers naming the brand, as on the Insights card, and isn't read from fewer than 5 of them: one answer turning would swing it, so the other metrics it names decide. Its prompts' change is also shown net of the brand's prompts it didn't touch over the same days (the other prompts in its topics, or the brand's others), so what moved for every prompt, such as an engine's update, is told apart from what moved for its own (a count from fewer than 5 before isn't netted: one more would read as a big swing); the result itself stays as measured. A Site Audit fix is judged by its pages audited again since it closed: the check that raised it passing, or a low score past the line; with none audited again yet, by the metrics. When tracking missed nights in either week, the drawer says so, and mentions and citations are read at a full week's worth from the nights that ran. More than two in one week are too few to read them from: they're left out of the result, and an action whose main metric is one of them reads **Not measurable**. The History drawer also says what became of the signals that raised it by then: how many ended, turned into another, were dismissed, or are still open.
+- Only a completed action is measured: a dismissed one reads **Not measured**, dismissed. One with no metric to read is **Not measurable**.
+- An action sent from a prompt's Improve tab reports on how many platforms its position improved. It is read again daily while the action is open and for 30 days after it is completed.
+
+### Scorecard
+
+Switch History from **Actions** to **Scorecard** to see what each kind of action did at this brand over the range (90 days unless you pick another, since an action's final reading comes 30 days after it closes): how many were completed, their results so far, the **Success rate** (the share of results that improved, shown once a kind has three), the median change in each action's main metric, and how many were dismissed, with the reason given most often. It counts this brand's own actions only, never another brand's.
+
+When an action is closed, its condition can open a new action after a two-week rest if it is still firing. The old one stays in History as the record of that round of work.
+
+### Detector thresholds (maintainers)
+
+The detectors' thresholds are first settings, not calibrations. To see how they did at a brand, export its closed actions with `backend/src/scripts/export-detector-outcomes.sql` (psql, read-only, with the brand's id as `brand_id`; it stops without one), writing outside the repository, such as `> ~/outcomes.jsonl`, and read them with `node src/scripts/calibrateDetectorThresholds.js ~/outcomes.jsonl` from `backend/`. Each action is read by its signals as they were when it opened, from its baseline; older actions without one are left out and counted. The report shows, per signal kind with 20 or more closed actions, how its actions turned out and why they were dismissed, by the signal's strength in quarters, in the unit of the kind's threshold (a topic's coverage, a relative fall, a competitor's multiple). Where the weakest quarter was mostly dismissed as not relevant or wrong data, or improves less often than the rest, it suggests a threshold in that unit; when strength doesn't spread enough to compare, it says so. A kind with no definition gets its distribution only. A suggestion is a starting point; nothing changes until you edit the threshold the report names.
+
+Run it on one brand you own, using your self-hosted data. Running it across customers' brands is not supported; it waits on a cross-brand learning decision and a privacy policy update.
+
+## Where actions come from
+
+Most actions are generated from signals each night. You can also send work to the Action Center from other pages. A sent action has no detection signals; its evidence is what you sent, shown on its Overview tab.
+
+| From | How |
+|---|---|
+| **Mentions** | Select answers on the Mentions tab, or open one, and click **Send to Action Center**. Sent with negative answers among them, the action is judged by Positive Sentiment: the positive share of its prompts' answers naming the brand, as on the Insights card (an answer that only cites the brand doesn't count); otherwise by how often the brand is named. An action sent before already listed Positive Sentiment among its metrics: it is still judged by mentions, but its result can now read **Mixed** when sentiment moved the other way. |
+| **Content** | **Send to Actions** on a content opportunity; **Assign to…** on a Content Plan row; or **Who does it → Team** when you start new content. See [Content Editor](/guides/content-editor). |
+| **Site Audit** | Audit results become signals with the Site Audit source, such as low AEO scores or missing structured data, and turn into Fix actions overnight. To send one page now, click **Send to Action Center** on its audit report: the page and the checks it fails go as one Fix action. |
+| **AI Traffic** | On the [AI Traffic Analytics](/guides/ai-traffic-analytics) pages list, select pages under *Cited, not clicked* or *No AI traffic* and click **Send to Action Center**. Traffic drops and strong or weak landing pages also arrive as signals. |
+| **Insights** | **Send action** on a topic in Insights' Opportunities opens a Growth action for it. |
+| **Prompts** | **Send Actions** on a prompt's Improve tab sends the selected suggestions as one action. |
+| **Product catalog** | After each catalog sync, a published page that links products that are sold out, refused by Merchant Center (when a Merchant Center account is connected) or gone from your catalog gets a Fix action with one task: swap them for products in stock. The next sync, or **Check now** on the task, closes it once the live page links none of them. See [Content Editor](/guides/content-editor). |
+
+Sending the same thing twice doesn't create a second action: the page says it is already in the Action Center, with its action number (for example `AC-42`).
+
+<Tip>
+Work from the **Top Actions** card each week. Assign each action, set a due date, and close it as **Completed** when its tasks are done, so History can measure the result.
+</Tip>
+
+<Card title="Continue: Answer Engine Insights" icon="arrow-right" href="/guides/answer-engine-insights">
+  See where your brand stands across AI engines.
+</Card>

@@ -1,36 +1,24 @@
 {
-  "name": "getcito",
-  "version": "9.1.0",
+  "name": "getcito-worlds-first-open-source-aio-aeo-or-geo-tool",
+  "version": "9.0.0",
   "private": true,
+  "description": "GetCito — open-source AI visibility, AIO, AEO, and GEO platform",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool.git"
+  },
+  "homepage": "https://getcito.com",
+  "bugs": {
+    "url": "https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/issues"
+  },
+  "author": "GetCito contributors",
+  "type": "module",
   "license": "MIT",
-  "packageManager": "pnpm@11.10.0",
-  "engines": {
-    "node": "24.x"
-  },
   "scripts": {
-    "dev": "turbo dev",
-    "build": "turbo build",
-    "lint": "turbo lint",
-    "test": "turbo test",
-    "format": "biome format --write .",
-    "knip": "knip",
-    "getcito": "tsx apps/cli/src/index.ts",
-    "cli:link": "npm unlink -g getcito-cli || true && pnpm -C apps/cli build && (cd apps/cli && npm link)",
-    "cli:unlink": "npm unlink -g getcito-cli",
-    "changeset": "changeset",
-    "version-packages": "changeset version && node scripts/sync-root-version.mjs",
-    "release": "pnpm build && changeset publish",
-    "release:github": "node scripts/gh-release.mjs",
-    "test:e2e": "pnpm --filter e2e test:e2e",
-    "test:e2e-local": "bash e2e/run-local.sh",
-    "license-check": "node scripts/check-licenses.mjs"
+    "version:check": "node scripts/checkVersion.js",
+    "version:bump": "node scripts/updateVersion.js"
   },
-  "devDependencies": {
-    "@biomejs/biome": "2.5.0",
-    "@changesets/cli": "^2.31.0",
-    "knip": "^6.16.1",
-    "tsx": "^4.22.4",
-    "turbo": "^2.9.18",
-    "typescript": "^6.0.3"
+  "engines": {
+    "node": ">=20"
   }
 }

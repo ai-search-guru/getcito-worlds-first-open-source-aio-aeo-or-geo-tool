@@ -1,0 +1,24 @@
+{
+  "id": "reviews-ugc-watch",
+  "goal": "citations",
+  "businessTypes": [
+    "b2c"
+  ],
+  "industries": [],
+  "roles": [],
+  "skills": [],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "MO",
+      "time": "09:00"
+    }
+  ],
+  "mode": "ask_first",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "review_sites",
+    "reddit_youtube"
+  ]
+}

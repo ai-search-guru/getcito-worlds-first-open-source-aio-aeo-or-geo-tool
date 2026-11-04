@@ -1,0 +1,80 @@
+---
+title: "Environment variables"
+description: "Full reference for every env var across web and server."
+---
+
+## Web (`frontend/.env.local`)
+
+Fed to the Next.js app. Variables prefixed with `NEXT_PUBLIC_` are exposed to the browser.
+
+| Variable | Required | Description |
+|---|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL` | ✅ | Your Supabase project URL |
+| `NEXT_PUBLIC_SUPABASE_ANON_KEY` | ✅ | Supabase anon key (public, RLS-protected) |
+| `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Service role key (bypasses RLS — used for server actions; never expose) |
+| `NEXT_PUBLIC_API_URL` | ✅ | Server URL (e.g. `https://api.your-domain.com` or `http://localhost`) |
+| `NEXT_PUBLIC_APP_URL` | ✅ | Web app URL (used for OAuth callback URLs) |
+| `OPENAI_API_KEY` | optional* | OpenAI API key |
+| `GOOGLE_GEMINI_API_KEY` | optional* | Google AI Studio Gemini key |
+| `ANTHROPIC_API_KEY` | optional* | Anthropic Claude key |
+| `PERPLEXITY_API_KEY` | optional* | Perplexity API key |
+| `GROK_API_KEY` | optional* | xAI Grok key |
+| `NEXT_PUBLIC_IS_CLOUD` | optional | `"true"` to enable cloud mode and billing (enables billing UI). Leave unset for self-hosted (all features unlocked). |
+| `STRIPE_SECRET_KEY` | cloud only | Stripe live/test secret key |
+| `STRIPE_WEBHOOK_SECRET` | cloud only | Stripe webhook signing secret |
+| `CRON_SECRET` | cloud; self-host with Chat | Shared secret the web app sends to the server's internal endpoints: Vercel cron, and Chat's AI budget for each model step when `CHAT_AGENTIC` is on. Self-hosted with Chat on, set it here and in the server's `.env` to the same value, or Chat can't answer. |
+| `CHAT_INTERNAL_SECRET` | optional | With the new Chat on (`CHAT_AGENTIC=true`): the secret the server sends to this app's `/api/internal/chat/agents/*` endpoints, which fire agent schedules and Signal triggers and sweep agent runs. Same value as the server's. Unset: agents run only with **Run now**. Generate with `openssl rand -hex 32` |
+| `CHAT_ACTING_SECRET` | optional | With the new Chat on (`CHAT_AGENTIC=true`): the secret this app sends to the API server, with `X-Acting-User: <member id>`, for an agent's triggered run's writes there (an opportunity's status, a dismissed prompt suggestion, Send to Action Center and its duplicate check), which have no one's session. A secret of its own, not `CHAT_INTERNAL_SECRET`'s value; same value as the server's. At least 32 characters; unset or shorter: those changes ask first, on a card in the owner's Inbox. If the web's and the server's values differ, the server answers 401 and the step stops with `acting_refused`: the change then waits on that card too, and the owner's Approve makes it with their own session. Generate with `openssl rand -hex 32` |
+
+\* You need **at least one AI provider key** for tracking to work. Configure providers per-brand in the dashboard.
+
+## Server (`backend/.env`)
+
+Fed to the Express API + workers.
+
+| Variable | Required | Description |
+|---|---|---|
+| `NODE_ENV` | ✅ | `production` for live, `development` for local |
+| `PORT` | ✅ | Default `80` |
+| `SUPABASE_URL` | ✅ | Same as web's `NEXT_PUBLIC_SUPABASE_URL` |
+| `SUPABASE_ANON_KEY` | ✅ | Supabase anon key |
+| `SUPABASE_SERVICE_ROLE_KEY` | ✅ | Service role key (used by workers and admin endpoints) |
+| `OPENAI_API_KEY` | optional* | OpenAI key |
+| `ANTHROPIC_API_KEY` | optional* | Anthropic key |
+| `GOOGLE_GENERATIVE_AI_API_KEY` | optional* | Google Gemini key (server-side name differs from web) |
+| `DEFAULT_SUGGESTION_MODEL` | optional | Default LLM for AI suggestions (default: `google/gemini-3-flash-preview`) |
+| `TOPIC_SUGGESTION_MODEL` | optional | LLM for topic suggestions |
+| `PROMPT_SUGGESTION_MODEL` | optional | LLM for prompt suggestions |
+| `COMPETITOR_SUGGESTION_MODEL` | optional | LLM for competitor suggestions |
+| `TAVILY_API_KEY` | optional | Runs the web search for topic and competitor suggestions through Tavily instead of the model provider's own search tool (useful when a free provider key's search is quota-limited). Each search uses a Tavily credit plus one extra model call. Without it, a quota-limited search falls back to research from the model's own knowledge. |
+| `CONTENT_READ_MODEL` | optional | LLM the Content Editor reads and judges with: the brief (**Rebuild outline**) and Quality's checks. Default: `anthropic/claude-haiku-5-5` when `ANTHROPIC_API_KEY` is set, else `IMPROVE_SUGGESTION_MODEL`, then `DEFAULT_SUGGESTION_MODEL`, then `google/gemini-3-flash-preview`. `QUALITY_CHECK_MODEL`, when set, still picks Quality's model. |
+| `CONTENT_WRITE_MODEL` | optional | LLM the Content Agent writes with: pages written or rewritten whole and its suggestions. Default: `anthropic/claude-sonnet-5-5` when `ANTHROPIC_API_KEY` is set, else the same fallbacks as `CONTENT_READ_MODEL`. A Claude model must support structured outputs (Claude 4.5 models or newer). |
+| `AUDIT_LLM_MODEL` | optional | LLM for the Site Audit's LLM-judged signals + AI recommendations. Use a pinned, versioned id, not a `-preview` or `-latest` alias: each signal's verdict is kept by model id and judged again only when the page or the model changes. Default: `google/gemini-3.8-flash` for the signals, `google/gemini-3-flash-preview` for the recommendations |
+| `ALLOWED_ORIGINS` | ✅ | Comma-separated list of web origins allowed to call the API (for CORS) |
+| `IS_CLOUD` | optional | `"true"` only to enable cloud mode and billing |
+| `RESEND_API_KEY` | optional | Resend key for product emails; email delivery remains disabled without configuration. |
+| `RESEND_FROM_EMAIL` | optional | GetCito sender: `GetCito <support@getcito.com>`. Use a sender verified with your email provider. |
+| `CANCEL_FEEDBACK_EMAILS` | optional | Cancellation feedback recipients; use `support@getcito.com` for GetCito support. |
+| `PUBLIC_APP_URL` | optional | Public dashboard origin used in email and webhook links; `https://getcito.com` for the GetCito deployment. |
+| `PUBLIC_SERVER_URL` | optional | Public origin of your deployed backend, for example `https://api.getcito.com`. |
+| `DATAFORSEO_LOGIN` | optional | DataForSEO login (for prompt volume analysis) |
+| `DATAFORSEO_PASSWORD` | optional | DataForSEO password |
+| `DEMAND_SIGNALS` | optional | `"true"` to read each tracked prompt's Google Trends, People Also Ask and YouTube demand from DataForSEO about once a week (the Demand card on a prompt's page). **Costs money:** each read is a paid DataForSEO task, about $0.004 a prompt a week, at most 500 prompts a night. Off by default; needs the DataForSEO keys above. Search Console demand is read every night either way, at no cost. |
+| `CLORO_API_KEY` | optional | Cloro web scraper API key (for ChatGPT/Gemini/Perplexity web scraping) |
+| `CLORO_CHATGPT_FANOUT` | optional | ChatGPT's query fan-out: `sample` asks for each prompt's searches one day a week, `all` on every nightly run, `off` never. Default `off` on self-host (an unknown value is `off` too, with a warning in the log). It goes through Cloro's legacy ChatGPT interface, which Cloro calls best-effort and temporary. Only the nightly run's first attempt asks; manual runs and retries don't. **Costs credits:** +2 for each ChatGPT task that asks, and a prompt has one task per location, so `sample` adds 2 credits a week for each prompt and location. The day is the UTC day the nightly run starts: with `DAILY_CRON_SCHEDULE` close to midnight UTC, a prompt can be asked 0 or 2 times in a week |
+| `PLATFORM_PROVIDER` | optional | Default `cloro`. Used to pick scraper backend |
+| `SCRAPEDO_API_KEY` | Site Audit | Scrape.do API key — required to run **Site Audit** (it fetches target pages via Scrape.do's proxy + JS render). Distinct from `CLORO_API_KEY`, which scrapes the AI answer engines. |
+| `AI_VOLUME_MULTIPLIER` | optional | Estimated AI search adoption rate (default `0.45` = 45% of a prompt's Google volume, the median of its keywords' monthly searches; AI Overviews appear on roughly 43–48% of Google searches) |
+| `CRON_SECRET` | cloud; self-host with Chat | Shared secret with web's `CRON_SECRET` (the same value); protects the internal endpoints: cron, and Chat's AI budget when `CHAT_AGENTIC` is on |
+| `CHAT_INTERNAL_SECRET` | optional | With the new Chat on (`CHAT_AGENTIC=true`): every minute the server calls the web app (`PUBLIC_APP_URL`) to fire agent schedules and sweep agent runs, and after each signal pass sends it the new signals for Signal triggers. Same value as the web's. Unset: agents run only with **Run now**. Not in `NODE_ENV=development`; there, run `node src/scripts/chatAgentsTick.js` |
+| `CHAT_ACTING_SECRET` | optional | With the new Chat on (`CHAT_AGENTIC=true`): an agent's triggered run has no one's session, so the web app's writes through this API for it (an opportunity's status, a dismissed prompt suggestion, Send to Action Center and its duplicate check) send this secret with `X-Acting-User: <member id>`, checked as that member's own session would be (their workspace with Chat on, their brand access, their role), on those routes only; a request naming a member without this secret is refused before Supabase Auth. A secret of its own, not `CHAT_INTERNAL_SECRET`'s value; same value as the web's. At least 32 characters; unset or shorter: those writes are refused. Generate with `openssl rand -hex 32` |
+
+## Tips for production
+
+- **Mark secrets as sensitive** — on Vercel, toggle the *Sensitive* flag on every secret env var. Once set, the value is write-only and can't be read back from the UI.
+- **Rotate `SUPABASE_SERVICE_ROLE_KEY` and `CRON_SECRET`** quarterly as a hygiene practice
+- **Use a different Supabase project for each environment** (dev / staging / prod). Don't share databases across environments — RLS bypasses make it easy to corrupt prod data with a misconfigured dev pointer
+
+<Card title="Continue: Upgrading" icon="arrow-right" href="/self-host/upgrading">
+  How to upgrade your self-hosted instance to a new release.
+</Card>

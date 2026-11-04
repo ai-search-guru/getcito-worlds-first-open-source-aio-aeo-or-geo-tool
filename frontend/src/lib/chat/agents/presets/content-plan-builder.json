@@ -1,0 +1,23 @@
+{
+  "id": "content-plan-builder",
+  "goal": "content",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [
+    "content"
+  ],
+  "skills": [],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "MO",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "content_plan_skill"
+  ]
+}

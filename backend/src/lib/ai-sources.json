@@ -1,0 +1,54 @@
+{
+  "version": 3,
+  "changes": [
+    {
+      "version": 1,
+      "summary": "Two separate lists: one in the tracking snippet, one in the Google Analytics sync."
+    },
+    {
+      "version": 2,
+      "date": "2026-10-18",
+      "summary": "One list for both. The snippet also counts Grok, DeepSeek, OpenAI and Bard links and stores chat.openai.com as ChatGPT; Google Analytics also counts Google Labs, subdomains such as m.perplexity.ai, and its own AI Assistant channel."
+    },
+    {
+      "version": 3,
+      "date": "2026-10-23",
+      "summary": "ChatGPT Shopping. A ChatGPT visit whose landing URL has utm_medium=feed, or a Google Analytics session from ChatGPT with medium feed, came through a ChatGPT Shopping product card: it is stored with the shopping surface and still counts as ChatGPT."
+    }
+  ],
+  "sources": [
+    {
+      "key": "chatgpt.com",
+      "hosts": ["chatgpt.com", "chat.openai.com"],
+      "aliases": ["chatgpt", "openai", "openai.com"],
+      "surfaces": [{ "key": "shopping", "medium": "feed" }]
+    },
+    { "key": "perplexity.ai", "hosts": ["perplexity.ai"], "aliases": ["perplexity"] },
+    { "key": "claude.ai", "hosts": ["claude.ai"], "aliases": ["claude"] },
+    {
+      "key": "gemini.google.com",
+      "hosts": ["gemini.google.com", "bard.google.com"],
+      "aliases": ["gemini", "bard"]
+    },
+    {
+      "key": "copilot.microsoft.com",
+      "hosts": ["copilot.microsoft.com", "copilot.com"],
+      "aliases": ["copilot"]
+    },
+    { "key": "grok.com", "hosts": ["grok.com"], "aliases": ["grok"] },
+    { "key": "deepseek.com", "hosts": ["deepseek.com"], "aliases": ["deepseek"] },
+    { "key": "meta.ai", "hosts": ["meta.ai"], "aliases": [] },
+    { "key": "you.com", "hosts": ["you.com"], "aliases": [] },
+    { "key": "phind.com", "hosts": ["phind.com"], "aliases": [] },
+    { "key": "poe.com", "hosts": ["poe.com"], "aliases": [] },
+    { "key": "labs.google", "hosts": ["labs.google"], "aliases": [] },
+    {
+      "key": "bing.com",
+      "hosts": ["bing.com"],
+      "aliases": [],
+      "referrerPath": "/ck/a",
+      "analytics": false,
+      "utm": false
+    }
+  ]
+}

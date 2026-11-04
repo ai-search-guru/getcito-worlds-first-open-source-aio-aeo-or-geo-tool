@@ -1,0 +1,18 @@
+{
+  "chatgpt.com": "ChatGPT",
+  "chat.openai.com": "ChatGPT",
+  "search.chatgpt.com": "ChatGPT",
+  "perplexity.ai": "Perplexity",
+  "claude.ai": "Claude",
+  "gemini.google.com": "Gemini",
+  "copilot.microsoft.com": "Copilot",
+  "you.com": "You.com",
+  "phind.com": "Phind",
+  "meta.ai": "Meta AI",
+  "poe.com": "Poe",
+  "labs.google": "Google Labs",
+  "bing.com": "Bing",
+  "grok.com": "Grok",
+  "deepseek.com": "DeepSeek",
+  "unknown": "Unknown"
+}

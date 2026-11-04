@@ -1,0 +1,185 @@
+---
+title: "Mentions & Sentiment"
+description: "Where AI answers name your brand, how they describe it, and what to do about it."
+---
+
+## What it shows
+
+The **Mentions & Sentiment** page (`/dashboard/mentions`, **Mentions** in the sidebar) reads the AI answers your tracking already stores and shows where they name your brand, in what tone, and next to which competitors. Opening the page or changing a filter never calls an LLM.
+
+It has three tabs:
+
+- **Overview** — the headline numbers, the trend, each AI platform, and how often AI names your competitors
+- **Mentions** — every answer that names your brand, one row each
+- **Perception** — the words AI uses next to your brand, compared with your top competitors
+
+The tab and the filters live in the URL, so a refresh or a shared link opens the same view. The **Mentions** and **Net sentiment** cards on [Answer Engine Insights](/guides/answer-engine-insights) open this page over the same dates.
+
+## Filters
+
+All three tabs share one filter bar. The brand is the active brand in the sidebar.
+
+| Filter | What it does |
+|---|---|
+| **Date range** | 24h, 7d, 30d (the default), 90d or Custom. A custom range is read as whole UTC days. |
+| **Platform** | One AI platform, or all of them |
+| **Country** | One tracked country. Shown only when the brand tracks more than one. |
+| **Topic** | One topic. Shown only when the brand has topics. |
+| **Search** | Matches the prompts' text. On the Perception tab the box reads *Search keywords…*, but it still searches the prompts. |
+
+The page header has three buttons:
+
+- **Copy summary** — copies the Overview as plain text: the filters, the summary line, the four KPIs with the number of responses behind each, and the period. Paste it into a doc, a ticket or a chat.
+- **Export CSV** — downloads the answers that name your brand under the filters, one row per answer, up to 5,000 rows per file. From the Mentions tab, the file also follows the table's sentiment and co-mention filters and its sort. Lines above the rows record the filters, the period and the counts, so the file still says what it covers when it is read later.
+- **Reports** — opens the [Reports](/guides/reports) page.
+
+The CSV's columns are `date_utc`, `prompt`, `topic`, `platform`, `model`, `country`, `sentiment`, `times_named`, `position`, `brands_named`, `co_mentioned` and `excerpt`. Dates are in UTC.
+
+## Overview
+
+<CardGroup cols={2}>
+  <Card title="Summary line" icon="align-left">
+    Net sentiment and its change, the platform behind most of that change, and the competitors AI usually names next to you. Written from the figures by a fixed template, with the period and the number of responses it rests on.
+  </Card>
+  <Card title="KPI cards" icon="gauge-high">
+    Total mentions, Mention rate, Prompts with mentions, and Net sentiment with its positive / neutral / negative split. Each one is compared with the previous period.
+  </Card>
+  <Card title="Mentions & sentiment over time" icon="chart-line">
+    One point per day. Switch between Mentions, Mention rate and Net sentiment. The trend needs at least two days, so the 24h view has none.
+  </Card>
+  <Card title="By AI platform" icon="table-list">
+    Mentions, mention rate, sentiment split and net sentiment for each platform. A platform with negative net sentiment is tinted, and a note appears when two platforms are 40 or more points apart.
+  </Card>
+  <Card title="Competitor framing" icon="users">
+    Your brand and each competitor: the responses naming it, its rate, and **Also names you**, which counts the competitor's responses that name your brand too and gives their share.
+  </Card>
+</CardGroup>
+
+Every change compares the selected period with the period of the same length just before it. It is taken only on the prompts that were answered in both periods, so adding or pausing prompts doesn't show up as a rise or a fall.
+
+## Mentions
+
+The **Mentions** tab lists every answer that names your brand, 100 per page.
+
+| Column | What it shows |
+|---|---|
+| **Prompt** | The tracked prompt the answer is for |
+| **Platform** | The AI platform that answered |
+| **Country** | Where the prompt ran. Shown only when the brand tracks more than one country. |
+| **Mention context** | The passage around the first place your brand is named, with your brand and competitors highlighted |
+| **Sentiment** | Positive, Neutral or Negative toward your brand. *Not rated* when the answer has no sentiment. |
+| **Position** | Where your brand comes among the brands the answer names: `#2 of 5` means second of five |
+| **Co-mentioned** | The competitors named in the same answer |
+| **Topic** | The prompt's topic |
+| **Date** | When the answer was tracked |
+
+### Table filters and grouping
+
+Next to the page filters, the table has its own controls:
+
+- **Sentiment** — all sentiments, Positive, Neutral or Negative
+- **Co-mentioned** — answers that also name a given competitor, answers that name **No competitor**, or **Any or none**
+- **Group by** — None, Prompt or Platform. Each group starts with its name and its size across all pages.
+- **Sort** — Newest, Oldest, Most co-mentions or Most negative
+
+The count beside them shows how many responses and prompts match. These controls are saved in the URL too.
+
+### Open a response
+
+Click a row to open the answer in a side panel:
+
+- the platform and model, the country, the date and time, and the prompt, with **View prompt** to open the prompt's page
+- the sentiment, your position and the topic
+- **Mention** — the passage around your brand, with your brand and competitors highlighted
+- **Also named in this answer** — the competitors and their positions
+- **Full AI response** — the answer as tracking stored it (it is not generated again)
+- **Citations in this answer** — each cited source, with the same source types as the [Citations](/guides/citations) page
+
+At the bottom of the panel are **Send to Action Center**, **Suggest content** and **Copy response**.
+
+### Correct a sentiment
+
+If an answer's tone toward your brand is wrong, click **Sentiment is wrong?** in the panel. Pick the new sentiment, add a note on why if you like, and click **Save correction**.
+
+- From then on, every figure counts the answer with its new sentiment. The original is kept in the history.
+- The panel shows who made the correction, when, what the sentiment was before, and the note.
+- Only admins and managers can correct a sentiment. Other members can see past corrections but not the button.
+
+### Suggest content
+
+**Suggest content** in the panel writes a content suggestion for the answer's prompt. When the suggestion is ready, the notification opens it in [Content Optimization](/guides/content-optimization). If the prompt already has a suggestion, **Open existing** takes you there instead. Suggestions count toward your monthly content limit. A prompt can't get a suggestion until it has tracked answers and a prompt group, and both arrive with its next tracking run.
+
+### Send to the Action Center
+
+Tick the rows you want. The box in the header selects every answer on the page. A bar appears with **Send to Action Center**, **Export** (a CSV of just the selected rows) and **Clear**. You can also send a single answer from its panel. One send takes up to 100 answers, a full page.
+
+The selected answers become one action, titled *Improve how AI describes you for "…"* (or *across N prompts*):
+
+- The action quotes up to 10 of the answers with their platform, sentiment and excerpt, and links back to Mentions.
+- It is a **Protect** action when any of the answers is negative, and a **Growth** action otherwise. The larger the share of negative answers, the higher its impact.
+- Its tasks walk you through inspecting the contexts you're mentioned in, analyzing the cited sources, choosing the pages to work on, strengthening how your brand is described, and publishing. They end by validating the mentions and measuring the outcome on the answers' prompts.
+- Sending the same answers again doesn't create a second action. The notification says **Already in the Action Center** and opens the existing action.
+
+## Perception
+
+The **Perception** tab shows the words AI uses next to your brand and how they compare with the words it uses for your competitors.
+
+<CardGroup cols={2}>
+  <Card title="What AI associates with you" icon="tags">
+    The words and phrases that appear next to your brand, ranked by the number of responses they appear in, each with its change from the previous period. Hover over a count to see its share of the responses naming you.
+  </Card>
+  <Card title="Brand shape: you vs top competitors" icon="shapes">
+    A radar chart of your brand and your three most-mentioned competitors, on the attributes that tell them apart. It needs at least three attributes and at least one competitor named in the period.
+  </Card>
+  <Card title="Brand × attribute" icon="table-cells">
+    The same attributes as a heat map: each attribute's share of the responses naming each brand, for you and up to four competitors.
+  </Card>
+  <Card title="Frequently mentioned with" icon="users">
+    The competitors named in the same responses as you, with the change from the previous period. It shows whether the set of brands AI considers alongside you is changing.
+  </Card>
+</CardGroup>
+
+Under the brand shape, **Biggest gap** names the attribute where a competitor leads you by the widest margin, if that margin is at least 20 points. For example, AI uses *affordable* in 45% of the responses naming a competitor but in only 10% of the responses naming you.
+
+The terms are taken from the sentences that name each brand, by fixed rules rather than an LLM. A sentence that names two brands lends its words to both.
+
+## How the numbers are counted
+
+Each tracked answer that names your brand is tagged **Positive**, **Neutral** or **Negative** toward your brand. An answer that doesn't name you has no sentiment. Competitors have no sentiment yet: every tone on this page is the tone toward your brand.
+
+| Term | How it is counted |
+|---|---|
+| **Tracked responses** | The AI answers stored for your prompts in the period, under the filters |
+| **Times named** | Every time an answer names your brand, by its name or one of its domains. An answer that names you three times counts three. The **Total mentions** card, the platform table's Mentions column and the CSV's `times_named` column count this way. |
+| **Mentions** (responses naming you) | Answers that name your brand at least once. An answer that names you twice is still one mention. The Mentions table lists these, and the Competitor framing table counts responses the same way. |
+| **Mention rate** | Responses naming you ÷ tracked responses |
+| **Prompts with mentions** | Prompts with at least one answer naming you, out of the prompts tracked |
+| **Net sentiment** | Positive share − negative share of the responses naming you, from −100 to +100. Neutral answers count in the total. It is shown as a signed number such as +21, not as a percentage. |
+| **Position** | Your brand's place among the brands an answer names (1 = named first) |
+
+### Low sample
+
+A figure that rests on fewer than 20 responses is marked **Low sample**. For the mention rate that means fewer than 20 tracked responses. For net sentiment it means fewer than 20 responses naming you. A low-sample figure is shown without a change from the previous period, isn't tinted in the platform table, and is left out of **Biggest gap**. With so few answers, a single negative response moves the number a lot.
+
+<Tip>
+If a figure says **Low sample**, widen the date range or clear a filter before you draw conclusions from it.
+</Tip>
+
+## API and MCP
+
+AI assistants can read the same figures through the [MCP server](/guides/mcp-server), and scripts can read them over REST with the same `getcito_` API key. Both take the page's filters.
+
+| Tool | What it returns |
+|---|---|
+| `get_mentions_summary` | The Overview: times named, mentions, mention rate, prompts with mentions, sentiment, each platform and each day |
+| `list_mentions` | The Mentions table, 100 rows per page, with the sentiment, co-mention and sort options |
+| `get_mention` | One answer in full, with its citations and latest sentiment correction |
+| `get_mention_competitors` | Competitor framing |
+| `get_mentions_perception` | The Perception tab, including the biggest gap |
+| `override_mention_sentiment` | Corrects one answer's sentiment (**writes**; the key's user must be an admin or manager) |
+
+The Mentions & sentiment section of the [MCP server guide](/guides/mcp-server) lists the filters, the REST endpoints and an example request.
+
+<Card title="Continue: Citations" icon="arrow-right" href="/guides/citations">
+  See which third-party URLs AI engines trust to talk about your brand.
+</Card>

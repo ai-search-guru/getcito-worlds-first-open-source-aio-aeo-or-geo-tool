@@ -1,0 +1,23 @@
+{
+  "id": "review-site-presence",
+  "goal": "citations",
+  "businessTypes": [
+    "b2b"
+  ],
+  "industries": [],
+  "roles": [],
+  "skills": [],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "MO",
+      "time": "09:00"
+    }
+  ],
+  "mode": "ask_first",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "review_sites"
+  ]
+}

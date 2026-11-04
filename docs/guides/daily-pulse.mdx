@@ -1,0 +1,113 @@
+---
+title: "Daily Pulse"
+description: "A short per-brand digest after each tracking run: KPIs, highlights and warnings, by email or webhook."
+---
+
+The Daily Pulse is a short digest for each brand that goes out after its scheduled tracking run. It shows the headline numbers for the period, then lists what went well (**highlights**) and what needs attention (**warnings**).
+
+It is delivered two ways:
+
+- **Email** — cloud only.
+- **The `daily_pulse.created` webhook** — in both cloud and self-hosted modes. See [Webhook delivery](#webhook-delivery).
+
+## Configure it
+
+Open **Settings → Notifications**. Every active brand in your organization has its own row with a frequency and a recipient list. Admins and managers can change them; other members see the settings read-only.
+
+The **Manage notification settings** link at the bottom of every pulse email opens this tab.
+
+### Frequency
+
+| Setting | What happens |
+|---|---|
+| **Daily** (default) | A pulse after every scheduled daily tracking run. |
+| **Weekly** | One pulse a week, on **Monday (UTC)**, covering the last 7 days compared with the 7 days before. |
+| **Only when notable** | Same timing as Daily, but the pulse is skipped when it has no highlights and no warnings. |
+| **Off** | No pulse at all — no email and no webhook. |
+
+A brand with no saved setting uses **Daily**.
+
+"Notable" means at least one highlight or one warning survived the rules below — including the 7-day warning cooldown. A day whose only warnings were already reported that week counts as not notable.
+
+### Recipients
+
+Enter a comma-separated list of email addresses.
+
+- **Leave it empty to send to every member of the organization.**
+- Each address is checked when you save. If any entry is not a valid email address, the save is rejected and the invalid entries are listed under the field — fix or remove them and save again. A mistyped address is never silently dropped, because an empty list would widen the audience to the whole organization.
+- Up to 50 addresses are stored.
+
+Recipients only affect email. Webhook delivery does not use them.
+
+## When it is sent
+
+A pulse is generated after a brand's **scheduled** daily tracking run finishes. Manual runs and single-prompt refreshes never trigger one.
+
+Before computing anything, the pulse waits (up to 90 minutes) for the AI engines' late answers from that run to arrive, so its numbers match what the dashboard shows for the same window.
+
+No pulse is sent when:
+
+- the frequency is **Off**, or it is **Weekly** and today is not Monday (UTC)
+- the brand already had a pulse today, or a pulse for the same tracking run was already sent
+- there are no tracking results in the window
+- the frequency is **Only when notable** and there is nothing notable
+- in cloud mode, the organization's subscription is not active or trialing
+
+If a scheduled run finished but its pulse was lost (for example, the server restarted at the wrong moment), it is sent at the start of the next daily cycle instead.
+
+## What's in a pulse
+
+### KPIs
+
+| KPI | Meaning |
+|---|---|
+| **Visibility** | Your [AI Visibility Score](/concepts/visibility-scoring) for the period |
+| **7-day trend** | The score over the last 7 days, and its change from the 7 days before |
+| **Mentions** / **Citations** | Totals for the period, and the change from the previous period |
+| **Positive sentiment** | Share of answers mentioning you that were positive, and its change |
+| **Prompts you appear in** | Prompts where you were visible, out of all tracked prompts |
+
+For **Daily** and **Only when notable**, the period is the latest completed tracking run (at most 24 hours), compared with the run before it. For **Weekly**, it is the last 7 days compared with the 7 days before.
+
+The email subject carries the score and the weekly trend, for example: `Acme Daily Pulse — visibility 42.5 (+1.2 pts this week)`. On **Weekly**, the subject and heading say **Weekly Pulse**.
+
+### Highlights
+
+| Highlight | When it appears |
+|---|---|
+| **First citation** (`first_citation`) | A URL from a prompt's **Target URLs** list was cited by an AI engine for the first time during the period. Up to 5 are listed. |
+| **Prompt gain** (`prompt_gain`) | A prompt's visibility score rose by 5 points or more this week versus last week. The top 3 gains are listed. |
+| **Competitor overtaken** (`competitor_overtaken`) | Last week a competitor's visibility score was at or above yours; this week yours is higher. |
+| **New engine** (`new_engine`) | Your brand was mentioned or cited on an AI platform for the first time ever. |
+
+Highlights other than first citations and new engines compare the last 7 days with the 7 days before, whatever the frequency.
+
+### Warnings
+
+| Warning | When it appears |
+|---|---|
+| **Sharp drop** (`sharp_drop`) | Your visibility score fell week-over-week by at least 3 points **and** at least 30% of last week's score. Only for brands with 10 or more tracked prompts. |
+| **Visibility slipping** (`visibility_slipping`) | A smaller fall: at least 3 points and at least 10% of last week's score, from a score of 10 or more. Same 10-prompt minimum. |
+| **Competitor surge** (`competitor_surge`) | A competitor's visibility score rose by 15 points or more week-over-week. |
+| **Competitor crossed** (`competitor_crossed`) | A competitor that was at or below your score last week is above it this week (and did not already trigger a surge). |
+| **Lost citations** (`lost_citations`) | A prompt with an estimated AI volume above zero was cited on at least 60% of its result days in the last 14 days, then not at all on its 3 most recent result days. |
+
+<Note>
+**Visibility slipping** is included in the webhook payload, but the email does not list it.
+</Note>
+
+**Cooldown.** The same warning about the same subject — for example, a surge by the same competitor — is not repeated within 7 days. Highlights have no cooldown.
+
+**Data-collection guard.** If an AI platform's result volume collapses on our side (under a quarter of its usual daily volume across the whole instance), the pulse treats it as a collection problem rather than a real change: **Sharp drop**, **Visibility slipping** and **Lost citations** are held back, and the email notes which platforms were affected. The webhook reports them in `degraded_platforms`.
+
+## Webhook delivery
+
+Every generated pulse is also sent as a `daily_pulse.created` event to the brand's active webhook, if it is subscribed to that event, configured under **Content → Configure Webhook**. This works on self-hosted instances too, where it is the only delivery channel.
+
+The webhook payload contains the same KPIs, highlights and warnings as the email, plus the pulse date, the frequency and a link to Insights. The frequency setting applies to the webhook as well: **Off** sends nothing, **Weekly** sends on Mondays only. The recipient list does not.
+
+See [Webhooks](/api-reference/webhooks#event-payloads) for the full payload, field reference and delivery rules.
+
+<Card title="Continue: Answer Engine Insights" icon="arrow-right" href="/guides/answer-engine-insights">
+  Dig into the numbers behind each pulse on the Insights dashboard.
+</Card>

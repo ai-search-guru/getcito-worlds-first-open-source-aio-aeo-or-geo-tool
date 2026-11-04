@@ -1,0 +1,332 @@
+---
+title: "Webhooks"
+description: "Outbound webhooks for content opportunities, Content Editor pages and the Daily Pulse."
+---
+
+## Configuration
+
+Each brand has one webhook, set up in **Content → Configure Webhook**:
+
+- **Webhook URL** — your endpoint. GetCito sends `POST` requests with a JSON body.
+- **Secret key** (optional) — sent back to you in a header on every request, so your endpoint can tell that the call came from GetCito.
+- **Active** — pause delivery without deleting the webhook.
+
+Choose the events a webhook should receive in **Content → Configure Webhook**. Migration 00198 keeps existing webhooks subscribed to the three events it knew until a user saves a new selection. `content_draft.sent` (00262) is opt-in: tick **Content page sent** to receive pages. **Test Webhook** always sends `webhook.test`, regardless of the saved selection.
+
+## Events
+
+| Event | Sent when |
+|---|---|
+| `opportunity.sent` | A user sends a content opportunity to the workflow — from the opportunity page, or several at once from the opportunities list |
+| `daily_pulse.created` | A brand's Daily Pulse is generated (in both cloud and self-hosted modes) |
+| `action_task.sent` | A user sends an Action Center task to the configured webhook |
+| `content_draft.sent` | An admin or manager sends a Content Editor page to the CMS through the webhook: from the editor, a Library row, or up to 25 selected Library pages ([Send to CMS](/guides/send-to-cms)). Pages sent to Webflow, WordPress, Framer or Wix don't fire it |
+| `webhook.test` | **Test Webhook** is pressed in the webhook settings (always sent, independent of subscriptions) |
+
+## Verifying requests
+
+When a secret key is set, every request carries it unchanged in a header:
+
+```
+Content-Type: application/json
+X-Webhook-Secret: <your secret key>
+```
+
+Compare it with the secret you configured and reject the request on a mismatch. Use a constant-time comparison:
+
+```js
+import crypto from 'crypto';
+
+function isFromGetCito(req, secret) {
+  const received = Buffer.from(req.headers['x-webhook-secret'] ?? '');
+  const expected = Buffer.from(secret);
+  return received.length === expected.length && crypto.timingSafeEqual(received, expected);
+}
+```
+
+The secret travels in the request itself, so only use an `https://` endpoint.
+
+### Signature (`content_draft.sent`)
+
+`content_draft.sent` requests also carry a signature of the raw request body, made with the same secret:
+
+```
+X-GetCito-Signature: sha256=<hex HMAC-SHA256 of the body>
+```
+
+Compute it over the body exactly as received, before parsing it, and compare in constant time:
+
+```js
+import crypto from 'crypto';
+
+function isSignedByGetCito(rawBody, signature, secret) {
+  const expected = `sha256=${crypto.createHmac('sha256', secret).update(rawBody).digest('hex')}`;
+  const received = Buffer.from(signature ?? '');
+  return received.length === expected.length && crypto.timingSafeEqual(received, Buffer.from(expected));
+}
+```
+
+## Event payloads
+
+Payloads are flat JSON objects with an `event` field at the top level.
+
+### `opportunity.sent`
+
+```json
+{
+  "event": "opportunity.sent",
+  "opportunity": {
+    "id": "uuid",
+    "title": "Publish a comparison page for project management tools",
+    "description": "Competitors are cited for this prompt and you are not.",
+    "type": "owned",
+    "impact": "high",
+    "opportunity_score": 82.5
+  },
+  "prompt": { "text": "best project management tools for agencies", "category": "comparison" },
+  "data": {
+    "promptText": "best project management tools for agencies",
+    "visibilityScore": 12,
+    "competitorGap": 45,
+    "competitorsCited": ["Competitor A", "Competitor B"]
+  },
+  "brief": {
+    "suggestedTitle": "…",
+    "contentType": "comparison-page",
+    "targetWordCount": 2000,
+    "outline": [{ "heading": "…", "keyPoints": ["…"] }],
+    "targetKeywords": ["…"],
+    "competitorInsights": "…",
+    "callToAction": "…"
+  },
+  "brand": { "name": "Acme", "domain": "acme.example", "industry": "Software" },
+  "callback_url": "https://api.example.com/webhooks/content/<opportunity id>/status",
+  "callback_method": "POST"
+}
+```
+
+- `prompt` is `null` when the opportunity is not tied to a prompt.
+- `data` is the evidence behind the opportunity; its fields depend on the opportunity type.
+- `brief` is `null` until a content brief has been generated for the opportunity.
+- `callback_url` points at `POST /webhooks/content/{id}/status`; `callback_method` is `POST`. Send `{ "status": "in_progress" }` (or `new`, `reviewed`, `sent`, `done`, `dismissed`) as JSON and pass the same secret configured for this active webhook in the `X-Webhook-Secret` header. Configure a non-empty webhook secret in **Content → Configure Webhook** before using callbacks; callback authentication fails with 401 when no secret is configured. Callbacks are limited to 1,200 requests per 15 minutes per secret hash, with a separate per-IP limiter for failed (401) authentication attempts (10 per 15 minutes). They do not require a dashboard JWT.
+
+When your endpoint responds with anything but a redirect, the opportunity is marked `sent` and the response status plus the first 1,000 characters of its body are stored only if the opportunity's status and update timestamp have not changed since delivery began. If your workflow calls `callback_url` before replying (or a user updates the opportunity during delivery), the newer status is preserved and the late response does not overwrite it. A redirect (3xx) is never followed, so it counts as not delivered: the opportunity keeps its status, and a single send says the address redirects. Use the address it redirects to. If the request times out or the connection fails, the opportunity keeps its previous status too.
+
+### `daily_pulse.created`
+
+```json
+{
+  "event": "daily_pulse.created",
+  "brand": { "id": "uuid", "name": "Acme" },
+  "pulse": {
+    "date": "2026-07-30",
+    "frequency": "daily",
+    "kpis": {
+      "visibilityRate": 42.5,
+      "visiblePrompts": 17,
+      "promptCount": 40,
+      "weekRate": 44.1,
+      "prevWeekRate": 45.3,
+      "weekTrend": -1.2,
+      "mentions": 31,
+      "mentionsChange": 4,
+      "citations": 12,
+      "citationsChange": -2,
+      "sentimentPct": 68,
+      "sentimentChange": 3,
+      "totalResults": 120
+    },
+    "highlights": [
+      { "type": "first_citation", "key": "first_citation:https://acme.example/guide", "url": "https://acme.example/guide", "label": "…", "promptText": "…" }
+    ],
+    "warnings": [
+      { "type": "competitor_surge", "key": "competitor_surge:<id>", "competitorName": "…", "from": 20, "to": 31 }
+    ],
+    "degraded_platforms": [],
+    "insights_url": "https://app.example.com/dashboard/insights"
+  }
+}
+```
+
+`frequency` is the brand's pulse setting (`daily`, `weekly` or `notable`); no pulse is generated when it is `off`. See the [Daily Pulse guide](/guides/daily-pulse) for when a pulse is sent and what each highlight and warning means.
+
+Highlight types and their fields:
+
+| `type` | Fields |
+|---|---|
+| `first_citation` | `url`, `label`, `promptText` |
+| `prompt_gain` | `promptText`, `gain` |
+| `competitor_overtaken` | `competitorName`, `brandRate`, `competitorRate` |
+| `new_engine` | `platform` |
+
+Warning types and their fields:
+
+| `type` | Fields |
+|---|---|
+| `sharp_drop`, `visibility_slipping` | `from`, `to`, `drop` |
+| `competitor_surge` | `competitorName`, `from`, `to` |
+| `competitor_crossed` | `competitorName`, `competitorRate`, `brandRate` |
+| `lost_citations` | `promptText` |
+
+Every highlight and warning also has a `key` that identifies its subject.
+
+### `action_task.sent`
+
+```json
+{
+  "event": "action_task.sent",
+  "task": {
+    "id": "uuid",
+    "title": "Update the shipping guide",
+    "status": "todo",
+    "type": "content",
+    "url": "/guides/shipping",
+    "where": "acme.example/guides/shipping",
+    "why": "The page is missing useful details.",
+    "change": { "before": null, "after": "A table of shipping costs by country." },
+    "how": ["Add a comparison table."],
+    "done_when": "The updated page is live.",
+    "check": "auto",
+    "effort": "~2h",
+    "role": "Content writer"
+  },
+  "action": {
+    "id": "uuid",
+    "action_no": 12,
+    "kind": "recover_lost_citations",
+    "category": "recover",
+    "impact": "high",
+    "priority_score": 84,
+    "priority_level": "high",
+    "link": "https://app.example.com/dashboard/action-center/actions?action=<action id>"
+  },
+  "brand": {
+    "name": "Acme",
+    "domain": "acme.example",
+    "industry": "Software"
+  }
+}
+```
+
+`url` is the exact page, `change` the text to replace (`before`, null when the change adds text) and the new text (`after`), and `check` how the task is checked: `auto` (the page is fetched again), `rerun` (the prompts run again) or `manual` (a person confirms). Each is null when the task has none.
+
+### `content_draft.sent`
+
+One request per page:
+
+```json
+{
+  "event": "content_draft.sent",
+  "schemaVersion": 1,
+  "delivery": {
+    "id": "uuid",
+    "batchId": "uuid",
+    "sentAt": "2026-10-24T10:00:00.000Z"
+  },
+  "page": {
+    "draftId": "uuid",
+    "title": "How to brew pour-over coffee",
+    "slug": "pour-over-coffee",
+    "metaTitle": "Pour-over coffee: a step-by-step guide",
+    "metaDescription": "Pour slowly in circles for an even extraction.",
+    "html": "<p>Pour slowly in circles for an even extraction.</p>…",
+    "jsonLd": [{ "@context": "https://schema.org", "@type": "HowTo", "name": "How to brew pour-over coffee" }],
+    "author": "Ada Lovelace",
+    "featuredImage": { "src": "https://cdn.example.com/cup.jpg", "alt": "A cup of pour-over coffee" },
+    "method": "optimize",
+    "sourceUrl": "https://www.acme.example/blog/pour-over-coffee",
+    "pageType": "guide",
+    "language": "en"
+  },
+  "brand": { "id": "uuid", "name": "Acme", "domain": "acme.example", "industry": "Food & Beverage" },
+  "callback_url": "https://api.example.com/webhooks/content-drafts/<delivery id>/status",
+  "callback_method": "POST"
+}
+```
+
+- `schemaVersion` is the package's format, `1` today.
+- `delivery.batchId` is shared by the pages sent in one request of several pages (a bulk send); it is `null` for a page sent on its own.
+- `page.html` is the page ready to publish, as **Export** gives it: placeholders filled, without its H1 (the title field carries it), with the brand's byline line when it adds the byline to its content. GetCito cleans it once more before sending: no scripts except JSON-LD, no frames, forms or event handlers, and links only to `http`, `https`, `mailto`, `tel` or relative addresses (images may also be `data:image/…`).
+- `page.jsonLd` is the page's JSON-LD, each block parsed, or `[]`. Many CMS rich-text fields drop `<script>` from `page.html`, so add these to the post's head or its schema field.
+- `page.metaTitle` is the title when none was set. `page.author` is the page's author, or the brand's team named in the page's language ("Acme Team", "Acme Ekibi"; the brand's name alone for a language without a wording), or `null`. `page.featuredImage` is the page's first `https` image, or `null`.
+- `page.method` is `create` for a new page and `optimize` for one made from a live page, whose address is `page.sourceUrl` (otherwise `null`): update that post rather than creating another. `page.pageType` is the page's type in the editor (`blog_post`, `guide`, `comparison`…), or `null`.
+- `page.language` is a two-letter code: the page's **Language** rule when it is on (the workspace's **My rules** for a page whose rules no one has changed), otherwise the brand's language, otherwise `en`.
+- `callback_url` and `callback_method` are `null` when the webhook has no secret key.
+
+#### Report how it went
+
+When the page is live, send its address to `callback_url`:
+
+```bash
+curl -X POST "<callback_url>" \
+  -H "Content-Type: application/json" \
+  -H "X-Webhook-Secret: <your secret key>" \
+  -d '{ "status": "published", "url": "https://www.example.com/blog/pour-over-coffee", "externalId": "812" }'
+```
+
+If your CMS refused the post, say so instead:
+
+```json
+{ "status": "failed", "reason": "The slug is already taken" }
+```
+
+- The `X-Webhook-Secret` must be the secret of an active webhook of the brand that receives `content_draft.sent`. An unknown delivery, a missing webhook and a wrong secret all answer 401.
+- `status` is `published` or `failed`. `published` needs `url`: an `http` or `https` address without sign-in details, up to 2,048 characters as a browser reads it. `externalId` (optional) is your CMS's id for the post, as text up to 200 characters or a whole number, and `reason` (optional, up to 500 characters) says why it failed. A field sent empty or as `null` counts as left out. Anything else answers 400.
+- `published` marks the send **published** with that address. When it is the page's latest send, the draft becomes **Published** too, the Library links to the page, and the page as published is kept in the editor's **History**. A late callback for an older send doesn't move the page's address back, and the same callback sent again changes nothing.
+- `failed` marks the send **failed** with your reason, and the Library shows it. A send already marked published stays published. A callback that lands before your webhook answers keeps its word: the answer doesn't mark that send **sent** afterwards.
+- You can call back before answering the webhook, or later. The callback shares the opportunity callback's limits: 1,200 requests per 15 minutes per secret for both together, and 10 failed attempts per 15 minutes per IP.
+
+### `webhook.test`
+
+```json
+{
+  "event": "webhook.test",
+  "message": "This is a test webhook from AEO platform.",
+  "timestamp": "2026-07-30T10:00:00.000Z"
+}
+```
+
+The test uses the URL and secret currently in the form, so you can check an endpoint before saving it.
+
+## Delivery
+
+- Each event is sent **once**. There are no automatic retries.
+- Every request carries `User-Agent: GetCito-Webhook/1.0 (+https://getcito.com)`, so a firewall or WAF in front of your endpoint can let it through.
+- GetCito waits up to 15 seconds for a response (10 seconds for `webhook.test`).
+- Respond with a 2xx status quickly and do slow work after responding. Once the status has arrived, it counts, even if the rest of the answer is cut off or doesn't arrive in time.
+- Redirects aren't followed: a 3xx is the answer, and nothing reaches the address it points to. Use that address; the **Test** button reports a 3xx as a failure and names where it redirects to.
+- When the **Test** button can't reach the webhook, it adds the network error, such as `ENOTFOUND` (the host name doesn't resolve), `ECONNREFUSED` (nothing listens on that port) or a TLS certificate error.
+- Only admins and managers can change or test a brand's webhook, up to 10 tests a minute each. Other members see its settings read-only.
+- The address must be `http://` or `https://`, with no user name or password in it. In cloud mode it must also be a public address. A self-hosted install may also use addresses on its own network.
+- `content_draft.sent`:
+  - A 2xx answer marks the send **sent**. Anything else, or no answer, marks it **failed**, and the Library shows why. The first 2,000 characters of the answer are kept.
+  - A single page is sent while the person waits. A bulk send (up to 25 pages) goes on in the background, one page after another, with a 2-second pause between pages.
+  - A workspace can send 200 pages in 24 hours.
+
+## When the plan has ended
+
+In cloud mode, a workspace without an active plan is read-only: a cancelled plan or free trial reached its end, or a payment failed. See [What happens when my plan ends?](/faq).
+
+- **Nothing is sent.** Sending an opportunity, a task or a page, and **Test Webhook**, are writes, so the API refuses them with the 402 below. No Daily Pulse is generated.
+- **Callbacks store nothing.** Both callbacks (`/webhooks/content/{id}/status` and `/webhooks/content-drafts/{deliveryId}/status`) check the secret first, so a wrong one still answers 401. With the right secret, they answer `202` with this body and change nothing, whatever you sent:
+
+  ```json
+  { "success": false, "ignored": true, "code": "subscription_inactive" }
+  ```
+
+  It's a 2xx, so your workflow doesn't fail. Don't retry it.
+
+A write to the API (`/api/…`, any method but `GET`, `HEAD` and `OPTIONS`) from a person in a read-only workspace answers `402`:
+
+| Field | Value |
+|---|---|
+| `success` | `false` |
+| `error` | `plan_limit` |
+| `code` | `subscription_inactive` |
+| `message` | `Your plan has ended. Choose a plan to use GetCito again.` |
+
+A few writes stay open, such as disconnecting an outside account; the FAQ lists them. A self-hosted install is never read-only.
+
+<Card title="Help center" icon="circle-question" href="/faq">
+  Common questions and troubleshooting.
+</Card>

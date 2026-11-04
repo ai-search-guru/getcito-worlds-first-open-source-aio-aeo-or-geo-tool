@@ -1,87 +1,22 @@
-# GetCito — local deploy, built from source.
-#
-# Usage (from repo root):
-#   cp .env.example .env   # then fill in real values
-#   docker compose build
-#   docker compose up -d
-#
+name: getcito
 
 services:
-  postgres:
-    # New deployments get 18. Existing PostgreSQL 16 data directories are not
-    # compatible: set POSTGRES_IMAGE_TAG=16-alpine before upgrading, then remove
-    # the pin only after a dump/restore into PostgreSQL 18.
-    image: postgres:${POSTGRES_IMAGE_TAG:-18-alpine}
-    ports:
-      - "127.0.0.1:5433:5432"
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
-      POSTGRES_DB: getcito
-    volumes:
-      - postgres_data:/var/lib/postgresql/data
-    healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U postgres"]
-      interval: 5s
-      timeout: 5s
-      retries: 5
-
-  adminer:
-    image: adminer
-    restart: always
-    ports:
-      - "8081:8080"
-    environment:
-      ADMINER_DEFAULT_SERVER: postgres
-      start_period: 30s
-
-  db-migrate:
-    pull_policy: build
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-      target: migrate
-    environment:
-      - DATABASE_URL=postgres://postgres:postgres@postgres:5432/getcito
-    depends_on:
-      postgres:
-        condition: service_healthy
-
   web:
-    pull_policy: build
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-      target: web
-      args:
-        # VITE_* values are baked into the client bundle at build time.
-        DEPLOYMENT_MODE: ${DEPLOYMENT_MODE:-local}
-        VITE_DEPLOYMENT_MODE: ${VITE_DEPLOYMENT_MODE:-local}
-        VITE_APP_TIMEZONE: ${VITE_APP_TIMEZONE:-}
-        VITE_APP_LOCALE: ${VITE_APP_LOCALE:-}
-    env_file:
-      - .env
+    image: getcito-web:9.0.0
+    build: ./frontend
     ports:
-      - "3001:3000"
-    depends_on:
-      postgres:
-        condition: service_healthy
-      db-migrate:
-        condition: service_completed_successfully
-
-  worker:
-    pull_policy: build
-    build:
-      context: .
-      dockerfile: docker/Dockerfile
-      target: worker
+      - "3000:3000"
     env_file:
-      - .env
+      - ./frontend/.env.local
     depends_on:
-      postgres:
-        condition: service_healthy
-      db-migrate:
-        condition: service_completed_successfully
+      - server
+    restart: unless-stopped
 
-volumes:
-  postgres_data:
+  server:
+    image: getcito-server:9.0.0
+    build: ./backend
+    ports:
+      - "80:80"
+    env_file:
+      - ./backend/.env
+    restart: unless-stopped

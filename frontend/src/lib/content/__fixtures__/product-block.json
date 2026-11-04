@@ -1,0 +1,29 @@
+{
+  "products": [
+    {
+      "title": "Summit \"GTX\" Boot",
+      "url": "https://shop.example/products/p1?utm_source=feed&variant=2#reviews",
+      "image": "https://cdn.example/p1.jpg",
+      "price": "$189.00"
+    },
+    {
+      "title": "Trail Mid",
+      "url": "https://shop.example/products/p2",
+      "image": "http://cdn.example/p2.jpg",
+      "price": null
+    },
+    {
+      "title": "Ridge Low",
+      "url": "http://shop.example/products/p3",
+      "image": null,
+      "price": "$99.00"
+    },
+    {
+      "title": "No page",
+      "url": "javascript:alert(1)",
+      "image": null,
+      "price": null
+    }
+  ],
+  "html": "<div class=\"getcito-products\" style=\"display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:16px;margin:16px 0\"><a class=\"getcito-product\" href=\"https://shop.example/products/p1?variant=2\" style=\"display:block;border:1px solid #e5e5e5;border-radius:12px;padding:12px;text-decoration:none;color:inherit\"><img src=\"https://cdn.example/p1.jpg\" alt=\"Summit &quot;GTX&quot; Boot\" loading=\"lazy\" style=\"display:block;width:100%;aspect-ratio:1/1;object-fit:cover;border-radius:8px\"><strong style=\"display:block;margin-top:8px\">Summit &quot;GTX&quot; Boot</strong> <span style=\"display:block;margin-top:4px\">$189.00</span></a>\n<a class=\"getcito-product\" href=\"https://shop.example/products/p2\" style=\"display:block;border:1px solid #e5e5e5;border-radius:12px;padding:12px;text-decoration:none;color:inherit\"><strong style=\"display:block;margin-top:8px\">Trail Mid</strong></a></div>"
+}

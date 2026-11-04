@@ -1,0 +1,24 @@
+{
+  "id": "market-source-finder",
+  "goal": "competitors",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [
+    "bizdev"
+  ],
+  "skills": [
+    "markets",
+    "listings"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "month_first",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "ready",
+  "needs": []
+}

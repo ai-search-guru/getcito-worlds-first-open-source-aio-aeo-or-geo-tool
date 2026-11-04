@@ -1,0 +1,23 @@
+{
+  "id": "local-store-locator",
+  "goal": "visibility",
+  "businessTypes": [
+    "b2c"
+  ],
+  "industries": [],
+  "roles": [],
+  "skills": [],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "month_first",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "local_listings"
+  ]
+}

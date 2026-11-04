@@ -1,0 +1,21 @@
+{
+  "id": "aeo-operator",
+  "goal": "tasks",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "daily",
+      "time": "07:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "sub_agents"
+  ]
+}

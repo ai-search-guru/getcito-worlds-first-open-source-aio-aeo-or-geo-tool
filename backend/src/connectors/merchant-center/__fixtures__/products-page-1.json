@@ -1,0 +1,69 @@
+{
+  "products": [
+    {
+      "name": "accounts/123456789/products/en~US~TB-42-BRN",
+      "offerId": "TB-42-BRN",
+      "contentLanguage": "en",
+      "feedLabel": "US",
+      "productAttributes": {
+        "title": "Trail Boot",
+        "description": "A waterproof hiking boot.",
+        "link": "https://shop.example/boots/trail?color=brown",
+        "imageLink": "https://shop.example/img/trail-brown.jpg",
+        "additionalImageLinks": ["https://shop.example/img/trail-brown-2.jpg"],
+        "brand": "Acme",
+        "gtins": ["00012345678905"],
+        "mpn": "TB-42",
+        "price": { "amountMicros": "129990000", "currencyCode": "USD" },
+        "salePrice": { "amountMicros": "99000000", "currencyCode": "USD" },
+        "availability": "IN_STOCK",
+        "condition": "NEW",
+        "itemGroupId": "TB",
+        "color": "Brown",
+        "size": "42",
+        "material": "Leather",
+        "productTypes": ["Shoes > Boots", "Outdoor"]
+      },
+      "productStatus": {
+        "itemLevelIssues": [
+          {
+            "code": "image_too_small",
+            "severity": "DEMOTED",
+            "resolution": "merchant_action",
+            "attribute": "image link",
+            "reportingContext": "SHOPPING_ADS",
+            "description": "Image too small",
+            "detail": "Use an image of at least 100 x 100 pixels",
+            "documentation": "https://support.google.com/merchants/answer/6098289",
+            "applicableCountries": ["US", "CA"]
+          },
+          {
+            "code": "image_too_small",
+            "severity": "NOT_IMPACTED",
+            "attribute": "image link",
+            "reportingContext": "FREE_LISTINGS",
+            "description": "Image too small",
+            "applicableCountries": ["US"]
+          }
+        ]
+      }
+    },
+    {
+      "name": "accounts/123456789/products/en~US~TB-43-BLK",
+      "offerId": "TB-43-BLK",
+      "contentLanguage": "en",
+      "feedLabel": "US",
+      "productAttributes": {
+        "title": "Trail Boot",
+        "link": "https://shop.example/boots/trail?color=black",
+        "price": { "amountMicros": "129990000", "currencyCode": "USD" },
+        "availability": "OUT_OF_STOCK",
+        "itemGroupId": "TB",
+        "color": "Black",
+        "size": "43"
+      },
+      "productStatus": {}
+    }
+  ],
+  "nextPageToken": "page-2"
+}

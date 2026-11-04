@@ -1,0 +1,63 @@
+/**
+ * Cities a prompt can be tracked in (PROMPT-015d): the location code
+ * `<country>~<CITY>` (`TR~ISTANBUL`). Google AI Overview and AI Mode and the
+ * API models ask from the city; the other engines answer per country, so
+ * they skip it. The API keeps the same ids, with what the providers take,
+ * in `backend/src/lib/cities.js`; both lists change together.
+ */
+export const CITIES: readonly { country: string; id: string; label: string }[] = [
+  { country: 'US', id: 'NEW_YORK', label: 'New York' },
+  { country: 'US', id: 'LOS_ANGELES', label: 'Los Angeles' },
+  { country: 'US', id: 'CHICAGO', label: 'Chicago' },
+  { country: 'US', id: 'HOUSTON', label: 'Houston' },
+  { country: 'US', id: 'SAN_FRANCISCO', label: 'San Francisco' },
+  { country: 'US', id: 'MIAMI', label: 'Miami' },
+  { country: 'US', id: 'SEATTLE', label: 'Seattle' },
+  { country: 'US', id: 'BOSTON', label: 'Boston' },
+  { country: 'US', id: 'AUSTIN', label: 'Austin' },
+  { country: 'US', id: 'ATLANTA', label: 'Atlanta' },
+  { country: 'GB', id: 'LONDON', label: 'London' },
+  { country: 'GB', id: 'MANCHESTER', label: 'Manchester' },
+  { country: 'GB', id: 'BIRMINGHAM', label: 'Birmingham' },
+  { country: 'GB', id: 'EDINBURGH', label: 'Edinburgh' },
+  { country: 'DE', id: 'BERLIN', label: 'Berlin' },
+  { country: 'DE', id: 'MUNICH', label: 'Munich' },
+  { country: 'DE', id: 'HAMBURG', label: 'Hamburg' },
+  { country: 'DE', id: 'FRANKFURT', label: 'Frankfurt' },
+  { country: 'DE', id: 'COLOGNE', label: 'Cologne' },
+  { country: 'FR', id: 'PARIS', label: 'Paris' },
+  { country: 'FR', id: 'LYON', label: 'Lyon' },
+  { country: 'FR', id: 'MARSEILLE', label: 'Marseille' },
+  { country: 'TR', id: 'ISTANBUL', label: 'İstanbul' },
+  { country: 'TR', id: 'ANKARA', label: 'Ankara' },
+  { country: 'TR', id: 'IZMIR', label: 'İzmir' },
+  { country: 'TR', id: 'BURSA', label: 'Bursa' },
+  { country: 'TR', id: 'ANTALYA', label: 'Antalya' },
+  { country: 'JP', id: 'TOKYO', label: 'Tokyo' },
+  { country: 'JP', id: 'OSAKA', label: 'Osaka' },
+  { country: 'BR', id: 'SAO_PAULO', label: 'São Paulo' },
+  { country: 'BR', id: 'RIO_DE_JANEIRO', label: 'Rio de Janeiro' },
+  { country: 'IN', id: 'MUMBAI', label: 'Mumbai' },
+  { country: 'IN', id: 'NEW_DELHI', label: 'New Delhi' },
+  { country: 'IN', id: 'BENGALURU', label: 'Bengaluru' },
+  { country: 'AU', id: 'SYDNEY', label: 'Sydney' },
+  { country: 'AU', id: 'MELBOURNE', label: 'Melbourne' },
+  { country: 'CA', id: 'TORONTO', label: 'Toronto' },
+  { country: 'CA', id: 'VANCOUVER', label: 'Vancouver' },
+  { country: 'CA', id: 'MONTREAL', label: 'Montréal' },
+  { country: 'NL', id: 'AMSTERDAM', label: 'Amsterdam' },
+  { country: 'NL', id: 'ROTTERDAM', label: 'Rotterdam' },
+  { country: 'IT', id: 'ROME', label: 'Rome' },
+  { country: 'IT', id: 'MILAN', label: 'Milan' },
+  { country: 'ES', id: 'MADRID', label: 'Madrid' },
+  { country: 'ES', id: 'BARCELONA', label: 'Barcelona' },
+  { country: 'KR', id: 'SEOUL', label: 'Seoul' },
+  { country: 'SE', id: 'STOCKHOLM', label: 'Stockholm' },
+  { country: 'MX', id: 'MEXICO_CITY', label: 'Mexico City' },
+  { country: 'SG', id: 'SINGAPORE', label: 'Singapore' },
+  { country: 'AE', id: 'DUBAI', label: 'Dubai' },
+  { country: 'AE', id: 'ABU_DHABI', label: 'Abu Dhabi' },
+];
+
+/** Engines that answer from a city (scrapers), beside the API models. */
+export const CITY_PLATFORMS: ReadonlySet<string> = new Set(['google-aio', 'google-aimode']);

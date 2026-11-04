@@ -1,0 +1,26 @@
+{
+  "id": "competitor-watch",
+  "goal": "competitors",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "beat",
+    "compare"
+  ],
+  "triggers": [
+    {
+      "kind": "signal",
+      "category": "compete"
+    },
+    {
+      "kind": "schedule",
+      "repeat": "MO",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "ready",
+  "needs": []
+}

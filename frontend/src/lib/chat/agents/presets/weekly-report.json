@@ -1,0 +1,30 @@
+{
+  "id": "weekly-report",
+  "goal": "reporting",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "report"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "FR",
+      "time": "16:00"
+    }
+  ],
+  "mode": "full_auto",
+  "connections": [
+    {
+      "key": "google_search_console",
+      "required": false
+    },
+    {
+      "key": "google_analytics",
+      "required": false
+    }
+  ],
+  "status": "ready",
+  "needs": []
+}

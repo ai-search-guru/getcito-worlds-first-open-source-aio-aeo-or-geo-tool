@@ -1,0 +1,102 @@
+---
+title: "Tracking"
+description: "Trigger AI engine queries and inspect tracking jobs."
+---
+
+## Trigger a tracking run
+
+```http
+POST /api/tracking/check
+Content-Type: application/json
+Authorization: Bearer <SUPABASE_JWT>
+
+{
+  "brandId": "uuid",
+  "promptId": "uuid"
+}
+```
+
+`promptId` is optional — omit it to run every active prompt for the brand. The platforms and models come from the brand's own configuration, not from the request. Enqueues a tracking job. Returns:
+
+```json
+{
+  "success": true,
+  "jobId": "job-uuid",
+  "message": "Tracking job enqueued"
+}
+```
+
+Errors: `400` when `brandId` is missing, `404` when the brand doesn't exist, `403` when it belongs to another organization, `409` when the brand is paused. In cloud mode the request can also return `402` (no active subscription or trial) or `429` (daily on-demand limit or cooldown reached).
+
+## Poll job status
+
+```http
+GET /api/tracking/job/{jobId}
+Authorization: Bearer <SUPABASE_JWT>
+```
+
+Returns:
+
+```json
+{
+  "success": true,
+  "status": "active",
+  "progress": {
+    "current": 12,
+    "total": 30,
+    "promptText": "best running shoes for beginners",
+    "model": "gemini-2.5-flash",
+    "platform": "gemini"
+  },
+  "result": null,
+  "failedReason": null
+}
+```
+
+`status` values: `waiting`, `active`, `completed`, `failed`, `cancelled`. `result` is only set once the job is `completed`, and `failedReason` only when it is `failed`. An unknown `jobId` returns `{ "success": true, "status": "not_found" }`.
+
+To cancel a running job, send `DELETE /api/tracking/job/{jobId}` with the same bearer token.
+
+## Internal cron endpoint
+
+The web app's cron route (`/api/cron/daily-tracking`) calls the server's internal endpoint with a shared secret:
+
+```http
+POST /api/internal/daily-tracking
+Authorization: Bearer <CRON_SECRET>
+```
+
+This loops over every active (not paused) brand, skips organizations without an active subscription (cloud mode) or without the daily monitoring feature, skips brands with no active prompts, and enqueues a tracking job for the rest. Returns:
+
+```json
+{
+  "success": true,
+  "triggered": 4,
+  "total": 5
+}
+```
+
+<Note>
+Vercel Cron triggers `/api/cron/daily-tracking` on a schedule defined in `frontend/vercel.json`. Self-hosted servers run the same flow on their own built-in daily schedule. To run it manually for testing, hit the server endpoint directly with the cron secret.
+</Note>
+
+## Latest results
+
+For UI rendering, prefer the optimized RPC:
+
+```http
+POST /rest/v1/rpc/get_latest_prompt_results
+Content-Type: application/json
+Authorization: Bearer <SUPABASE_JWT>
+
+{
+  "p_brand_id": "uuid",
+  "p_platform": "chatgpt"  // optional
+}
+```
+
+Returns the most recent `prompt_results` row per `(prompt_id, platform)` — much cheaper than `SELECT … ORDER BY created_at DESC LIMIT 1` per prompt in app code.
+
+<Card title="Continue: Webhooks" icon="arrow-right" href="/api-reference/webhooks">
+  Outbound webhooks for content briefs and lifecycle events.
+</Card>

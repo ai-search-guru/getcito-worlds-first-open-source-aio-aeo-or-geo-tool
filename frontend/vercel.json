@@ -1,0 +1,23 @@
+{
+  "crons": [
+    {
+      "path": "/api/cron/daily-tracking",
+      "schedule": "0 2 * * *"
+    },
+    {
+      "path": "/api/cron/health-report",
+      "schedule": "0 6 * * *"
+    }
+  ],
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Robots-Tag",
+          "value": "noindex, nofollow, noarchive, nosnippet"
+        }
+      ]
+    }
+  ]
+}

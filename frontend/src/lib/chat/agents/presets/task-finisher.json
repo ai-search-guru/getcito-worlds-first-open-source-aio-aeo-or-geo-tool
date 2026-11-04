@@ -1,0 +1,26 @@
+{
+  "id": "task-finisher",
+  "goal": "tasks",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "tasks"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "MO",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [
+    {
+      "key": "cms",
+      "required": false
+    }
+  ],
+  "status": "ready",
+  "needs": []
+}

@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom" xmlns:g="http://base.google.com/ns/1.0">
+  <title>Acme Outdoor</title>
+  <link rel="self" href="https://shop.example/feed.xml"/>
+  <updated>2026-10-20T10:00:00Z</updated>
+  <entry>
+    <g:id>TR-100-RED</g:id>
+    <g:item_group_id>TR-100</g:item_group_id>
+    <title>Trailrunner Hiking Boot - Red</title>
+    <summary><![CDATA[Waterproof leather & mesh. <b>Grips wet rock.</b>]]></summary>
+    <link rel="alternate" href="https://shop.example/trailrunner?color=red"/>
+    <g:image_link>https://shop.example/img/tr-red.jpg</g:image_link>
+    <g:additional_image_link>https://shop.example/img/tr-red-2.jpg</g:additional_image_link>
+    <g:additional_image_link>https://shop.example/img/tr-red-3.jpg</g:additional_image_link>
+    <g:brand>Acme</g:brand>
+    <g:gtin>4006381333931</g:gtin>
+    <g:price>129.00 USD</g:price>
+    <g:sale_price>99.00 USD</g:sale_price>
+    <g:availability>in stock</g:availability>
+    <g:condition>new</g:condition>
+    <g:color>Red</g:color>
+    <g:size>42</g:size>
+    <g:material>Leather</g:material>
+    <g:product_type>Shoes &gt; Hiking Boots</g:product_type>
+  </entry>
+  <entry>
+    <g:id>TR-100-BLUE</g:id>
+    <g:item_group_id>TR-100</g:item_group_id>
+    <title>Trailrunner Hiking Boot - Blue</title>
+    <summary><![CDATA[Waterproof leather & mesh. <b>Grips wet rock.</b>]]></summary>
+    <link href="https://shop.example/trailrunner?color=blue"/>
+    <g:image_link>https://shop.example/img/tr-blue.jpg</g:image_link>
+    <g:brand>Acme</g:brand>
+    <g:price>129.00 USD</g:price>
+    <g:availability>in stock</g:availability>
+    <g:condition>new</g:condition>
+    <g:color>Blue</g:color>
+    <g:size>42</g:size>
+    <g:material>Leather</g:material>
+    <g:product_type>Shoes &gt; Hiking Boots</g:product_type>
+  </entry>
+  <entry>
+    <g:id>TR-100-GREEN</g:id>
+    <g:item_group_id>TR-100</g:item_group_id>
+    <title>Trailrunner Hiking Boot - Green</title>
+    <summary><![CDATA[Waterproof leather & mesh. <b>Grips wet rock.</b>]]></summary>
+    <link href="https://shop.example/trailrunner?color=green"/>
+    <g:image_link>https://shop.example/img/tr-green.jpg</g:image_link>
+    <g:brand>Acme</g:brand>
+    <g:price>129.00 USD</g:price>
+    <g:availability>out of stock</g:availability>
+    <g:condition>new</g:condition>
+    <g:color>Green</g:color>
+    <g:size>42</g:size>
+    <g:material>Leather</g:material>
+    <g:product_type>Shoes &gt; Hiking Boots</g:product_type>
+  </entry>
+  <entry>
+    <g:id>SOCK-1</g:id>
+    <title>Merino Hiking Sock</title>
+    <summary>Soft merino wool, cushioned heel.</summary>
+    <link href="https://shop.example/merino-sock"/>
+    <g:image_link>https://shop.example/img/sock.jpg</g:image_link>
+    <g:brand>Acme</g:brand>
+    <g:mpn>SOCK-MER-1</g:mpn>
+    <g:price>18.50</g:price>
+    <g:availability>preorder</g:availability>
+  </entry>
+</feed>

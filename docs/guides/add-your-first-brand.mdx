@@ -1,0 +1,156 @@
+---
+title: 'Add your first brand'
+description: 'Step-by-step walkthrough of brand onboarding.'
+---
+
+## Prerequisites
+
+- A logged-in GetCito account on your [self-hosted instance](/self-host/docker-compose)
+- 5–10 minutes
+- The website URL of the brand you want to track
+
+## Onboarding flow
+
+The onboarding wizard has **5 steps for self-hosted** instances. Deployments configured with cloud mode and billing have **7 steps**: the extra steps are what you work on and plan checkout. From step 2 on, your progress is saved as you go, so if you drop off you resume where you left off.
+
+<Steps>
+  <Step title="1. Brand basics">
+    **Set up your brand** asks for three fields:
+
+    - **Brand name** — exactly how the brand is named in the wild (e.g. *Acme Coffee*, not *AC*). Mention detection ignores upper and lower case.
+    - **Website** — your main domain; the `https://` prefix is already filled in (e.g. `example.com`). Used to recognize citations of your site and to suggest competitors.
+    - **Describe your brand** *(optional but recommended)* — 1–3 sentences covering what industry you're in and who your audience is. A description helps GetCito generate better topic, prompt and competitor suggestions.
+
+    There's no separate industry field: put your industry in the description.
+
+  </Step>
+  <Step title="2. Region & language">
+    **Select your target market**: pick the region and language your audience uses. For the United States you can also pick a state, which localizes AI answers to it; leave it empty for nationwide results. This drives:
+
+    - The language your suggested topics and prompts are written in, and so the language AI engines answer in
+    - The location your prompts are asked from
+    - The competitors suggested in step 5
+
+    18 regions and 13 languages supported. You can track prompts in more locations later; see [Prompts](/guides/prompts).
+
+  </Step>
+  <Step title="3. Topic selection">
+    **Choose topics to monitor**: GetCito uses your brand details and an AI model to suggest **topics** — themes your customers care about (e.g. *EV Range*, *Reliability*, *Pricing*). The first seven come checked.
+
+    Check the topics that fit your brand and uncheck any that don't apply, up to 10. You can also type a custom topic name and add it with **+**. If suggestions can't be fetched, add your own. **Looks good** moves on.
+
+    <Tip>
+    Aim for 4–7 topics. Too few = narrow tracking surface. Too many = noisy and hard to interpret.
+    </Tip>
+
+  </Step>
+  <Step title="4. Prompt review">
+    **Review your prompts**: for each selected topic, GetCito generates **5 starter prompts** (real questions a potential customer would ask an AI engine), so 10 topics give 50 prompts. Review the list:
+
+    - Remove prompts that don't fit
+    - Remove a whole topic from its **…** menu › **Remove topic**
+    - Add your own prompts under each topic
+
+    If the list holds more prompts than your plan allows, the step says how many to remove before you can continue.
+
+    <Note>
+    These prompts are sent to AI platforms daily, on every platform your plan allows. Self-hosted runs all 8 (ChatGPT, Google AI Overviews, Google AI Mode, Google Gemini, Perplexity, Microsoft Copilot, Grok, Claude). In cloud mode, Starter runs ChatGPT and Microsoft Copilot; Growth and Enterprise add Google AI Overviews, Google AI Mode, Gemini, Perplexity and Grok. Claude is an Enterprise option in cloud mode.
+    </Note>
+
+    <Tip>
+    Avoid prompts that include your brand name (e.g. *"What is Acme?"*). They almost always score 100 because the AI obviously talks about you when asked — but they don't measure organic AEO performance. Keep your tracked prompts brand-agnostic.
+    </Tip>
+
+  </Step>
+  <Step title="5. Competitors">
+    **Add your competitors**: GetCito analyzes your brand and suggests competitor names. Review the list:
+
+    - Check the ones that are actual rivals
+    - Uncheck or remove ones that aren't really comparable
+    - Add your own with a company name and domain (use the name as it appears in AI responses, e.g. *Acme*, not *acme.com*)
+
+    Select at least one competitor to continue; **Start tracking with N competitors** finishes the brand. Competitor tracking is on every plan.
+
+    If your site looks like an online store, GetCito turns on Product Visibility for the brand and says so on this step. You can turn it off in brand settings.
+
+  </Step>
+  <Step title="6. What do you work on? (cloud only)">
+    Pick what you work on or lead (Founders & leaders, Brand & PR, Content, Growth and more), and your left menu keeps only the sections you need. **Skip: show me everything** keeps every section, and you can change it later in **Settings → Account**. Self-hosted instances ask the same the first time you open the dashboard. See [Menu access](/guides/menu-access).
+  </Step>
+  <Step title="7. Plan & checkout (cloud only)">
+    In cloud mode, the final step picks your plan, **Starter** or **Growth**, and runs Stripe Checkout. While a free trial is on offer, **Choose how to start** offers a **14-day trial**, **Monthly** or **Yearly**. With the trial, the plan's button reads **Start 14-day free trial**: you enter card details, nothing is charged until the trial ends, and the step tells you the day of the first charge. Otherwise it reads **Buy now**. The trial comes with an organization's first subscription only; without it, the plan starts the same day. Self-hosted instances skip this step entirely.
+  </Step>
+</Steps>
+
+To add another brand later, pick **Add Brand** in the brand switcher. It walks through the same first five steps; your plan sets how many brands you can have.
+
+## What happens after you finish
+
+The first round of AI engine queries starts automatically: right away on self-hosted instances, after checkout in cloud mode, and the dashboard opens. The first run can take anywhere from a few minutes to 1–2 hours at busy times. While you wait:
+
+- **Brand Visibility** — shows that the first tracking is in progress, and fills in with your results. You can leave the page; the run keeps going in the background.
+- **Citations** — fills in with the source URLs AI answers cite
+- **Prompts → Prompt Suggestions** — prompt ideas to add to tracking
+
+## Adding the tracking pixel (optional, post-onboarding)
+
+The onboarding flow doesn't include the tracking pixel — it's an opt-in step you do separately for **AI Traffic Analytics** (real visits arriving from AI answer engines). To set it up:
+
+<Steps>
+  <Step title="Open the AI Referral Traffic page">
+    Pick **AI Referral Traffic** in the sidebar (`/dashboard/traffic`) after onboarding. Until the snippet sends its first visit, the code is shown at the top of the page; after that, **Code** on the **Tracking snippet** card shows it again.
+  </Step>
+  <Step title="Copy the snippet">
+    Looks something like:
+
+    `<script src="http://localhost/t.js" data-t="YOUR_TRACKING_CODE" defer></script>`
+
+    This example uses the local API server. For a published site, copy the snippet from your deployed instance so it points to that server's HTTPS URL.
+  </Step>
+  <Step title="Paste it into your site head">
+    Drop the snippet just before the closing `</head>` tag. Next.js: add it inside `app/layout.tsx`. WordPress: use a header injection plugin. Static sites: edit your template.
+  </Step>
+</Steps>
+
+Once the snippet sends a visit, the **Tracking snippet** card shows it as active with the time of the last visit. See [AI Traffic Analytics](/guides/ai-traffic-analytics) for the rest of the page.
+
+## Common pitfalls
+
+<AccordionGroup>
+  <Accordion title="My visibility score is 0 — is something broken?">
+    Probably not. New, niche, or B2B brands often start at 0 across most
+    prompts. AI engines need either (1) significant training data mentioning
+    your brand, or (2) live citations from authoritative sources. The score only
+    stays at 0 when both are missing — which is exactly what AEO is for.
+  </Accordion>
+  <Accordion title="Prompts include my brand name — should I remove?">
+    Yes. *"What is Acme?"* style prompts almost always score 100 (the AI
+    obviously talks about you when asked) but they're not measuring organic
+    discovery. Remove brand-name prompts; they distort averages.
+  </Accordion>
+  <Accordion title="I see weird competitors I never heard of in AI responses">
+    That's gold. Those are AI-suggested alternatives users see when you're not
+    cited. Add the most-mentioned ones to your competitors list to track them
+    properly.
+  </Accordion>
+  <Accordion title="Why is Google AI Overviews missing from my plan?">
+    Starter plan runs only ChatGPT and Microsoft Copilot. Google AI Overviews,
+    Google AI Mode, Gemini, Perplexity and Grok unlock on Growth and Enterprise
+    plans (cloud), or are all available immediately on self-hosted. Claude runs
+    on self-hosted, and is an Enterprise option in cloud mode.
+  </Accordion>
+  <Accordion title="Can I add more topics later?">
+    Yes. On **Prompts → Topics**, admins and managers can add topics with **Add
+    Topic** or from the **Topic Suggestions** card, and **Prompts → Prompt
+    Suggestions** offers new prompts to track. New prompts run with the next
+    daily run.
+  </Accordion>
+</AccordionGroup>
+
+<Card
+  title="Continue: Reading Answer Engine Insights"
+  icon="arrow-right"
+  href="/guides/answer-engine-insights"
+>
+  Now that data is flowing, learn to read the dashboard.
+</Card>

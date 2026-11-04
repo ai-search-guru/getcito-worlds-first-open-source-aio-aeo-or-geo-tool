@@ -1,0 +1,24 @@
+{
+  "id": "alternatives-comparison-pages",
+  "goal": "competitors",
+  "businessTypes": [
+    "b2b"
+  ],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "compare",
+    "features"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "month_first",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "ready",
+  "needs": []
+}

@@ -1,0 +1,114 @@
+---
+title: "Content Optimization"
+description: "Find content opportunities in your visibility gaps, brief them, and send them to the editor, the Action Center or your workflow."
+---
+
+<Note>
+This page is **Opportunities** in the **Content** section. **Send to Editor** on an opportunity starts a page in the Content Editor, and **Send to Plan** puts it at the top of the Content plan. See [Content Editor](/guides/content-editor) for the Plan, the editor and the Library.
+</Note>
+
+## What this page does
+
+**Opportunities** (`/dashboard/content`) lists *content opportunities*: what to write or change so AI answers name you where they don't yet. GetCito suggests them on its own as tracking data comes in. An opportunity is built for a group of related prompts that one piece of content can answer, or for a single prompt. Each row shows:
+
+- the action to take, with what it was built for: a topic and its number of prompts, **Single prompt**, or the Action Center action it came from;
+- when it was **Suggested** (a dot marks the rows suggested since your last visit);
+- its **Type**: **Owned** (content on your own site) or **Earned** (coverage on other sites: articles, reviews, links), and, where it applies, what to do with your page: Create, Optimize, Expand, Refresh, Consolidate or Defend;
+- its **Impact** (High, Medium or Low) and its **Score**, from 0 to 100;
+- its **Status**: New, Reviewed, Sent to Workflow, In Progress, Done, Dismissed or Archived.
+
+Above the list, cards count the **Total Opportunities** and the **High Impact** ones, and give the **Avg. Score**. On plans with monthly limits, **This billing period** shows how many new opportunities and content briefs are left, and when they reset.
+
+## Filters and export
+
+- Search the opportunities, and narrow the list by topic, prompt, type, impact, **Source** (**System**: suggested automatically; **Manual**: made with **+ New**; **Prompt**: suggested from a prompt; **Action**: sent from an Action Center task) and status.
+- **Suggested** picks a period (all time, this month, the last 30 days or your own dates) and the order: highest score, newest or oldest.
+- **Archived** opportunities stay hidden unless you filter to them.
+- The filters stay in the page's address, so a link opens the same view.
+- **Export CSV** downloads every opportunity that matches the filters and the search, not only the page you see.
+
+## Ask for new opportunities
+
+**+ New** (admins and managers) suggests opportunities now, instead of waiting for the next automatic run. Pick a **Focus** (let GetCito choose, a topic or a prompt), or describe an idea, and how many. Duplicates of existing opportunities are skipped and don't count toward the month's opportunities.
+
+## The opportunity panel
+
+Each row's **…** menu has the quick actions: **Send to Editor** (or **Open draft**), **Send to Plan**, **Send to Workflow** for a new opportunity, **Open in new tab**, which opens it as a page of its own, and **Dismiss** for a new one, which you can undo from the message that appears. Send to Plan and Dismiss are for admins and managers.
+
+Click an opportunity's title to open it in a panel beside the list. The page's address keeps it, so a link opens it too.
+
+The panel shows what the opportunity rests on:
+
+- **Source Data**: the related prompt, **Est. AI Volume**, your **Current Visibility**, the **Competitor Gap**, the **Strongest Competitor**, the **Search Intent**, keywords, the searches AI engines ran for the prompt, and the competitors cited. An opportunity sent from an Action Center task shows that task instead: where, why, how and when it's done.
+- For a group of prompts: **Your Site** (which of your pages to work on, with their AI citations and sessions over 30 days), **Recommended Assets** (the main piece of work and any supporting ones, each of which can go to the Action Center on its own), the **Opportunity Basket** (its prompts, and the searches AI engines ran for them) and **Why This Score**: demand 40%, visibility gap 30%, competitor gap 20% and intent 10%, measured over the last 30 days.
+- **Results**: the Action Center actions sent from it, with what changed once their work is complete and measured.
+
+Its buttons:
+
+- **Send to Actions** makes it an action in the Action Center, then reads **Open in Actions**.
+- **Generate Brief** writes a content brief (see below).
+- **Send to Editor** opens **New content** with the opportunity picked: a new page, or the page of yours it names to optimize. Once a draft is being written for it, the button reads **Open draft**. It's offered for owned opportunities that are still open.
+- **Export** downloads the opportunity as CSV, Excel or Word.
+- In the **…** menu: **Send to Plan** (admins and managers), **Another angle**, **Send to Workflow** (**Send Again** once sent), **Copy All Data**, **Mark as reviewed** for a new one, **Restore** for an archived one (it comes back as New), and **Dismiss**.
+
+**Another angle** (admins and managers) writes one more opportunity for the same need, with a different content type, format, audience or approach, and an optional direction from you. Both stay in the list, so you keep the one you prefer. It counts as one of the month's new opportunities.
+
+**Dismiss** (admins and managers) asks why. **The topic doesn't matter to us** keeps it from being suggested again in this form for 90 days. **Right topic, wrong angle** dismisses it and opens **Another angle**.
+
+## From opportunity to brief
+
+<Steps>
+  <Step title="Open an opportunity">
+    Click its title in the list. The panel shows its source data and any brief it has.
+  </Step>
+  <Step title="Generate Brief">
+    Admins and managers click **Generate Brief**. AI writes a brief, in your brand's language, with:
+    - a suggested title
+    - a content type (blog post, comparison page, landing page, FAQ page, guide or case study)
+    - a target word count
+    - keywords
+    - a call to action
+    - an outline of 3 to 8 sections, each with its key points
+    - competitor insights: the competitors cited and their visibility advantage
+
+    A brief is written once per opportunity: the button then reads **Brief Generated**. Each brief counts toward the month's content briefs.
+  </Step>
+  <Step title="Write it, or hand it on">
+    **Send to Editor** starts the page in the Content Editor, with the brief's outline and keywords as its brief. **Send to Actions** puts the work in the Action Center, and **Send to Workflow** sends it to your webhook.
+  </Step>
+  <Step title="Follow it to Done">
+    Once it's in the Action Center, the opportunity's status follows its action: **In Progress** once work on it starts, **Done** when it's complete. Its **Results** card shows what changed once the work has been measured.
+
+    A done opportunity comes back as **New**, marked **New signal detected**, when its score has risen since, or the visibility its work gained didn't hold.
+  </Step>
+</Steps>
+
+## Webhook configuration
+
+Set up a webhook once, and send opportunities to it from the list or the panel. Click **Webhook Settings** at the top of the page:
+
+- **Webhook URL**: your workflow tool's address (n8n, Make, Zapier or your own endpoint).
+- **Secret Key (optional)**: sent with every request in the `X-Webhook-Secret` header, so your endpoint can tell the call came from GetCito. Your workflow also needs it to report an opportunity's status back.
+- **Events to send**: **Opportunity sent**, **Daily Pulse created**, **Action Center task sent** and **Content page sent**. A new webhook has the first three ticked; **Content page sent** stays off until you tick it. **Test Webhook** always sends a test event.
+- **Active**: turn it off to pause sending without deleting the webhook.
+
+Only admins and managers can change or test the webhook.
+
+**Send to Workflow** sends the opportunity, the data behind it and its brief, if it has one, and moves it to **Sent to Workflow**. The webhook needs **Opportunity sent** ticked. An address that redirects isn't followed, so nothing is sent: use the address it redirects to. The payload's fields, and the callback your workflow can use to move the opportunity on (to In Progress or Done, for example), are described in [Webhooks](/api-reference/webhooks).
+
+## Bulk operations
+
+Tick rows, or the box in the header for every row shown, and:
+
+- **Send All** sends each one to your webhook (great for kicking off a content sprint).
+- **Done**, **Dismiss All** and **Delete** (admins and managers) change them all at once. **Delete** removes them for good, with any brief they have, and doesn't give back the month's opportunities or briefs. Dismissing keeps them out of your way instead.
+
+## Strategy notes
+
+- **Don't ship every brief** — pick the top 2–4 high-impact opportunities per week. Editorial bandwidth is the bottleneck.
+- **Refresh the brief in the editor** — an opportunity's brief is written once. Once the page is in the Content Editor, **Rebuild brief** writes a new one from the sources you keep there.
+- **Mix owned and earned** — some opportunities are best closed with a guest post or PR placement (type **Earned**), not a new owned page. Earned opportunities don't go to the editor: send them to the Action Center or your workflow.
+
+<Card title="Self-host setup" icon="server" href="/self-host/docker-compose">
+  Ready to run GetCito on your own infrastructure?
+</Card>

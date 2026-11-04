@@ -1,0 +1,24 @@
+{
+  "id": "social-proof-pages",
+  "goal": "content",
+  "businessTypes": [
+    "b2c"
+  ],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "faq",
+    "facts"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "month_first",
+      "time": "10:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "ready",
+  "needs": []
+}

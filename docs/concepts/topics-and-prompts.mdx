@@ -1,0 +1,80 @@
+---
+title: "Topics and Prompts"
+description: "The two primitives that drive every GetCito measurement."
+---
+
+## Prompt = a single tracked query
+
+A **prompt** is one natural-language question your potential customer might ask an AI engine. Examples:
+
+- *"best CRM for small business"*
+- *"how to automate email marketing for ecommerce"*
+- *"ChatGPT alternatives for enterprise"*
+- *"longest range luxury EV available in the US"*
+
+Each prompt runs on a schedule across the AI engines you've configured (ChatGPT, Gemini, Perplexity, Claude, Copilot, Grok). Every run produces a stored response with mention count, citations, sentiment, competitor mentions, and a visibility score for that prompt.
+
+## Topic = a cluster of related prompts
+
+A **topic** is a label you (or the AI suggestion engine) attach to one or more prompts. Topics group prompts by intent, theme, or product area:
+
+| Topic | Example prompts |
+|---|---|
+| **Reliability** | *most reliable luxury sedan according to Consumer Reports*, *which luxury cars have lowest 10-year ownership cost* |
+| **EV Range** | *longest range luxury EV available in the US*, *best electric SUV with 300+ mile range* |
+| **Pricing** | *cheapest luxury brand to maintain long term*, *best executive sedans under $100k* |
+
+Topics serve three purposes:
+
+<Steps>
+  <Step title="Aggregate analysis">
+    The Topics view (Prompts → Topics) shows visibility per topic, so you spot which themes your brand owns and which it's losing.
+  </Step>
+  <Step title="Content planning">
+    Content briefs are generated per topic, ensuring your editorial output covers your weakest themes first.
+  </Step>
+  <Step title="Prompt suggestions">
+    When GetCito suggests new prompts to track, each suggestion comes with a topic label so you can see at a glance whether it expands an existing theme or opens a new one.
+  </Step>
+</Steps>
+
+## How prompts get into the system
+
+Three sources:
+
+1. **Onboarding suggestions** — when you create a brand, GetCito's AI generates 10 starter prompts based on industry and description.
+2. **Prompt Suggestions** in the Insights tab — periodically, GetCito analyzes your tracked prompts + competitor citations + topic gaps and suggests new prompts to add. Each comes with a one-click `+` button.
+3. **Manual entry** — you can always add a prompt directly with custom text and platform/region selection.
+
+## How topics get created
+
+Two paths:
+
+- **Auto-created from suggestions** — when a new prompt suggestion comes with a topic label that doesn't exist for your brand yet, accepting the prompt creates the topic too.
+- **Manual** — you can rename, merge, or create topics in the Topics view. A prompt can belong to one topic at a time.
+
+## Practical workflow
+
+A typical AEO operator's loop on GetCito:
+
+<Steps>
+  <Step title="Review Insights weekly">
+    Check overall visibility delta. Drill into topics that dropped most.
+  </Step>
+  <Step title="Inspect prompts in losing topics">
+    Find which prompts dragged the topic down — usually 1–2 prompts where a competitor surged.
+  </Step>
+  <Step title="Generate content briefs">
+    Click "Generate Brief" on those opportunities; receive structured brief (title, outline, keywords, competitor angles).
+  </Step>
+  <Step title="Send to your CMS or workflow">
+    Use the webhook integration to push the brief directly into Notion, Linear, Asana, or your editorial system.
+  </Step>
+  <Step title="Add new prompts from Suggestions">
+    Pick up 1–3 fresh prompts each week from the Suggestions card to expand your tracked surface.
+  </Step>
+</Steps>
+
+<Card title="Continue: Add your first brand" icon="arrow-right" href="/guides/add-your-first-brand">
+  Walk through the brand onboarding step by step.
+</Card>

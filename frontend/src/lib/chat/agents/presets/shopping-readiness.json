@@ -1,0 +1,22 @@
+{
+  "id": "shopping-readiness",
+  "goal": "shopping",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "shopping"
+  ],
+  "triggers": [],
+  "mode": "auto",
+  "connections": [
+    {
+      "key": "catalog",
+      "required": true
+    }
+  ],
+  "status": "soon",
+  "needs": [
+    "catalog_trigger"
+  ]
+}

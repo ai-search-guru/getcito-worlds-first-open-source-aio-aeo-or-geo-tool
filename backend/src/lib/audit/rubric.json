@@ -1,0 +1,524 @@
+{
+  "version": "v1.1",
+  "description": "48-signal AEO/GEO scoring rubric for measuring whether a page will get cited by AI answer engines.",
+  "totalSignals": 48,
+  "categories": [
+    {
+      "key": "structure",
+      "label": "Structure",
+      "weight": 0.25,
+      "description": "How parseable your page is to an AI engine. Schema, headings, lists, tables, alt-text, OG meta. The substrate that makes everything else legible.",
+      "signalCount": 13
+    },
+    {
+      "key": "authority",
+      "label": "Authority",
+      "weight": 0.2,
+      "description": "Whether your page reads as authored by an expert, citing real sources. Bylines, citations, statistics, quotations, freshness, technical terms.",
+      "signalCount": 8
+    },
+    {
+      "key": "content",
+      "label": "Content",
+      "weight": 0.25,
+      "description": "Whether the page actually answers the buyer query — directly, completely, in the right register. BLUF, query coverage, sub-question coverage, readability, and on product pages the description's opening.",
+      "signalCount": 12
+    },
+    {
+      "key": "trust",
+      "label": "Trust",
+      "weight": 0.1,
+      "description": "Crawl-time + share-time trust signals: HTTPS, canonical, viewport, AI-bot access via robots/llms.txt, Twitter card, meta description.",
+      "signalCount": 7
+    },
+    {
+      "key": "eeat",
+      "label": "E-E-A-T",
+      "weight": 0.2,
+      "description": "Google's framework for Experience, Expertise, Authoritativeness, Trustworthiness. First-person evidence, case studies, author credentials, brand entity in Wikidata, press mentions, privacy policy, contact info.",
+      "signalCount": 8
+    }
+  ],
+  "signals": [
+    {
+      "key": "structural-depth",
+      "category": "structure",
+      "label": "Structural depth (GEO-SFE)",
+      "what": "Heading hierarchy + nested structure depth — H1→H2→H3 nesting that mirrors a real outline.",
+      "why": "arXiv:2603.29979 shows a +17.3% citation lift for pages with measurable structural depth vs flat documents.",
+      "howToFix": "Group your content under named H2 subsections. Use H3 for sub-points. Don't skip levels.",
+      "source": "GEO-SFE (arXiv:2603.29979) + Aggarwal et al. NeurIPS 2024",
+      "impactTier": "high"
+    },
+    {
+      "key": "internal-linking",
+      "category": "structure",
+      "label": "Internal linking",
+      "what": "Links from this page to other pages on your site — signal of a navigable graph.",
+      "why": "AI crawlers expand context via internal links the same way they crawl. Isolated pages get under-indexed.",
+      "howToFix": "Add 5–10 internal links per page to related concepts, glossary terms, or supporting pages.",
+      "source": "Anthropic web-search retrieval docs",
+      "impactTier": "medium"
+    },
+    {
+      "key": "page-weight",
+      "category": "structure",
+      "label": "Page weight",
+      "what": "Total HTML size, lower is better. We flag pages over 500 KB.",
+      "why": "AI render bots have shorter timeouts than humans. Heavy pages get truncated or skipped.",
+      "howToFix": "Strip unused JS, defer below-the-fold images, kill render-blocking third-party scripts.",
+      "source": "Google SGE crawler docs",
+      "impactTier": "standard"
+    },
+    {
+      "key": "json-ld-presence",
+      "category": "structure",
+      "label": "JSON-LD presence",
+      "what": "Whether the page ships at least one schema.org JSON-LD block.",
+      "why": "Schema.org is the single highest-leverage signal for AI Overview eligibility — engines parse it before text.",
+      "howToFix": "Add at minimum an Organization or Article block. Our /tools/schema-generator outputs valid JSON-LD.",
+      "source": "Google SGE evaluation guide",
+      "impactTier": "high"
+    },
+    {
+      "key": "json-ld-validity",
+      "category": "structure",
+      "label": "JSON-LD validity",
+      "what": "Whether the JSON-LD parses, has @context = schema.org, and a valid @type.",
+      "why": "Malformed JSON-LD is worse than absent — engines log a parse error and downrank trust.",
+      "howToFix": "Run your JSON-LD through Google's Rich Results Test before shipping.",
+      "source": "Google SGE evaluation guide",
+      "impactTier": "medium"
+    },
+    {
+      "key": "json-ld-relevance",
+      "category": "structure",
+      "label": "JSON-LD type relevance",
+      "what": "Whether the @type matches the page intent (Article on a blog, Product on a PDP, FAQPage on a FAQ).",
+      "why": "Wrong-type schema gets ignored — Article markup on a homepage is parsed as noise.",
+      "howToFix": "Pick the closest schema.org type for the page's actual content, not a generic catch-all.",
+      "source": "schema.org documentation",
+      "impactTier": "medium"
+    },
+    {
+      "key": "faq-schema",
+      "category": "structure",
+      "label": "FAQ schema",
+      "what": "FAQPage JSON-LD with at least 2 Q&A pairs.",
+      "why": "FAQPage is the highest single-type lift for AI Overview citations per Google's own SGE guidance.",
+      "howToFix": "Add FAQPage schema with 3–5 question/answer pairs that mirror real buyer queries.",
+      "source": "Google SGE evaluation guide",
+      "impactTier": "medium"
+    },
+    {
+      "key": "h1-quality",
+      "category": "structure",
+      "label": "H1 quality",
+      "what": "Exactly one H1, length 20–70 chars, contains a primary query token.",
+      "why": "AI engines treat H1 as the page's claim — multiple H1s confuse the topical model.",
+      "howToFix": "One H1 per page, descriptive, 30–60 chars, includes the page's primary topic.",
+      "source": "Google SGE crawler docs",
+      "impactTier": "medium"
+    },
+    {
+      "key": "h2-coverage",
+      "category": "structure",
+      "label": "H2 coverage",
+      "what": "≥3 H2 subsections that segment the content for skim-readability.",
+      "why": "AI engines extract H2s as section anchors — pages without them are harder to summarize.",
+      "howToFix": "Break content into 3–6 H2 subsections, each addressing a sub-question.",
+      "source": "Aggarwal et al. NeurIPS 2024",
+      "impactTier": "medium"
+    },
+    {
+      "key": "lists",
+      "category": "structure",
+      "label": "Lists",
+      "what": "≥1 <ul> or <ol> with ≥3 items.",
+      "why": "Lists are the unit AI engines preferentially extract for 'how to X' and 'best Y' queries.",
+      "howToFix": "Convert at least one paragraph of enumerated reasons or steps into a real <ul>/<ol>.",
+      "source": "Aggarwal et al. NeurIPS 2024",
+      "impactTier": "standard"
+    },
+    {
+      "key": "tables",
+      "category": "structure",
+      "label": "Tables",
+      "what": "≥1 <table> with proper <thead>/<tbody> for structured data.",
+      "why": "Tables are the highest-extraction-rate format for comparison and spec-sheet queries.",
+      "howToFix": "If you have specs, prices, or comparisons, render them as real <table>s, not images.",
+      "source": "Aggarwal et al. NeurIPS 2024",
+      "impactTier": "standard"
+    },
+    {
+      "key": "alt-text",
+      "category": "structure",
+      "label": "Alt-text",
+      "what": "≥80% of <img> tags have non-empty alt attributes.",
+      "why": "Multi-modal engines (Gemini, Claude, GPT-4o) read alt-text as page semantic context.",
+      "howToFix": "Add descriptive alt to every meaningful image. Decorative images get alt=\"\".",
+      "source": "Google SGE evaluation guide",
+      "impactTier": "standard"
+    },
+    {
+      "key": "open-graph",
+      "category": "structure",
+      "label": "Open Graph metadata",
+      "what": "og:title, og:description, og:image, og:type all present.",
+      "why": "AI engine link previews + social shares use OG meta as the citation card.",
+      "howToFix": "Add the 4 OG tags. Use 1200×630 og:image. Our /tools/og-checker validates them.",
+      "source": "Open Graph Protocol",
+      "impactTier": "medium"
+    },
+    {
+      "key": "outbound-authority-links",
+      "category": "authority",
+      "label": "Outbound authority links",
+      "what": "Links to official sites (government, academic or international bodies), reference and research sites, or major news.",
+      "why": "Linking out to trusted sources transfers authority backwards (citation graph effect).",
+      "howToFix": "Cite primary sources with real <a> tags, not bare-text references. Aim for 2–3 per long page.",
+      "source": "GEO paper §4.2 + Anthropic retrieval docs",
+      "impactTier": "medium"
+    },
+    {
+      "key": "citation-density",
+      "category": "authority",
+      "label": "Citation density",
+      "what": "Inline citations per 1000 words (target ≥2).",
+      "why": "Pages that cite sources get cited as sources. Citation density is the strongest non-link authority signal.",
+      "howToFix": "Replace 'studies show' with 'a 2024 Stanford study (link)'. Specificity wins.",
+      "source": "GEO paper §4.2",
+      "impactTier": "medium"
+    },
+    {
+      "key": "statistic-density",
+      "category": "authority",
+      "label": "Statistic density",
+      "what": "Quantitative claims with numbers per 1000 words (target ≥3).",
+      "why": "AI engines preferentially cite content with measurable claims over hand-wavy text.",
+      "howToFix": "Add real numbers — percentages, dollar amounts, time durations — to your claims.",
+      "source": "Aggarwal et al. NeurIPS 2024",
+      "impactTier": "medium"
+    },
+    {
+      "key": "quotations",
+      "category": "authority",
+      "label": "Direct quotations",
+      "what": "Inline <blockquote> or quoted attributions.",
+      "why": "Quotations imply primary research. They lift citation rates ~12% in the GEO paper test set.",
+      "howToFix": "Quote one customer, one expert, or one primary source per long page.",
+      "source": "GEO paper",
+      "impactTier": "standard"
+    },
+    {
+      "key": "author-byline",
+      "category": "authority",
+      "label": "Author byline",
+      "what": "A named author with at least a real name in the byline area.",
+      "why": "Anonymous content is treated as low-E-E-A-T. AI engines surface authored content.",
+      "howToFix": "Add 'By [Name]' at the top. Link to a real author bio page. Use Person schema.",
+      "source": "Google SGE + E-E-A-T docs",
+      "impactTier": "medium"
+    },
+    {
+      "key": "date-markup",
+      "category": "authority",
+      "label": "Date markup",
+      "what": "datePublished + dateModified in JSON-LD or <time datetime>.",
+      "why": "Engines penalize undated content as potentially stale. Dated content gets freshness scoring.",
+      "howToFix": "Add JSON-LD datePublished + dateModified, or a visible <time datetime> tag.",
+      "source": "Google SGE evaluation guide",
+      "impactTier": "standard"
+    },
+    {
+      "key": "freshness",
+      "category": "authority",
+      "label": "Freshness",
+      "what": "Date modified within the last 365 days.",
+      "why": "Stale content gets downranked for time-sensitive queries. Re-publishing dates resets the clock.",
+      "howToFix": "Refresh top pages at least annually. Bump dateModified when you do.",
+      "source": "Google freshness algorithm docs",
+      "impactTier": "standard"
+    },
+    {
+      "key": "technical-terms",
+      "category": "authority",
+      "label": "Technical term density",
+      "what": "Domain-specific terminology indicating real expertise vs surface-level writing.",
+      "why": "Pages that use precise technical vocabulary signal genuine expertise.",
+      "howToFix": "Use the field's actual technical language. Glossary-link or define the first occurrence.",
+      "source": "GEO paper §4.3",
+      "impactTier": "standard"
+    },
+    {
+      "key": "direct-answer",
+      "category": "content",
+      "label": "Direct answer to query",
+      "what": "Whether the buyer query appears answered in the first 200 chars.",
+      "why": "AI engines preferentially extract direct answers. Burying the answer = no citation.",
+      "howToFix": "Lead the page with a 1–2 sentence direct answer to the primary query. Then expand.",
+      "source": "GEO paper §3.2",
+      "impactTier": "high"
+    },
+    {
+      "key": "bluf-answer",
+      "category": "content",
+      "label": "BLUF (Bottom Line Up Front)",
+      "what": "A clear thesis statement in the first paragraph stating the page's main claim.",
+      "why": "Military-doctrine writing style — BLUF dramatically improves AI extractability.",
+      "howToFix": "Open with 'The answer is X. Here's why.' Don't bury the lede.",
+      "source": "U.S. military writing doctrine + adopted by Anthropic prompt eng team",
+      "impactTier": "medium"
+    },
+    {
+      "key": "query-coverage",
+      "category": "content",
+      "label": "Query token coverage",
+      "what": "Fraction of query tokens that appear in the page body (target ≥80%).",
+      "why": "Coverage is a baseline relevance signal — missing tokens means the page misses the query.",
+      "howToFix": "Make sure every meaningful query token appears at least once in body content.",
+      "source": "BM25 + cosine retrieval fundamentals",
+      "impactTier": "medium"
+    },
+    {
+      "key": "entity-coverage",
+      "category": "content",
+      "label": "Entity coverage",
+      "what": "Named entities mentioned that match the query's entity space.",
+      "why": "AI engines build an entity graph per page — missing related entities reduces topical authority.",
+      "howToFix": "If the page is about X, mention X's known related entities (people, places, products).",
+      "source": "Knowledge graph extraction literature",
+      "impactTier": "medium"
+    },
+    {
+      "key": "readability",
+      "category": "content",
+      "label": "Readability",
+      "what": "Reading-ease score in the page's language: Flesch Reading Ease for English (target 50–70), Ateşman for Turkish (50 or more), Amstad, Kandel–Moles or Fernández-Huerta for German, French or Spanish (60 or more); other languages by sentence and word length.",
+      "why": "Engines extract from content humans can read. Dense, academic text underperforms; in English, very simple text (over 70) can leave out the detail readers expect.",
+      "howToFix": "Under the target: shorten sentences and use plainer words, about 16 words a sentence. English over 70: write fuller sentences with the detail readers expect.",
+      "source": "Flesch (1948), Ateşman (1997) + adapted by SGE",
+      "impactTier": "standard"
+    },
+    {
+      "key": "length",
+      "category": "content",
+      "label": "Page length",
+      "what": "Word count in the main content (target 800–3000).",
+      "why": "Too short = thin; too long = engines truncate. Sweet spot is medium-long form.",
+      "howToFix": "If under 600 words, expand with examples + sub-sections. If over 4000, split into hub + spokes.",
+      "source": "Empirical GEO paper data",
+      "impactTier": "standard"
+    },
+    {
+      "key": "info-density",
+      "category": "content",
+      "label": "Information density",
+      "what": "Ratio of substantive content to filler.",
+      "why": "Dense content gets preferentially cited. Engines model 'value per token' implicitly.",
+      "howToFix": "Cut throat-clearing sentences. Replace 'It is important to note that' with the actual point.",
+      "source": "Empirical GEO paper data",
+      "impactTier": "standard"
+    },
+    {
+      "key": "mega-page-coverage",
+      "category": "content",
+      "label": "Mega-page coverage",
+      "what": "Whether the page covers multiple closely-related sub-topics under one URL.",
+      "why": "Mega-pages outrank thin pages on AI engines because they cover entity neighborhoods.",
+      "howToFix": "Consolidate 3 thin pages into one comprehensive page with H2-segmented sub-topics.",
+      "source": "Ahrefs research + Cleartopic.io",
+      "impactTier": "medium"
+    },
+    {
+      "key": "youtube-embed",
+      "category": "content",
+      "label": "YouTube embed",
+      "what": "Embedded YouTube video alongside the article.",
+      "why": "Multi-modal engines weight pages with on-topic video. 0.737 correlation with citation rate.",
+      "howToFix": "Create or embed a 2–4 minute video on the page topic. Mark up with VideoObject schema.",
+      "source": "Ahrefs 2025 study",
+      "impactTier": "standard"
+    },
+    {
+      "key": "product-description-opening",
+      "category": "content",
+      "label": "Product description opening",
+      "what": "On a product page, the description's first 40 words (or 250 characters) name the product type and at least two key attributes: a measure, a material, a fit or a use.",
+      "why": "ChatGPT appears to read only about the first 50 tokens of a product description when it matches products to a shopping question. A description that opens with the brand's story may never be matched.",
+      "howToFix": "Put the product type and key attributes in the first 40 words.",
+      "source": "brightonSEO 2026 research on ChatGPT Shopping (to be confirmed by our own tests)",
+      "impactTier": "high"
+    },
+    {
+      "key": "sub-query-coverage",
+      "category": "content",
+      "label": "Sub-query coverage",
+      "what": "Fraction of decomposed sub-questions answered in body content.",
+      "why": "Engines decompose seed queries into 4–6 sub-queries (Profound 'fanouts') — missing answers = missing citations.",
+      "howToFix": "Add a Q&A section that explicitly addresses the top 5 sub-questions for your topic.",
+      "source": "Profound Query Fanouts methodology",
+      "impactTier": "medium"
+    },
+    {
+      "key": "definitions",
+      "category": "content",
+      "label": "In-line definitions",
+      "what": "First-mention terms defined inline ('X (definition…)').",
+      "why": "Defined-in-place pages get cited as glossary sources. AI engines preferentially link to them.",
+      "howToFix": "Define the key 3–5 terms on first use, in-line.",
+      "source": "Stanford NLP citation extraction work",
+      "impactTier": "standard"
+    },
+    {
+      "key": "ai-bot-access",
+      "category": "trust",
+      "label": "AI bot access (robots.txt)",
+      "what": "Whether robots.txt explicitly addresses GPTBot/ClaudeBot/PerplexityBot.",
+      "why": "Default-allow gets you crawled, but explicit allow signals intent + unlocks niche AI bots.",
+      "howToFix": "Add User-agent: GPTBot/ClaudeBot/OAI-SearchBot/PerplexityBot rules to robots.txt.",
+      "source": "OpenAI / Anthropic / Perplexity bot docs",
+      "impactTier": "medium"
+    },
+    {
+      "key": "llms-txt-presence",
+      "category": "trust",
+      "label": "llms.txt presence",
+      "what": "Whether /llms.txt exists per llmstxt.org spec.",
+      "why": "Explicit channel for telling AI engines exactly which content to ingest. 2026 frontier signal.",
+      "howToFix": "Generate llms.txt via our /audit/llms-txt tool. Add to site root.",
+      "source": "llmstxt.org spec",
+      "impactTier": "medium"
+    },
+    {
+      "key": "https",
+      "category": "trust",
+      "label": "HTTPS",
+      "what": "Site responds correctly over TLS without mixed content.",
+      "why": "AI crawlers refuse to crawl mixed-content pages. HTTPS is table stakes.",
+      "howToFix": "Migrate to HTTPS. Force redirect with HSTS. Fix mixed-content warnings.",
+      "source": "Web standards + Google ranking docs",
+      "impactTier": "standard"
+    },
+    {
+      "key": "canonical",
+      "category": "trust",
+      "label": "Canonical URL",
+      "what": "<link rel=canonical> pointing to the page's preferred URL.",
+      "why": "Without canonical, AI engines may split citations across duplicate URLs and downrank each.",
+      "howToFix": "Add <link rel=canonical href=…> to every page. Self-canonical on canonical pages.",
+      "source": "Google canonical docs",
+      "impactTier": "standard"
+    },
+    {
+      "key": "viewport",
+      "category": "trust",
+      "label": "Viewport meta",
+      "what": "<meta name=viewport content=…> present.",
+      "why": "Mobile rendering signal — AI crawlers favor mobile-first content.",
+      "howToFix": "Add <meta name=viewport content=\"width=device-width, initial-scale=1\">.",
+      "source": "Google mobile-first indexing docs",
+      "impactTier": "standard"
+    },
+    {
+      "key": "twitter-card",
+      "category": "trust",
+      "label": "Twitter card",
+      "what": "<meta name=twitter:card> + twitter:image present.",
+      "why": "AI engines fall back to Twitter card on platforms without OG support.",
+      "howToFix": "Add twitter:card=summary_large_image + twitter:image (can reuse og:image).",
+      "source": "X (Twitter) card docs",
+      "impactTier": "standard"
+    },
+    {
+      "key": "meta-description",
+      "category": "trust",
+      "label": "Meta description",
+      "what": "<meta name=description> with 80–160 chars of summary text.",
+      "why": "AI engines use meta description as a primary summary candidate when generating cites.",
+      "howToFix": "Write a 130-char meta description for every page. Include the primary query.",
+      "source": "Google docs + SGE evaluation guide",
+      "impactTier": "standard"
+    },
+    {
+      "key": "first-person",
+      "category": "eeat",
+      "label": "First-person evidence",
+      "what": "Sentences told in the first person, showing real experience: 'we tested', 'I built', and in Turkish verb endings such as 'gezdik' or 'düşünüyoruz'. Two or more pass. Quotes and stock phrases such as 'Contact us' don't count. Read in English and Turkish.",
+      "why": "Google's E-E-A-T update prioritizes lived experience. First-person signals it.",
+      "howToFix": "Use first-person sparingly but precisely — 'we tested', 'in our experience', 'I found that…'.",
+      "source": "Google E-E-A-T quality rater guidelines",
+      "impactTier": "medium"
+    },
+    {
+      "key": "case-study-evidence",
+      "category": "eeat",
+      "label": "Case study evidence",
+      "what": "Named customer outcomes, numbers, or before/after evidence in-line.",
+      "why": "Case studies are the highest-conversion E-E-A-T signal — prove it, don't just claim it.",
+      "howToFix": "Name one customer. Quote one outcome with numbers. 'We helped X go from Y → Z.'",
+      "source": "Google E-E-A-T guidelines",
+      "impactTier": "medium"
+    },
+    {
+      "key": "author-credentials",
+      "category": "eeat",
+      "label": "Author credentials",
+      "what": "Author has visible credentials — years of experience, prior role, education, certifications.",
+      "why": "Anonymous bylines fail E-E-A-T. Credentialed authors get treated as expert sources.",
+      "howToFix": "Each author page lists credentials, prior roles, years in field, links to LinkedIn/Twitter.",
+      "source": "Google E-E-A-T guidelines (Quality Rater Guidelines §3.2)",
+      "impactTier": "medium"
+    },
+    {
+      "key": "byline-depth",
+      "category": "eeat",
+      "label": "Byline depth",
+      "what": "Byline links to a real author bio page with sufficient detail.",
+      "why": "Byline → bio page → credentialed author chain is the E-E-A-T graph engines trace.",
+      "howToFix": "Make every byline link to /authors/[name] with bio, photo, credentials, prior work.",
+      "source": "Google E-E-A-T guidelines",
+      "impactTier": "standard"
+    },
+    {
+      "key": "brand-entity",
+      "category": "eeat",
+      "label": "Brand entity in Wikidata",
+      "what": "Brand has a Wikidata entity (Q-number) that AI engines can dereference.",
+      "why": "Wikidata is the canonical entity database — engines use it to validate brand identity. No entity = no trust anchor.",
+      "howToFix": "Get a Wikidata entry: requires 2–3 press mentions as citations. Submit at wikidata.org.",
+      "source": "Wikidata + knowledge graph literature",
+      "impactTier": "medium"
+    },
+    {
+      "key": "press-mentions",
+      "category": "eeat",
+      "label": "Press mentions",
+      "what": "References to or links from top-tier press (NYT, WaPo, Bloomberg, FT, etc.).",
+      "why": "Press mentions transfer authority across the citation graph and validate brand entity claims.",
+      "howToFix": "Earn press. Display logos. Link back to the original article (not your case study).",
+      "source": "Empirical brand-citation research",
+      "impactTier": "standard"
+    },
+    {
+      "key": "privacy-terms",
+      "category": "eeat",
+      "label": "Privacy + terms",
+      "what": "Linked privacy policy + terms of service from every page.",
+      "why": "YMYL (Your-Money-Your-Life) categories require these — and engines treat them as legitimacy signals everywhere.",
+      "howToFix": "Footer-link privacy and terms on every page. Real pages, not coming-soon stubs.",
+      "source": "Google YMYL + E-E-A-T guidelines",
+      "impactTier": "standard"
+    },
+    {
+      "key": "contact-info",
+      "category": "eeat",
+      "label": "Contact info",
+      "what": "Real contact info — email, phone, or address visible on the page or linked /contact.",
+      "why": "Anonymous brands fail E-E-A-T. Real contact info signals real entity behind the content.",
+      "howToFix": "Add an email + physical address (real or registered office) to the footer.",
+      "source": "Google E-E-A-T guidelines",
+      "impactTier": "standard"
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "timeZone": "Etc/UTC",
+  "exceptionLogging": "NONE",
+  "runtimeVersion": "V8",
+  "urlFetchWhitelist": ["https://your-getcito-app.example/"],
+  "dataStudio": {
+    "name": "GetCito — AI Visibility Metrics",
+    "logoUrl": "https://raw.githubusercontent.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/main/frontend/public/brand/icons/getcito-icon-512.png",
+    "company": "GetCito",
+    "companyUrl": "https://getcito.com",
+    "addonUrl": "https://getcito.com",
+    "supportUrl": "https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/issues",
+    "description": "Blend GetCito AI visibility metrics — ChatGPT, Gemini, Perplexity, Claude and more — with GA4 and Search Console data in one Looker Studio dashboard.",
+    "shortDescription": "AI visibility metrics for Looker Studio"
+  }
+}

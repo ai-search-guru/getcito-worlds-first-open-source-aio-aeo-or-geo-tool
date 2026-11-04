@@ -1,0 +1,23 @@
+{
+  "id": "app-alternatives-watch",
+  "goal": "competitors",
+  "businessTypes": [
+    "app"
+  ],
+  "industries": [],
+  "roles": [],
+  "skills": [],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "MO",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "soon",
+  "needs": [
+    "app_store_data"
+  ]
+}

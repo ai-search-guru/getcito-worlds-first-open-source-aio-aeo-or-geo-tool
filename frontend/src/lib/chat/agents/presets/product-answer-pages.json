@@ -1,0 +1,25 @@
+{
+  "id": "product-answer-pages",
+  "goal": "content",
+  "businessTypes": [
+    "ecommerce"
+  ],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "questions",
+    "answerfirst",
+    "compare"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "TU",
+      "time": "09:00"
+    }
+  ],
+  "mode": "auto",
+  "connections": [],
+  "status": "ready",
+  "needs": []
+}

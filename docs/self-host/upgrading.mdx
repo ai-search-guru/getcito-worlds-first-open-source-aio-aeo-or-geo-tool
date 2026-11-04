@@ -1,0 +1,59 @@
+---
+title: "Upgrading"
+description: "How to safely upgrade your self-hosted GetCito instance."
+---
+
+## Standard upgrade
+
+```bash
+cd getcito
+git pull
+docker compose up -d --build
+```
+
+That's it for most releases. Behind the scenes:
+
+- Docker rebuilds the changed image(s)
+- `restart: unless-stopped` ensures containers come back up automatically
+- Migrations under `supabase/migrations/` are forward-only — re-running `supabase db push` is idempotent
+
+## When migrations are involved
+
+If the release introduces new SQL migrations:
+
+```bash
+cd getcito
+git pull
+supabase db push       # apply new migrations
+docker compose up -d --build
+```
+
+Always run migrations **before** restarting containers — new code may expect new tables/columns.
+
+## Major version upgrades
+
+When jumping a major version (e.g. v1 → v2), check the release notes on [GitHub Releases](https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/releases) for breaking changes. Common scenarios:
+
+- Renamed env variables — update `frontend/.env.local` and `backend/.env`
+- Migration that requires manual data backfill — release notes will spell it out
+- Removed deprecated endpoints — your custom integrations might need updates
+
+## Rollback
+
+If an upgrade breaks something:
+
+```bash
+cd getcito
+git checkout "YOUR_PREVIOUS_RELEASE_TAG"
+docker compose up -d --build
+```
+
+Database migrations are **not** automatically reversed. If a new migration introduced a breaking schema change, you may need to manually restore from a Supabase backup taken before the upgrade.
+
+<Tip>
+**Always take a Supabase backup before upgrading** in production. Use the backup or export options available for your Supabase project and confirm that you can restore them.
+</Tip>
+
+## Watching the changelog
+
+Subscribe to release notifications on the GitHub repo: [GetCito → Watch → Releases only](https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool). You'll get an email for each new release with the full changelog.

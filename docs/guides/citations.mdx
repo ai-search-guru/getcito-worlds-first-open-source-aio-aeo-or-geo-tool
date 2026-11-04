@@ -1,0 +1,142 @@
+---
+title: "Citations"
+description: "The domains and URLs AI engines cite when they answer your tracked prompts, by source type."
+---
+
+## What it shows
+
+The **Citations** page (`/dashboard/citations`) lists the domains and URLs that AI engines cited in their answers to your tracked prompts, for the active brand in the sidebar. It reads the answers your tracking already stores.
+
+## Filters
+
+| Filter | What it does |
+|---|---|
+| **Date Range** | 24h (the default), 7d, 30d, 90d, All or Custom |
+| **Topic** | One topic. Shown only when the brand has topics. |
+| **Prompt** | One tracked prompt; type to search the list |
+| **Platform** | One AI platform, or all of them |
+| **Region** | One region the answers were tracked in, or all of them |
+
+The filters live in the URL, so a refresh or a shared link opens the same view. When a table is empty for the window but the brand has citations outside it, **Show all data** clears the filters and shows all dates and all sources.
+
+## Summary cards
+
+- **Total Citations** — every citation in the window, and how many tracked results (AI answers) they come from
+- **Unique Domains** — the cited domains in the source choice below (**Brand**, **Competitors**, **Third-Party** or **All**), with their unique URLs
+- **Avg citations per result** — the number of links per AI answer
+
+## Top Sources
+
+The **Top Sources** card has four tabs: **Domains**, **URLs**, **Competitor Gaps** and **Source Types**.
+
+Above the Domains and URLs tables, four buttons choose which sources they list:
+
+- **Brand** (the default) — your brand's own domains
+- **Competitors** — the domains of the competitors you track
+- **Third-Party** — every other site
+- **All** — every source
+
+The choice doesn't change **Total Citations**, **Avg citations per result**, Competitor Gaps or Source Types.
+
+### Domains
+
+Each cited domain, ranked by how often it was cited:
+
+| Column | What it shows |
+|---|---|
+| **Domain** | The domain, its source type, and a link that opens the site |
+| **Platforms** | The AI platforms whose answers cited it |
+| **Usage** | The share of tracked answers in the window that cite it |
+| **Avg Citations** | How many times an answer that cites the domain cites it, on average |
+
+On a domain that isn't yours or a tracked competitor's, the **+** button (**Add as competitor**) opens a dialog with a name taken from the domain. Edit the name and click **Add** to track it on [Competitors](/guides/competitors).
+
+### URLs
+
+Each cited page, ranked by its citations, with **Platforms**, **Usage** and **Citations**. Click a page's title to open its [URL page](#the-url-page); the small icon beside it opens the page itself. The tab lists up to the 2,000 most-cited URLs, and its count is the full number.
+
+Both tables show 100 rows a page.
+
+### Export
+
+**Export CSV** in the header downloads the open tab under the filters:
+
+- **Domains** — `domain`, `category`, `total_citations`, `results_citing`, `usage_pct`, `models`
+- **URLs** — `url`, `domain`, `category`, `title`, `total_citations`, `results_citing`, `usage_pct`
+- **Competitor Gaps** — the gap list: `domain`, `category`, `competitor_answers`, `competitors`, `strength`
+
+Source Types has no export.
+
+## Source classification
+
+GetCito gives every cited domain one of eight types:
+
+| Type | What it covers |
+|---|---|
+| **You** | Your brand's domains and their subdomains |
+| **Competitor** | The domains of the competitors you track, and their subdomains |
+| **Editorial** | A fixed list of well-known news, tech and magazine sites |
+| **Forum** | Forums and question-and-answer sites |
+| **Social** | Social networks, video sites and blogging platforms |
+| **Review** | Review and rating sites |
+| **Institutional** | `.edu`, `.gov` and `.mil` addresses (country versions included), and a list of public and international bodies |
+| **Other** | Every site that isn't on one of the lists |
+
+**You** and **Competitor** come first: a tracked competitor's domain is always **Competitor**, even when it's also a review site. Only competitors with a domain are matched. The other lists are short, so most sites are **Other**.
+
+The **Source Types** tab shows the cited domains in a donut chart, with each type's share of the domains (not of the citations). It covers every cited domain in the window, whatever the source choice.
+
+## How to use it
+
+### See which of your pages AI cites
+On the **Brand** choice (the default), the URLs tab lists your own pages that AI cites, on which platforms and how often. Open a page to see the prompts it's cited for.
+
+### Find the third-party sources AI trusts
+Choose **Third-Party**. The top of the Domains and URLs lists are the sites AI leans on most for your prompts: places to be mentioned or cited.
+
+### Find outreach targets in Competitor Gaps
+**Competitor Gaps** lists third-party domains that AI cites when it names a competitor and not you. It has two views:
+
+- **Gap list** — domains cited in at least two answers that name a competitor while your brand isn't named and none of your domains is cited, and never cited in an answer where you appear. Columns: **Domain**, **Source type**, **Competitor answers**, **Which competitors** and **Strength**. Up to 100 domains, strongest first.
+- **By competitor** — pick a competitor to see the third-party domains cited in answers that name it, with **Answers feeding**, **Also cites us?** (whether the domain also appears in an answer where you appear) and **Strength**.
+
+**Strength** weighs each answer by how many sources it had, so a source in a two-source answer counts more than one in a twenty-source answer (**How this works**). When your brand appears in fewer than one answer in ten in the window, a note says the list may be broad: work on your baseline visibility first.
+
+Competitor Gaps follows the date, topic, prompt, platform and region filters, not the **Brand** / **Competitors** / **Third-Party** / **All** choice.
+
+### Watch your competitors' pages
+Choose **Competitors** to see which competitor domains and pages AI cites in your answers.
+
+## The URL page
+
+Click a page's title on the URLs tab to open its page (`/dashboard/citations/url`). It opens with the Citations page's date range, platform and region (not its topic or prompt), and you can change the date range and platform there. **Citations** at the top goes back.
+
+The header shows the page's title and address, its source type and, when GetCito can tell from the address and title, its article type: **Topic Guide**, **How-to Guide**, **Review**, **Ranked List** or **Comparison**. Your own pages are marked **Owned**; any other page has **Add as competitor**, which adds its domain.
+
+Five cards sum it up: **Total citations**, **Answers citing**, **Prompts**, **Platforms** and **Last seen** (with the date it was first seen).
+
+For your own pages, two more cards:
+
+- **Targeted in N prompts** — the prompts that list this page in their **Target URLs**, and how many times it was cited for each
+- **AI-referred visits** — visits to this page from AI platforms in the window, by platform
+
+### Cited in
+
+Every AI answer in the window that cites the page, newest first, 10 a page:
+
+| Column | What it shows |
+|---|---|
+| **Date** | When the answer was tracked |
+| **Platform** | The AI platform that gave the answer |
+| **Prompt** | The prompt; click it to open the prompt's page |
+| **Sentiment** | The answer's sentiment |
+| **Brand mentioned** | A check when the AI answer names your brand. It says nothing about the cited page's own text. |
+| **Position** | Where the page's first citation sits among the answer's citations: **Early**, **Mid** or **Late**, with its number, e.g. *#2 of 7* |
+
+### Prompts breakdown
+
+The prompts whose answers cite the page, with **Answers**, **Citations** and **Last seen**, most citations first.
+
+<Card title="Continue: AI Traffic Analytics" icon="arrow-right" href="/guides/ai-traffic-analytics">
+  Measure real visits arriving on your site from AI answer engines.
+</Card>

@@ -1,0 +1,57 @@
+---
+title: "Quickstart"
+description: "Set up GetCito and track your first brand on your own infrastructure."
+---
+
+## Run GetCito locally
+
+GetCito runs as a web app and API server, with Supabase for the database, authentication and storage. You provide your infrastructure and provider keys.
+
+<Steps>
+  <Step title="Clone the repo and prepare env files">
+    ```bash
+    git clone https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool.git getcito
+    cd getcito
+    cp frontend/.env.example frontend/.env.local
+    cp backend/.env.example backend/.env
+    ```
+    Fill in Supabase URL/keys and at least one AI provider key. Configure Cloro if you use web AI engine tracking.
+    See [Env variables](/self-host/env-variables) for the full reference.
+  </Step>
+  <Step title="Prepare the database">
+    Follow [Supabase setup](/self-host/supabase-setup) to connect your project and apply the schema and migrations.
+  </Step>
+  <Step title="Build and start the stack">
+    From the repository root:
+    ```bash
+    docker compose up -d --build
+    ```
+    This builds the local `getcito-web:9.0.0` and `getcito-server:9.0.0` images. The web app runs at `http://localhost:3000` and the API server at `http://localhost`.
+  </Step>
+  <Step title="Sign up and onboard">
+    Open [the local app](http://localhost:3000/sign-up), create an account, then follow the onboarding flow to add your first brand. Replace the local URL with your deployed web app URL when running on a server.
+  </Step>
+</Steps>
+
+## What happens next
+
+After your first tracking run completes, the dashboard fills with data. The most useful first walkthrough:
+
+<CardGroup cols={2}>
+  <Card title="Read your visibility score" icon="gauge-high" href="/guides/answer-engine-insights">
+    Understand what the score means and how it's calculated.
+  </Card>
+  <Card title="Review citations" icon="quote-left" href="/guides/citations">
+    See which third-party URLs AI engines trust to talk about you.
+  </Card>
+  <Card title="Find content gaps" icon="magnifying-glass-chart" href="/guides/content-optimization">
+    Generate AI content briefs to close visibility gaps.
+  </Card>
+  <Card title="Add competitors" icon="users" href="/guides/competitors">
+    Benchmark your AI presence against named rivals.
+  </Card>
+</CardGroup>
+
+<Tip>
+**Got stuck?** Open an issue at [GitHub Issues](https://github.com/ai-search-guru/getcito-worlds-first-open-source-aio-aeo-or-geo-tool/issues) with the steps to reproduce the issue.
+</Tip>

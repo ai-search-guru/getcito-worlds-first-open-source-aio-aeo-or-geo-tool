@@ -1,0 +1,191 @@
+---
+title: "Site Audit"
+description: "Score any page for AI search readiness across 48 signals, and get page-specific fixes you can paste."
+---
+
+## What it does
+
+The **Site Audit** page (`/dashboard/audit`) checks how ready a page is to be cited by AI answer engines. It fetches the page, runs **48 signals** in five categories, scores the page out of 100, and writes fixes for what failed: an improved H1, a meta description, an opening paragraph that leads with the answer, FAQ markup and more.
+
+You find it in the sidebar under **Execution**, after **Content**. It is available on plans that include Content Optimization.
+
+You can audit any URL: your own pages, or a competitor's page to see what it does better. Audits of other sites are listed with your pages but kept out of your site's score.
+
+## Run an audit
+
+<Steps>
+  <Step title="Enter a URL">
+    The field at the top is filled in with your brand's primary domain. Replace it with the page you want to check and click **Run Audit**.
+  </Step>
+  <Step title="Wait for the report">
+    The report page opens right away and follows the audit through its stages: **Fetching the page…**, **Analyzing 48 signals…** and **Generating AI recommendations…**. An audit usually takes about 30 seconds. If it is still running after two minutes, the page says **This audit is taking longer than expected.** Click **Check again** to look again.
+  </Step>
+  <Step title="Read the report and fix">
+    Start with the **AI Recommendations**, then open the failing signals. When you've made changes, click the re-run icon at the top of the report to audit the page again.
+  </Step>
+</Steps>
+
+You can also start audits from:
+
+- the **Opportunities** tab, with **Audit selected**, or **Audit all** under its **Not audited** filter (see [Opportunities](#opportunities));
+- the **Pages** tab, with **Re-audit** on the pages you select;
+
+A bulk audit asks first: it lists the pages, says how many of the month's audits it uses, and leaves out pages audited in the last 7 days unless you include them. With fewer audits left than pages, the most valuable go now (on Pages, the first in the list) and the rest wait.
+- the **AI Referral Traffic** page, with **Audit page** on a landing page;
+- auto-audit, which audits your top-priority pages on its own (see [Auto-audit and settings](#auto-audit-and-settings));
+- the [MCP server](/guides/mcp-server#site-audit), with `run_site_audit`.
+
+Audits started in bulk run a few at a time.
+
+A page has one audit running at a time: starting it again, from any of these places and however its address is written (with or without www, a last slash or a tracking parameter), opens the audit already running and uses no audit. When a page was audited in the last 10 minutes, Site Audit asks first: **Open it** shows that audit, and **Audit again** starts a new one. Pages started together leave those out and say so, with **Audit again**.
+
+<Note>
+Each completed audit uses one of your plan's monthly audits. An audit still running already counts; a failed one doesn't. The **Audits this month** card shows what's left. Self-hosted instances have no monthly limit, but they need a Scrape.do key to fetch pages — see [Environment variables](/self-host/env-variables).
+</Note>
+
+## The Site Audit page
+
+### Summary and cards
+
+A one-line summary at the top gives your site score, the number of pages audited, your lowest category and when the next auto-audit runs. Below the URL field, four cards sum up your audits. The first three count only the pages of your **primary domain**:
+
+| Card | What it shows |
+|---|---|
+| **Site score** | The average score of each page's latest audit, and its change from each page's previous audit |
+| **Pages audited** | How many of your site's pages (from your sitemap, Google Analytics and AI citations) have an audit from the last 90 days, how many don't, and a link to those in Opportunities. Before your site's pages are read, your domain's audited pages |
+| **Authority · E-E-A-T** | The two category scores averaged over your pages, and the signals that fail or warn on the most pages |
+| **Audits this month** | Audits left this billing month, with the share auto-audit keeps for its runs still to come |
+
+**Score over time** charts your primary domain's audit scores (one point a day, the latest audit that day) over 7d, 30d, 90d or All, with the category breakdown of the latest audit beside it. The chart needs audits on at least two days.
+
+### Opportunities
+
+The **Opportunities** tab is an inbox of the pages worth auditing next. Each row shows a **Priority** (0–100), the page, **Why** it's listed, its **AI visits** over the last 30 days and its **Last audit**. A page is listed because:
+
+- **No AI traffic** — a page that ranks high on your site in Google Analytics (for example **Top 5% by revenue**) but gets no visitors from AI engines. **Targeted, not cited** adds that a tracked prompt points at the page and no AI answer cites it;
+- a competitor is cited on prompts where you never are, and this is your closest page (for example **Acme cited on 3 prompts**);
+- **Never audited**, or **Audited 120 days ago** — pages of your site with no audit in the last 90 days.
+
+Chips above the list show one reason at a time: **All**, **Not audited**, **No AI traffic** and **Competitor cited**, each with its count.
+
+The priority multiplies the page's value to the business, the size of the opportunity and how easy it is to fix (how close its last score is to passing). Hover the number to see the three parts.
+
+Pages built from one template, such as every post under `/blog/*`, share most of their gaps. When at least two-thirds of a template's audited pages fail the same signals, the template gets one row: **Fix once, applies to 38 pages**. Auditing it audits the template's pages that have no audit yet.
+
+Select rows to **Audit selected**, **Pin** them (pinned pages always come first) or **Exclude** them. Excluded pages are listed under the table, where **Restore** puts them back.
+
+<Note>
+AI visits need Google Analytics or the [tracking snippet](/guides/ai-traffic-analytics). Without either, the column stays empty and pages are ranked without them.
+</Note>
+
+### Pages
+
+The **Pages** tab lists every page you audited, one row per page however many times you audited it, most recent first:
+
+| Column | Meaning |
+|---|---|
+| **Score** | The latest audit's score |
+| **Issues** | Signals that failed or warned in that audit |
+| **Status** | **Good** (70 or more), **Improving** (below 70 but up from the previous audit), **Needs work**, **Running** or **Failed** (no audit of the page has completed) |
+| **Last audit** | When it was last audited; **Auto** marks an auto-audit run's audit |
+
+Click a row to open its latest report. The arrow beside a page lists its earlier audits, each with **View report** and a delete icon. **Group by template** groups the rows under their template (`/blog/*`) and names the gaps its pages share. **Export** downloads the list as CSV or Excel; select pages to **Re-audit** or export only those.
+
+## The audit report
+
+Each audit has its own report at `/dashboard/audit/[id]`. The icons at the top re-run the audit on the same URL or delete it (**Delete audit** can't be undone). On a page that fails checks, **Send to Action Center** sends the page and the checks it fails as one Fix action, without waiting for the nightly pass (see below). Sent again while that action is open, it doesn't add another: a notice names the open action (AC-…) with **Open**. Only a page's latest report can be sent; an older one's notice offers **Open the latest report**.
+
+### Total score
+
+The gauge shows the page's score out of 100 and a grade: **Good** (70 and above), **Needs work** (40–69) or **Poor** (below 40). Beside it are the number of signals that **passed**, raised **warnings** or **failed**, and how many of the 48 signals were evaluated.
+
+### Categories
+
+**Category breakdown** scores each category out of 100, with how many of its signals were evaluated:
+
+| Category | Weight | What it checks | Examples |
+|---|---|---|---|
+| **Structure** | 25% | Whether an AI engine can parse the page | Heading hierarchy, JSON-LD, FAQ schema, lists and tables, alt text, Open Graph |
+| **Content** | 25% | Whether the page answers its question directly and completely | Direct answer, BLUF, sub-query coverage, in-line definitions, readability |
+| **Authority** | 20% | Whether the page reads as expert and sourced | Author byline, citations, statistics, quotations, freshness |
+| **E-E-A-T** | 20% | Experience, expertise and trust signals | First-person evidence, case studies, author credentials, your brand in Wikidata, privacy and contact pages |
+| **Trust** | 10% | Crawl-time and share-time basics | AI bot access in robots.txt, llms.txt, HTTPS, canonical URL, meta description |
+
+A category's score is the average of its signals; the total is the weighted average of the categories. A signal that couldn't be evaluated (**n/a**) is left out, so it never lowers the score.
+
+On a product page (one with Product structured data), **Product description opening** checks that the description's first 40 words, or 250 characters, name the product type and at least two key attributes: a measure such as 268 g, a material, a fit or a use. ChatGPT appears to read only about that much of a description when it matches products to a shopping question. The finding shows where the opening ends. Other pages show this signal as n/a.
+
+Most signals are read straight from the page, its robots.txt and its llms.txt. Thirteen, such as **Direct answer to query** and **Case study evidence**, are judged by an AI model that first works out what the page itself is about, so a page is never judged against a topic it isn't trying to cover. **Brand entity in Wikidata** looks your brand up in Wikidata.
+
+The AI keeps its verdict on each of its thirteen signals until the part of the page that signal reads changes, so a page audited again with no changes gets the same score; a page that changed is judged again only on the signals whose part changed. If the AI checks can't run, the page keeps the verdicts of its last audit. A page with none, such as one audited for the first time, gets a partial score: the report says the AI checks couldn't run, and the score leaves them out and isn't compared with your other audits (previous score, change and trend). A partial audit doesn't use one of your monthly audits.
+
+### Signals
+
+The **Signals** section lists every check by category, each with a pass, warning, fail or n/a icon and its impact (**high**, **medium** or **standard**). **Issues only** hides the passing ones. Open a signal to see:
+
+- **Finding** — what this audit saw on the page, when the check reports it;
+- what the signal measures, and **Why** it matters to AI engines;
+- **Recommended fix** — the page-specific AI recommendation, with any draft or code to paste; or **Fix** — the general fix, for signals without one.
+
+### AI Recommendations
+
+**AI Recommendations** collects the page-specific fixes at the top of the report, ordered by priority (**high**, **medium**, **low**). Each names the signal, says what to change in one sentence and, where it helps, gives a ready-to-paste **draft** (a meta description, an H1, an opening paragraph, FAQ questions and answers, sources to cite) and **code** (such as an FAQPage JSON-LD block).
+
+Recommendations are written for the content signals an AI model can help with. Mechanical ones — HTTPS, the viewport tag, alt text, a video embed — keep their general fix. Every sentence is kept to 150 characters.
+
+### Your input needed
+
+Recommendations only use facts found on the page, or in your brand's name, description and domains when the page is on one of your domains. A number, percentage or date that appears in neither, such as a statistic or a year, is left out with its sentence: the audit reads the page, it doesn't search the web, so it leaves you nothing to research. A source to cite is named in words, such as "Google's structured data documentation".
+
+Only what your brand alone knows stays as a **placeholder** in square brackets, three at most in a recommendation, highlighted in the draft and marked **Your input needed**:
+
+```text
+Teams at [customer name] switched to [your plan] last spring.
+```
+
+Common placeholders are `[customer name]`, `[price]`, `[your result]` and, in code, `[date]` and `[your figure]`. When a draft or code block holds one, the report reminds you: **Your input needed: replace each highlighted [bracket] with your own details before you publish.**
+
+<Tip>
+Search the pasted text for `[` before you publish. A placeholder left in a JSON-LD block, such as `"price": "[price]"`, is valid JSON but tells AI engines nothing.
+</Tip>
+
+### Copying drafts and code
+
+Each draft and code block has a copy icon in its corner (**Copy draft** or **Copy code**). It copies the block exactly as shown, placeholders included; a **Copied** toast confirms it.
+
+## Auto-audit and settings
+
+Auto-audit spends a quarter of your monthly audits on the Opportunities inbox's top pages, in five runs on days 1, 7, 14, 21 and 28 of your billing month. Pages you fixed go first: a page of your brand's site whose Site Audit fix you completed in the Action Center in the last 30 days, and that hasn't been audited since, is audited again in the next run, fixed pages taking up to about half the run (rounded up), so the action's result says whether the fix took. Then pinned pages; pages audited in the last 30 days wait for a later run. After a run, a notice on the Site Audit page sums it up (pages audited, critical issues, the next run) with **View pages**, and the audits show **Auto** in the Pages list.
+
+**Settings** (top right) holds:
+
+- **Auto-audit** — on or off for every brand in your organization. Turned off, all your monthly audits are yours to spend. On plans with no monthly limit, it starts off.
+- **E-mail the team after each run** — a summary e-mail after each auto-audit run.
+- **Excluded pages** — one path per line, `*` for anything (`/legal/*`). These pages stay out of Opportunities and auto-audits.
+- **Pinned pages** — the pages you pinned from Opportunities, with **Unpin**.
+
+Only admins and managers can change these settings; other members see them read-only.
+
+## How audits feed the Action Center
+
+Each night the Action Center reads the latest audit of each page from the last 90 days and turns failed signals into actions:
+
+| Action | Raised when |
+|---|---|
+| **Fix low-scoring pages** | Audited pages score below 50/100. One action covers all of them, worst first. |
+| **Fix AI crawler accessibility** | **AI bot access (robots.txt)** fails |
+| **Fix structured data issues** | A JSON-LD or **FAQ schema** signal fails |
+| **Fix outdated content** | **Freshness** or **Date markup** fails |
+| **Fix weak entity signals** | **Brand entity in Wikidata** or **Entity coverage** fails |
+| **Fix internal content connectivity** | **Internal linking** fails |
+| **Fix content gaps** | **Query token coverage** or **Sub-query coverage** fails |
+
+An action lists the pages it covers and the failed checks on each, with a link to **Open Site Audit**. Re-audit the pages after you fix them: only each page's latest audit counts, so once the new audit no longer fails the check, the Action Center stops reporting that page. An audit older than 90 days no longer counts either.
+
+You can also send one page yourself from its report with **Send to Action Center** (see [The audit report](#the-audit-report)). The action names the page and the checks it fails, takes the Fix low-scoring pages plan, and is measured on the page's citations and AI visits. Like a nightly Site Audit fix, once you complete it, it is judged by the page audited again since it closed: the checks it failed passing. Until the page is audited again, the metrics judge it.
+
+The **Audit Score** section of [Reports](/guides/reports) brings your audit scores into a report.
+
+<Card title="Continue: Reports" icon="arrow-right" href="/guides/reports">
+  Turn your AI visibility and audit scores into shareable snapshot reports.
+</Card>

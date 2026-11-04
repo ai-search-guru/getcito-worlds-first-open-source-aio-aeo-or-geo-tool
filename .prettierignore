@@ -1,0 +1,19 @@
+# Mintlify docs — MDX files use Prettier-incompatible syntax
+# (fenced code blocks with HTML tags, JSX-like Step titles, etc.).
+# Keep them hand-formatted.
+docs/**/*.mdx
+docs/**/*.md
+
+# Generated / vendor
+**/.next/
+**/.vercel/
+**/dist/
+**/build/
+**/node_modules/
+**/coverage/
+**/.turbo/
+
+# Lock files
+**/package-lock.json
+**/yarn.lock
+**/pnpm-lock.yaml

@@ -1,0 +1,341 @@
+{
+  "skills": [
+    {
+      "name": "winback",
+      "title": "Win back lost citations",
+      "description": "Finds pages that lost citations and refreshes them against what AI cites now.",
+      "filters": [
+        "visibility",
+        "content"
+      ],
+      "body": "# Win back lost citations\n\nFind the brand's pages that AI engines stopped citing, see what they cite instead, and refresh the pages to win the citations back.\n\n## When to use\n\n- \"Win back the citations we lost this week\", \"Which pages lost citations on Google AI Overviews?\", \"Why did our guide stop being cited?\"\n- Not for a page that was never cited: the Beat a competitor or Comparison page skill fits better.\n\n## What to read\n\n1. `list_citations` with the owned filter, for the last 7 days and the 7 before (or the periods the person names): the brand's pages and how their citations changed.\n2. `get_gsc_summary` when Search Console is connected: whether clicks fell with the citations.\n3. `get_prompt_performance` for the prompts those pages served, lowest visibility first.\n4. `list_ai_answers` for one or two of those prompts: which pages AI cites now, and what they answer that the brand's page doesn't.\n5. `get_fanouts` for the topic: questions the page doesn't cover yet.\n6. `get_draft` when a draft of the page exists: its passages, and which ones AI still quotes (locked).\n\n## Steps\n\n1. Find the pages that lost citations, the biggest loss first; work on two at most in one run.\n2. Compare each with the pages AI engines cite now for the same prompts: newer facts, a direct answer, a table, an FAQ, a date.\n3. Refresh each page: keep, update, add or cut, each change tied to what the cited pages do. Save it as a new version with `create_draft`, method optimize, with the live page's address as its source; the app asks the person first when it should.\n4. Sending the drafts to the site's CMS, and publishing them, aren't part of this skill: the person does both in the Content Library (**Send to CMS**, then **Publish**), or an agent with the Ready to publish skill does.\n\n## Output\n\n1. A table: Page, Citations before, Citations now, Cited instead, Main change.\n2. For each page: the refreshed passages, and what the person must supply as [placeholders].\n3. When to check again: after the next tracking runs.\n\n## Don't\n\n- Keep the passages AI still quotes word for word.\n- Never say the refresh will bring the citations back, or that a change caused the loss.\n- Never publish yourself: the app decides whether a page goes live, and asks the person unless an Admin allowed this agent to go live on its own."
+    },
+    {
+      "name": "tasks",
+      "title": "Complete this week’s tasks",
+      "description": "Works through Action Center by priority. You close the tasks.",
+      "filters": [
+        "content",
+        "visibility"
+      ],
+      "body": "# Complete this week’s tasks\n\nWork through the brand's Action Center actions, highest priority first, and prepare what each one needs: drafts, code and notes. The person closes the tasks.\n\n## When to use\n\n- \"Complete this week's Action Center tasks\", \"Work on what's due by Friday\", \"Start the top task.\"\n- For one action the person names, do only that one.\n\n## What to read\n\n1. `list_action_center_tasks` sorted by priority, the new and in-progress ones: their category, impact, due date and progress.\n2. `get_action` for each action you work on: why it exists, its signals, and its tasks (What, Where, Why, How, Done when).\n3. `list_citations` for the last 30 days, when an action is about citations: which pages are cited, and which lost citations.\n4. `get_site_audit_summary`, then `list_site_audit_issues`, for the pages the tasks name: the failed checks, as AI engines would see the page.\n5. `get_fanouts` when a task asks for questions to answer.\n6. `get_onboarding_progress`, once the actions are worked through: the open Getting started steps, in stage order.\n\n## Steps\n\n1. Read the open actions and rank them by impact and due date. Say which ones you will work on, at most four in one run.\n2. Check the pages the tasks name, from their latest Site Audit.\n3. Prepare each task's work: an FAQ block, a rewritten passage, schema code or a new page, as its How says. Show a change to a passage AI cites before it is made.\n4. Save page work as a draft with `create_draft`; the app asks the person first when it should.\n5. Sending a draft to the site's CMS, and publishing it, aren't part of this skill: the person does both in the Content Library (**Send to CMS**, then **Publish**), or an agent with the Ready to publish skill does. Never publish yourself: the app decides whether a page goes live, and asks the person unless an Admin allowed this agent to go live on its own.\n6. When a task's work is finished, set it Ready for review with `set_task_ready_for_review`, so the person sees it in the task strip under your answer.\n7. Then help with the open Getting started steps, in stage order: say what each step needs and link its page, with short steps for anything the person connects themselves (Search Console, Analytics, the AI Traffic snippet). Add competitors, topics or prompts a step asks for only with the tools that do it, and the app asks the person first.\n\n## Output\n\nA list of the actions worked on, each with what was made (and where it is), what is left for the person, and its \"Done when\" check. Then the actions not reached, by priority.\n\n## Don't\n\n- Never close, complete or dismiss an Action Center task: the person does, once its \"Done when\" is met.\n- Never mark a Getting started step done or skip it: it completes through its own check, and the person skips an optional one in Action Center.\n- Don't invent facts, quotes or figures for a draft: use [placeholders] the person fills.\n- Never claim a task's work will move a number; say what to watch after it goes live."
+    },
+    {
+      "name": "quality",
+      "title": "Quality pass",
+      "description": "E-E-A-T, Trust and Readability fixes. Leaves only what you alone can give.",
+      "filters": [
+        "content"
+      ],
+      "body": "# Quality pass\n\nMake the fixes a draft's Quality checks ask for (E-E-A-T, Trust and Readability), and leave a short list of what only the person can add.\n\n## When to use\n\n- \"Run a quality pass on the drafts under 60\", \"Fix this draft's readability\", \"What does this draft still need?\"\n- The Quality tab in the Content Editor shows each draft's scores. When the person names no drafts, ask which ones, or list the drafts and let them pick.\n\n## What to read\n\n1. `list_drafts`: the brand's drafts, latest changed first.\n2. `get_draft` for each draft you work on, at most three in one run: its passages, its sources, and which passages AI quotes (locked).\n\n## Steps\n\n1. For each draft, find what the checks look for:\n   - **Readability:** sentences over about 25 words, paragraphs over about 5 sentences, jargon without a definition.\n   - **Trust:** claims without a source, figures without a date, a missing disclosure where the brand compares itself or recommends its own product.\n   - **E-E-A-T:** no author, no first-hand experience, no examples.\n   - **Structure:** headings that don't say what the section answers, a missing FAQ or schema.\n2. Fix what you can fix from the draft itself: split sentences, reorder, add headings, define terms, mark claims that need a source.\n3. Give the fixes as **Before** and **After** for each passage. When the person wants them kept as a new draft, save it with `create_draft`; the app asks them first when it should. In an agent's run nobody is there to ask: always save it with its tool, and the app holds it for approval where the agent's mode needs it.\n4. List what only the person can give: quotes, first-hand data, customer examples, the author and their credentials, sources for marked claims.\n\n## Output\n\nFor each draft: the fixes made, then \"Only you can add\" as a short to-do list.\n\n## Don't\n\n- Don't invent quotes, authors, credentials, studies, customers or figures to pass a check.\n- Keep the passages AI quotes word for word.\n- Don't change what a passage claims: only how it says it."
+    },
+    {
+      "name": "faq",
+      "title": "FAQ from fan-outs",
+      "description": "An FAQ block from the top fan-outs and your brand facts, with FAQPage schema.",
+      "filters": [
+        "content",
+        "visibility",
+        "technical"
+      ],
+      "body": "# FAQ from fan-outs\n\nAn FAQ block that answers the questions AI engines search for, and the FAQPage structured data that goes with it.\n\n## When to use\n\n- \"Write an FAQ for our pricing page\", \"Add FAQ schema to this draft\", \"What questions should this page answer?\"\n- If the page or topic is unclear, ask which one first.\n\n## What to read\n\n1. `get_fanouts` for the brand, or the topic of the page: the searches the engines run behind its answers. These are the best questions.\n2. `get_prompt_insights` or `list_prompts` for the topic: the prompts people ask, and where the demand is.\n3. `list_ai_answers` for one or two of those prompts: what AI says now, and what it gets wrong or leaves out.\n4. `get_draft` when the person names a draft: its passages, so the FAQ doesn't repeat them.\n\n## Steps\n\n1. Pick the top fan-outs for the page: 5 to 8 questions. Merge near-duplicates, and phrase each the way a buyer would ask it.\n2. Write the answers from the brand's facts: 40 to 80 words each, the first sentence answering on its own. Use only facts from the person's messages, the brand's approved facts they give, its own pages read in this chat, or the draft. Any other fact is a [placeholder], such as [plan limits] or [support hours].\n3. Save the FAQ and its FAQPage schema as a draft when the person wants it kept, with `create_draft`; the app asks them first when it should. In an agent's run nobody is there to ask: always save it with its tool, and the app holds it for approval where the agent's mode needs it.\n\n## Output\n\n1. The FAQ as HTML: a heading, then each question as a subheading with its answer.\n2. The FAQPage structured data as JSON-LD, in a code block, repeating each question and answer exactly as the visible FAQ says them.\n3. One line on where the questions came from (fan-outs, prompts).\n\n## Don't\n\n- No tracking numbers (visibility, share of voice, rankings) in the FAQ: it is public content.\n- Don't invent prices, figures, customers or awards.\n- Don't mark up questions and answers that aren't visible on the page."
+    },
+    {
+      "name": "report",
+      "title": "Weekly report",
+      "description": "Citations, mentions and share of voice: what changed and why. Ready to share with your team.",
+      "filters": [
+        "reports"
+      ],
+      "body": "# Weekly report\n\nA one-page report a team can read in two minutes: where the brand stands in AI answers this week, what changed, and what to do next.\n\n## When to use\n\n- \"Write this week's report\", \"Give me a weekly recap\", \"What should I tell the team on Monday?\"\n- For another period, follow the same layout with the period the person names.\n\n## What to read\n\n1. Seven days of answers: `get_overview_summary`, or `get_visibility_summary` for this week and for last week, on every tracked platform.\n2. `get_visibility_trend` by day for the two weeks.\n3. `get_mentions_summary`: mention rate and sentiment against the week before.\n4. `get_competitor_comparison` for this week and last: share of voice against competitors.\n5. `list_citations` for both weeks: the pages that gained or lost citations.\n6. `get_prompt_performance` sorted by visibility, both ways, for the biggest gainers and losers.\n7. `list_action_center_tasks` sorted by priority, open ones only, and `get_action_history` for actions closed this week.\n\n## Steps\n\n1. Read 7 days of answers on all tracked platforms.\n2. Compare with last week: citations, mentions and share of voice.\n3. Write the report in the layout below.\n\n## Output\n\n**Weekly report · {first day} to {last day}**\n\n1. **Summary:** three bullets, the most important first.\n2. **Numbers:** a table with Metric, This week, Last week and Change, for citations, mentions, share of voice and visibility.\n3. **What changed and why:** the prompts, pages and platforms that moved most, up and down, with their numbers and what moved with them.\n4. **Competitors:** who gained or lost share of voice.\n5. **Next week:** the three Action Center actions to work on, by priority, and what closed this week.\n\nEnd with the date of the newest data the report used.\n\n## Don't\n\n- Chat doesn't email the report: the person keeps it with **Save to Files** or downloads it, and sends it to the team.\n- Never claim a change caused another: say what moved together, and when. An outcome before day 30 is a reading so far.\n- Keep it internal and truthful: report drops as plainly as gains."
+    },
+    {
+      "name": "beat",
+      "title": "Beat a competitor",
+      "description": "Compares your cited pages with theirs and drafts the changes.",
+      "filters": [
+        "content",
+        "visibility"
+      ],
+      "body": "# Beat a competitor\n\nOn one prompt where a competitor wins, compare the pages AI engines cite for them with the brand's own, and draft the changes that close the gap.\n\n## When to use\n\n- \"Help us beat Northwind on 'ai visibility tool'\", \"Why does ChatGPT pick them over us for this prompt?\"\n- For a new side-by-side page instead, the Comparison page skill fits better.\n\n## What to read\n\n1. `list_competitors`, and `get_competitor_comparison` for the period: where the competitor leads, per platform.\n2. `get_prompt_performance` for the brand's prompts: the prompt where the gap is widest, if the person names none.\n3. `list_ai_answers` for that prompt: which pages each engine cites, theirs and the brand's.\n4. `list_citations` with the competitor and owned filters: the competitor's cited pages, and the brand's best page for the topic.\n5. `get_fanouts` for the prompt: the questions behind it that the cited pages answer.\n6. `get_draft` when the brand's page is a draft in the Content Library.\n\n## Steps\n\n1. Pick the prompt and the competitor. If either is unclear, ask, with the tracked competitors as the options.\n2. Compare the cited pages: what the competitor's page answers that the brand's doesn't, how directly it answers, its tables, FAQs, dates and sources.\n3. Write a gap table, then draft the changes to the brand's page: new or rewritten passages, each tied to a gap.\n4. Save the changed page as a new version with `create_draft`, method optimize, with the live page's address as its source; the app asks the person first when it should.\n\n## Output\n\n1. A gap table: What the cited page does, The competitor, The brand, Change.\n2. The drafted passages, ready to paste, with [placeholders] for facts only the brand can give.\n\n## Don't\n\n- Don't copy the competitor's text or structure: say what it answers, and answer it in the brand's own way.\n- Don't disparage the competitor, and claim nothing about them a read page doesn't say.\n- No tracking numbers on the page, and never claim the changes will win the prompt."
+    },
+    {
+      "name": "refresh",
+      "title": "Refresh for this year",
+      "description": "Updates dates, numbers and examples from Sources; flags what needs the user.",
+      "filters": [
+        "content"
+      ],
+      "body": "# Refresh for this year\n\nBring an older page up to date: its dates, numbers and examples, without losing what AI engines already quote from it.\n\n## When to use\n\n- \"Refresh our pricing guide for this year\", \"Which pages are out of date?\", \"Update this draft's numbers.\"\n- When no page is named, list the drafts that changed longest ago and ask which one to refresh.\n\n## What to read\n\n1. `get_draft` for the page: its passages, the sources it cites, and which passages AI quotes now (locked).\n2. `list_drafts` when no page is named: the drafts, latest changed first, to find the oldest.\n3. `get_site_audit_summary`, then `list_site_audit_issues` for the page's latest audit: freshness, date markup and the other failed checks.\n4. `list_ai_answers` for one or two prompts the page serves: what AI cites now, and what this page no longer answers.\n\n## Steps\n\n1. Find what is dated: years, \"last year\", figures, prices, screenshots described in the text, examples, product names that changed.\n2. Update what a source supports: a figure or date from the page's own sources, the person's messages, or a page read in this chat. Each new number names its source.\n3. Flag what needs the person: a figure no source supports stays as a [placeholder], such as [current customer count], in a to-do list.\n4. Keep the passages AI quotes word for word, unless the person asks to change them and knows they are quoted.\n5. Add an \"Updated on [date]\" line.\n\n## Output\n\n1. A table: Passage, What changed, Source (or \"needs you\").\n2. The updated passages, ready to paste.\n3. The to-do list of what only the person can supply.\n\nWhen the person wants it kept, save it as a new version with `create_draft`, method optimize, with the live page's address as its source; the app asks them first when it should. In an agent's run nobody is there to ask: always save it with its tool, and the app holds it for approval where the agent's mode needs it.\n\n## Don't\n\n- Don't invent new facts or figures to make the page look fresh.\n- Don't change a date on the page unless its content changed.\n- Never publish yourself: the app decides whether a page goes live, and asks the person unless an Admin allowed this agent to go live on its own."
+    },
+    {
+      "name": "publish",
+      "title": "Ready to publish",
+      "description": "Checks, page fields and a CMS draft. Goes live on its own only if an Admin allows it.",
+      "filters": [
+        "content",
+        "technical"
+      ],
+      "body": "# Ready to publish\n\nGet drafts ready to go live: check them, fill their page fields, hand them to the site's CMS as drafts, and publish them. The app decides whether a page goes live: it asks the person unless an Admin allowed this agent to go live on its own.\n\n## When to use\n\n- \"Get the 2 ready drafts published\", \"Is this draft ready to go live?\", \"Fill the SEO fields for this page.\"\n\n## What to read\n\n1. `list_drafts`: the brand's drafts and their status; the ready ones first.\n2. `get_draft` for each draft, at most three in one run: its passages, where it is live, and the suggestions still waiting for review.\n3. `list_connections`: whether the brand has a CMS site connected.\n4. `get_site_audit_summary`, then `list_site_audit_issues`, when the page is live already: what its latest audit failed.\n\n## Steps\n\n1. Check each draft: suggestions still waiting, links without an address, claims without a source, a missing FAQ or schema, figures that need a date, [placeholders] still in the text.\n2. Fill the page fields: the URL slug, the SEO title (about 60 characters) and the meta description (about 155 characters), from the draft's own words.\n3. Hand it to the CMS as a draft. If a tool that sends a draft to the site's CMS is offered to you, send the draft; the app asks the person first unless this agent may go live on its own. Otherwise the person uses **Send to CMS** in the Content Library. A draft isn't live.\n4. Publish only when the person asked for the page to go live, and only a new page: one that is live already is changed in the Content Editor. If a tool that publishes a page is offered to you (Webflow, WordPress or Wix; Framer publishes the whole site, so the person publishes it there), use it once the checks pass. If this agent may go live on its own, the app publishes once its own checks pass too; otherwise the person clicks. Never say a page is live before the app says so.\n\n## Output\n\nFor each draft: Ready or Not ready, the checks that failed and how to fix them, and the page fields in a small table (Field, Value). Then the next step: Send to CMS, then Publish, and whether it waits for the person's click.\n\n## Don't\n\n- Never publish yourself, and never say a page is live before the app says so: the app decides whether a page goes live, and asks the person unless an Admin allowed this agent to go live on its own.\n- Don't send a draft that still has waiting suggestions or [placeholders] without saying so.\n- Don't invent page fields from data the draft doesn't hold."
+    },
+    {
+      "name": "shopping",
+      "title": "AI shopping readiness",
+      "description": "Checks product pages and feed for ChatGPT Shopping (US) and Google Shopping (EU).",
+      "filters": [
+        "product",
+        "technical"
+      ],
+      "body": "# AI shopping readiness\n\nCheck how the brand's products show up in AI shopping results, and what their pages and feed need so ChatGPT Shopping and Google Shopping can show them well.\n\n## When to use\n\n- \"Check our products for AI shopping\", \"Why doesn't ChatGPT show our product?\", \"What should we fix in our feed?\"\n- Product Visibility needs a plan that includes it: when the read says it isn't on the plan, say so and stop.\n\n## What to read\n\n1. `get_shopping_visibility` for each product the person names, by its title as AI shopping results show it (at most five in one run): its appearances by platform, region and date, its rating, reviews and the merchants selling it.\n2. `list_connections`: whether the store or a product feed is connected.\n3. `get_site_audit_summary`, then `list_site_audit_issues`, for product pages that have an audit: the product description opening, schema and the other failed checks.\n\nChat can't open the live store or the feed: ask for the product titles when the person names none, and work from what the reads return.\n\n## Steps\n\n1. Read each product's AI shopping results: where it shows, where it doesn't, and who sells it there.\n2. Check against what ChatGPT Shopping (US) and Google Shopping (EU) need: a clear title with brand, model and key attribute; a description that says what it is in its first sentence; price, availability, identifiers (GTIN, brand, model), images, and Product schema on the page.\n3. Draft fixes for titles and attributes, product by product.\n4. Prepare the feed changes as a list. Pushing a feed to the store or to Google Merchant Center leaves the workspace: it is always the person's own click.\n\n## Output\n\n1. A table: Product, Where it shows, What's missing, Fix.\n2. The proposed new titles and descriptions, ready to paste.\n3. The feed changes, field by field, for the person to apply.\n\n## Don't\n\n- Don't invent prices, stock, ratings, reviews or identifiers: leave a [placeholder] for any the person must fill.\n- Never push a feed or change a product: the person does.\n- Don't promise a product will appear in AI shopping results."
+    },
+    {
+      "name": "wrongclaim",
+      "title": "Fix wrong claims about us",
+      "description": "Finds AI answers with wrong facts about you and drafts the fixes.",
+      "filters": [
+        "visibility"
+      ],
+      "body": "# Fix wrong claims about us\n\nFind what AI engines get wrong about the brand, where they got it from, and what to change so the next answers are right.\n\n## When to use\n\n- \"ChatGPT says we don't have an API\", \"AI keeps calling us a free tool\", \"Find wrong claims about us.\"\n- When the person names the wrong claim, start from it; otherwise look for claims first.\n\n## What to read\n\n1. `list_mentions`, with a search for the subject when the person names one: the answers naming the brand, and their excerpts.\n2. `get_mention` for each answer that looks wrong: its full text and the pages it cites.\n3. `list_ai_answers` for the prompts where the claim shows: whether every engine says it, or one.\n4. `get_mentions_perception`: what AI associates with the brand, to spot a wrong idea that keeps coming back.\n5. `list_citations` with the external filter: the third-party pages behind those answers.\n6. `get_brand_facts`: the brand's approved facts (its plans, trial, founding year and the claims it makes), what a person confirmed is true.\n\n## Steps\n\n1. Find the AI answers with wrong facts about the brand, across the tracked platforms. List each claim once, with the engines and prompts that make it.\n2. Check each claim against the brand's facts: its approved facts from `get_brand_facts`, the person's own words, the facts they confirm, or the brand's pages read in this chat. You don't decide what is true: when none of these says, ask the person, with the claim quoted.\n3. Draft fixes for the brand's own pages: a short, dated passage that states the right fact plainly. When the person wants it kept, save it as a draft with `create_draft`; the app asks them first when it should. In an agent's run nobody is there to ask: always save it with its tool, and the app holds it for approval where the agent's mode needs it.\n4. Build the outreach list for third-party pages: each page, what it says, and what to ask its owner to correct.\n5. Sending outreach leaves the workspace: the person does it. Chat sends nothing.\n\n## Output\n\n1. A table: Claim, Engines, Prompts, Cited source, What's true (an approved fact, or as the person confirmed), Fix.\n2. The fix passages, ready to paste.\n3. The outreach list.\n4. When to check again: after the next tracking runs, with the same prompts.\n\n## Don't\n\n- Never state what is true about the brand from your own knowledge.\n- Don't invent contacts, names or addresses for outreach.\n- Don't promise the engines will change their answers, or when."
+    },
+    {
+      "name": "answerfirst",
+      "title": "Answer-first rewrite",
+      "description": "Puts a direct answer under each H2 and an AI Overview summary on top.",
+      "filters": [
+        "content"
+      ],
+      "body": "# Answer-first rewrite\n\nTurn sections that warm up slowly into ones that answer first, so an AI engine can lift them as they are.\n\n## When to use\n\n- \"Make this page answer-first\", \"Rewrite our intro so AI quotes it\", \"Why doesn't AI quote this page?\"\n- For a whole page, work section by section, the summary first.\n\n## What to read\n\n1. `get_draft` when the person names a draft: its passages, and which ones AI quotes now (locked).\n2. `list_prompts` or `get_fanouts` for the page's topic: the questions each section should answer.\n3. When a live page is named, `get_site_audit_summary` and `list_site_audit_issues` for its latest audit: the direct-answer and bottom-line-up-front checks.\n\nIf the person pasted the text, work from it and read nothing else unless needed.\n\n## Steps\n\n1. Write a summary for the top of the page: two or three sentences that answer the page's main question, the way an AI Overview would.\n2. Under each H2, put a direct answer first: one or two sentences, 50 words or fewer, that answer the heading on their own. Detail, reasons and caveats come after.\n3. One question per section; its heading says the question or its answer.\n4. Define a term where it is first used, in the same sentence. Steps as a numbered list, options as a table.\n5. Keep every fact, figure and claim exactly as the source has it, and the brand's voice: change the order, not the personality. A passage AI quotes now stays word for word.\n\n## Output\n\nFor each section: **Before**, **After**, and one line on what changed. Then the full rewritten text in one block, ready to paste. When the person wants it kept, save it as a new draft with `create_draft`; the app asks them first when it should. In an agent's run nobody is there to ask: always save it with its tool, and the app holds it for approval where the agent's mode needs it.\n\n## Don't\n\n- Don't add facts, figures or promises that weren't in the text.\n- Don't shorten an answer until it is no longer true.\n- Don't touch locked passages without saying so."
+    },
+    {
+      "name": "facts",
+      "title": "Brand facts check",
+      "description": "Checks every draft against your approved brand facts.",
+      "filters": [
+        "content"
+      ],
+      "body": "# Brand facts check\n\nCheck the brand's drafts against its approved brand facts (its plans, trial, founding year and the claims it makes), and list every place a draft says something else.\n\n## When to use\n\n- \"Check our drafts against our brand facts\", \"Does this page still say the old trial length?\", \"Are our facts consistent?\"\n\n## Where the facts come from\n\nGetCito reads the brand facts from the brand's own pricing, About and product pages, and a person approves each one in the brand's settings, on the **Brand facts** tab. Only approved facts count. Read them with `get_brand_facts`: the approved facts still on the brand's site, each in its page's own words, with when it was approved and the page it came from. Facts waiting for approval, rejected ones and ones gone from the site aren't in it.\n\nWhen it returns none, say so, and ask the person to open **Brand facts** and approve the ones waiting, or to paste the facts they confirm. Never approve a fact yourself, and never use a fact that isn't approved or that the person didn't confirm.\n\n## What to read\n\n1. `get_brand_facts`: the brand's approved facts.\n2. `list_drafts`: the brand's drafts, latest changed first.\n3. `get_draft` for each draft you check, at most five in one run: its passages, and where it is live.\n\n## Steps\n\n1. Read the approved facts with `get_brand_facts`. With none, stop and ask for them, as above. Facts the person gives in the chat count too.\n2. Read each draft and find every passage that states one of those facts: a plan, a trial, a founding year, a claim about the brand.\n3. Compare each with the approved fact: same, different, or no longer true.\n4. Draft the fix for each mismatch: the passage with the approved fact in it, nothing else changed.\n\n## Output\n\n1. A table: Draft, Passage, Says, Approved fact, Fix.\n2. The drafts with no mismatch, in one line.\n3. Facts a draft states that aren't in the approved list, for the person to check.\n\nWhen the person wants the fixes kept, save the corrected page as a new draft with `create_draft`; the app asks them first when it should. In an agent's run nobody is there to ask: always save it with its tool, and the app holds it for approval where the agent's mode needs it.\n\n## Don't\n\n- Don't decide a fact is true from your own knowledge or from a page you read: only an approved fact, or one the person confirms, counts.\n- Don't change anything in a passage but the fact.\n- Keep the passages AI quotes word for word unless the fact in them is wrong, and then say they are quoted."
+    },
+    {
+      "name": "compare",
+      "title": "Comparison page",
+      "description": "Compares cited pages and drafts a balanced comparison with dated facts.",
+      "filters": [
+        "content",
+        "visibility"
+      ],
+      "body": "# Comparison page\n\nA balanced comparison page that answers \"X or Y?\" the way AI engines like to quote: plainly, fairly, with dates.\n\n## When to use\n\n- \"Write an GetCito vs Northwind page\", \"We lose the 'best alternative to X' prompt: draft a page\", \"Make an alternatives page.\"\n- To change the brand's existing pages against one competitor instead, the Beat a competitor skill fits better.\n\n## What to read\n\n1. `list_competitors`: the tracked competitors and their domains.\n2. `list_ai_answers` for the comparison prompt: how AI frames the choice today, and which pages it cites.\n3. `list_citations` with the competitor and external filters: the comparison and review pages AI cites.\n4. `get_fanouts` for the prompt: the questions people ask around the choice.\n5. `get_competitor_comparison` only as internal context: it never goes on the page.\n\n## Steps\n\n1. Pick the prompt and the competitor. If either is unclear, ask, with the tracked competitors as the options.\n2. Compare the pages AI engines cite for that prompt: what they answer, how they lay out the choice, how old their facts are.\n3. Draft the comparison page:\n   - Open with the answer: who should pick which option, in two or three sentences.\n   - A comparison table: one row per feature or need, a column for each option, and an \"as of {date}\" line under it.\n   - A short section for each option's strengths, the competitor's included, and an FAQ from the fan-outs.\n   - Facts about the competitor come only from pages read in this chat or from the person, each with the date it was true. Facts about the brand come from the person or its own pages; anything else is a [placeholder].\n4. Save it as a draft when the person wants it kept, with `create_draft` (page type comparison or alternatives); the app asks them first when it should. In an agent's run nobody is there to ask: always save it with its tool, and the app holds it for approval where the agent's mode needs it.\n\n## Output\n\nThe page as HTML, and under it the list of facts the person must check before it goes live.\n\n## Don't\n\n- Don't disparage the competitor or claim what you can't source.\n- No tracking numbers, share of voice or rankings on the page: it is public content.\n- Don't invent prices, plan limits or feature lists, for either side.\n- Never publish yourself: the app decides whether a page goes live, and asks the person unless an Admin allowed this agent to go live on its own."
+    },
+    {
+      "name": "translate",
+      "title": "Translate a page",
+      "description": "Translates a page into the user's markets, keeps rules and sources.",
+      "filters": [
+        "content"
+      ],
+      "body": "# Translate a page\n\nTranslate an existing draft into the languages of the brand's markets. Only the language changes: the facts, structure, sources and rules stay as they are.\n\n## When to use\n\n- \"Translate /pricing to German and French\", \"Make a Turkish version of this draft.\"\n- If the draft or the languages are unclear, ask which ones; offer the languages of the brand's tracked regions.\n\n## What to read\n\n1. `get_draft` for the draft: its passages, its sources, and which passages AI quotes (locked).\n2. `list_brands` when the person names no language: the brand's region, for the language to offer first.\n\n## Steps\n\n1. Translate the draft passage by passage, into natural language for that market, not word for word.\n2. Keep the structure: the same headings, lists, tables, FAQ and schema, translated.\n3. Keep every fact, figure, date, name, product name and source exactly as the original has them. Units and date formats follow the market; the values don't change.\n4. Keep links as they are, unless the person gives the addresses of the translated pages.\n5. Save each language as its own draft with `create_draft`, the title in that language; the app asks the person first when it should.\n\n## Output\n\nFor each language: the translated page, and a short list of what to check, such as terms that have no settled translation, or a passage that may need a local example.\n\n## Don't\n\n- Don't add, drop or change facts, claims or figures: translate only.\n- Don't add local prices, offers or examples the original doesn't have.\n- Never publish a translation yourself: the app decides whether a page goes live, and asks the person unless an Admin allowed this agent to go live on its own."
+    },
+    {
+      "name": "questions",
+      "title": "Buyer questions",
+      "description": "Groups new buyer questions by topic, with volume and who AI recommends.",
+      "filters": [
+        "visibility",
+        "product"
+      ],
+      "body": "# Buyer questions\n\nWhat buyers ask AI engines in the brand's category: the questions grouped by topic, how often they are searched, and which brand AI recommends for each, with the reason it gives.\n\n## When to use\n\n- \"What do buyers ask AI about integrations?\", \"Which buyer questions came up this week?\", \"Product digest.\"\n- For one competitor's side of things, the Rival brief skill fits better.\n\n## What to read\n\n1. `list_topics` and `list_prompts`: the brand's topics and the prompts under each, newest first when the person asks what's new.\n2. `get_fanouts` for the prompts of the topic asked about: the questions engines search behind them.\n3. `get_prompt_volumes`: how often each prompt is searched, where the volume is known.\n4. `list_ai_answers` for those prompts: which brand each engine recommends, and the words it gives as the reason.\n5. `list_prompt_suggestions`: questions the brand doesn't track yet.\n\n## Steps\n\n1. Take the topic the person names; with none, the topics with the most new prompts and fan-outs.\n2. Group the questions by what the buyer wants to know, not by their wording. Merge near-duplicates.\n3. For each group: its searches a month where known, the brand AI recommends most, and the reason it gives, quoted from an answer.\n4. Mark the groups where no brand clearly leads: they are the easiest to win.\n5. Close with what this means for the roadmap and the content plan, in three to five lines.\n\n## Output\n\n1. A table: Buyer question, Searches a month, AI recommends, Reason AI gives.\n2. \"What this means\": three to five lines.\n3. The untracked questions worth tracking, as a list the person can add with `add_prompts`; the app asks them first.\n\n## Don't\n\n- Never make up a volume: write \"unknown\" where none is known.\n- Quote the reason AI gives; don't write your own.\n- Don't say which product is better: report what AI says."
+    },
+    {
+      "name": "features",
+      "title": "How AI compares us",
+      "description": "How AI describes you against each competitor, feature by feature, with quotes.",
+      "filters": [
+        "visibility",
+        "product"
+      ],
+      "body": "# How AI compares us\n\nHow AI engines describe the brand against each tracked competitor, feature by feature, in the engines' own words.\n\n## When to use\n\n- \"Which features does AI name for Northwind but not for us?\", \"How does ChatGPT compare us with our rivals?\"\n- For a page that answers \"X or Y?\", the Comparison page skill fits better.\n\n## What to read\n\n1. `list_competitors`, and `get_competitor_comparison` for the period: who the brand is compared with, and where each leads.\n2. `get_mention_competitors`: the competitors named beside the brand most often.\n3. `list_mentions`, then `get_mention` for answers that name the brand and a competitor together: what each is praised or faulted for.\n4. `get_mentions_perception`: what AI associates with the brand.\n\n## Steps\n\n1. Take the competitor the person names; with none, the two or three named beside the brand most.\n2. List the features and qualities the answers name, for the brand and for each competitor.\n3. For each one: who AI credits with it, with a short quote and its engine.\n4. Mark the features AI names for a competitor but never for the brand, and anything AI says about the brand that looks wrong.\n\n## Output\n\n1. A table: Feature, the brand, one column per competitor, Quote and engine.\n2. \"Gaps\": the features AI credits only to competitors, and what to check for each.\n3. Claims about the brand that look wrong, for the person to confirm.\n\n## Don't\n\n- Don't decide which product is better: report what AI says.\n- Never state what the brand offers from your own knowledge: ask the person.\n- Don't disparage a competitor, and claim nothing about them an answer doesn't say."
+    },
+    {
+      "name": "gaps",
+      "title": "No clear leader",
+      "description": "Finds prompts and segments where no brand leads yet, and suggests what to do.",
+      "filters": [
+        "visibility",
+        "product"
+      ],
+      "body": "# No clear leader\n\nThe prompts, topics and segments where AI engines don't recommend one brand most of the time: open ground the brand can take first.\n\n## When to use\n\n- \"Which use cases have no clear winner yet?\", \"Where is nobody leading?\", \"Unmet needs.\"\n- To work on one prompt a competitor already wins, the Beat a competitor skill fits better.\n\n## What to read\n\n1. `list_topics` and `list_prompts`: the brand's topics and tracked prompts.\n2. `get_prompt_performance`: the brand's place on each prompt, per engine.\n3. `list_ai_answers` for the prompts: which brands each engine recommends.\n4. `get_competitor_comparison`: where competitors lead, to tell an open prompt from a taken one.\n5. `get_prompt_volumes`: how often each prompt is searched, where known.\n\n## Steps\n\n1. For each prompt, count which brands the engines recommend across its answers.\n2. A prompt has no clear leader when no brand is recommended in most of its answers. Group these prompts by topic or segment.\n3. Order them by searches a month where known, then by how close the brand already is.\n4. For each, suggest one action: a page to write or update, a question to answer, a source to be listed on.\n5. Offer to add the top ones to Action Center with `create_action`; the app asks the person first.\n\n## Output\n\n1. A table: Prompt or segment, Engines, Brands that appear, The brand's place, Searches a month, Suggested action.\n2. The three to start with, and why.\n\n## Don't\n\n- Don't call a prompt won or lost from one answer: look across its answers and engines.\n- Never make up a volume: write \"unknown\" where none is known.\n- Never promise the brand will lead after an action."
+    },
+    {
+      "name": "markets",
+      "title": "Who AI recommends by market",
+      "description": "Shows who AI recommends in each market and language you track.",
+      "filters": [
+        "visibility"
+      ],
+      "body": "# Who AI recommends by market\n\nWho AI engines recommend in each market the brand tracks, and where a competitor leads in one market but not in the others.\n\n## When to use\n\n- \"Where in Germany does AI send buyers to rivals?\", \"Market snapshot\", \"How do we do in each country?\"\n- For the sources AI cites in a market, the Listing gaps skill fits better.\n\n## What to read\n\n1. `list_prompts`: the locations each prompt tracks. A market is a location the brand's prompts track.\n2. `get_visibility_summary` and `get_competitor_comparison` for each market: the brand's place and the competitors'.\n3. `list_ai_answers` for the market's prompts: which brands each engine recommends there, and how buyers ask.\n4. `list_citations` for the market: the sources behind those answers.\n\n## Steps\n\n1. List the markets the brand tracks. With only one, compare languages or segments instead, and say so.\n2. For each market: the brands AI recommends most, and the brand's place.\n3. Where a competitor leads in one market but not in the others, say where, on which prompts, and which sources back it.\n4. Note the markets with too few answers to tell anything yet.\n\n## Output\n\n1. One table per market: Brand, Mentioned in, Recommended in, Top prompt.\n2. \"Where to start\": the market and prompts where a change would count most.\n\n## Don't\n\n- Don't name a market the brand doesn't track.\n- Don't guess a market's size or the brand's sales there.\n- Don't compare markets with too few answers to tell."
+    },
+    {
+      "name": "listings",
+      "title": "Listing gaps",
+      "description": "Lists the sources AI cites in a market and whether they list you.",
+      "filters": [
+        "visibility"
+      ],
+      "body": "# Listing gaps\n\nThe directories, marketplaces, review sites and publishers AI engines cite in the brand's category, and whether each one lists the brand.\n\n## When to use\n\n- \"Which directories and review sites does AI trust in our category?\", \"Where are we missing?\", \"Publisher sites.\"\n- To fix what AI gets wrong about the brand, the Fix wrong claims about us skill fits better.\n\n## What to read\n\n1. `list_citations` with the external filter: the third-party sites AI cites for the brand's prompts, and how often.\n2. `list_ai_answers` for the prompts that cite them: which brands those answers recommend.\n3. `list_competitors`: the competitors to look for on each site.\n4. `fetch_page` for each site's page about the category: whether it names the brand.\n\n## Steps\n\n1. Take the market the person names; with none, every market the brand tracks.\n2. List the third-party sources AI cites most, by kind: directory, marketplace, review site, publisher.\n3. For each: the answers that cite it, and the competitors it names.\n4. Read its page to see whether it lists the brand. When the page can't be read, write \"unknown\".\n5. Suggest a next step for each: ask for a listing, update a profile, or nothing to do.\n\n## Output\n\n1. A table: Source, Kind, Answers citing it, Lists you, Competitors listed, Next step.\n2. Outreach drafts for the top three, when the person asks.\n3. Sending leaves the workspace: the person does it. Chat sends nothing.\n\n## Don't\n\n- Never say a site lists the brand, or doesn't, without reading its page.\n- Don't invent contacts, names or addresses for outreach.\n- Never promise a listing will bring citations."
+    },
+    {
+      "name": "rivals",
+      "title": "Rival brief",
+      "description": "A one-page brief on one competitor across all AI platforms.",
+      "filters": [
+        "visibility",
+        "reports"
+      ],
+      "body": "# Rival brief\n\nA one-page brief on one competitor in AI answers: where they lead, the prompts they win, the pages AI cites for them, how AI describes them, and what the brand can do.\n\n## When to use\n\n- \"Tell me about Northwind in AI search\", \"Why does AI recommend them over us?\", \"Competitor moves.\"\n- To work on one prompt they win, the Beat a competitor skill fits better.\n\n## What to read\n\n1. `list_competitors`: the tracked competitors. When the person names none, ask, with these as the options.\n2. `get_competitor_comparison` for the period: where they lead, per platform.\n3. `get_visibility_trend`: how their visibility and the brand's moved.\n4. `get_prompt_performance` and `list_ai_answers`: the prompts they win, and the answers that recommend them.\n5. `list_citations` with the competitor filter: the pages AI cites for them.\n6. `get_mention_competitors` and `list_mentions`: how AI describes them beside the brand.\n\n## Steps\n\n1. Summarise where they stand against the brand in three lines.\n2. By platform: who leads, and by how much.\n3. The prompts they win that the brand doesn't, with the pages AI cites for them there.\n4. How AI describes them, quoted, and what it credits them with.\n5. Three moves for the brand, each tied to a prompt or a page.\n\n## Output\n\n1. One page: Summary, By platform, Prompts they win, Pages AI cites for them, How AI describes them, What to do next.\n2. Every number with the period it covers.\n\n## Don't\n\n- Don't disparage the competitor, and claim nothing about them a read page or answer doesn't say.\n- Don't copy their text: say what their pages answer.\n- Never promise the moves will win."
+    },
+    {
+      "name": "audit-fix",
+      "title": "Site audit fixes",
+      "description": "Turns site audit findings into fixes you approve.",
+      "filters": [
+        "content",
+        "technical"
+      ],
+      "body": "# Site audit fixes\n\nThe site audit's findings, ordered by what matters most for AI answers, each turned into a fix ready to apply.\n\n## When to use\n\n- \"Fix our site audit\", \"What should we fix first for AI?\", \"Site audit fixes.\"\n- To rewrite one page so AI quotes it, the Answer-first rewrite skill fits better.\n\n## What to read\n\n1. `get_site_audit_summary`: the latest audit, its date and its scores.\n2. `list_site_audit_issues`: the findings, with the pages each one affects.\n3. `fetch_page` for the pages behind the top findings: what is on them now.\n4. `list_drafts` and `get_draft`: drafts already open for those pages.\n\n## Steps\n\n1. Start from the latest audit. When there is none, or it is old, offer `run_site_audit`; the app asks the person first. A page with an audit running gets that audit back, with no new audit used. A page audited in the last 10 minutes isn't started again: ask whether to open that audit or audit it again, and only then run it again with force.\n2. Order the findings by what matters for AI answers: whether AI crawlers can reach the pages, then missing direct answers, structured data, titles and descriptions, then the rest.\n3. For each of the top findings: why it matters for AI answers, and the fix, ready to apply: the corrected markup, text or setting.\n4. When the person wants a page change kept, save it as a draft with `create_draft`; the app asks them first when it should. In an agent's run nobody is there to ask: always save it with its tool, and the app holds it for approval where the agent's mode needs it.\n5. Settings outside the page, such as the robots file or the CMS, are the person's to change: write the change for them.\n\n## Output\n\n1. A table: Finding, Pages, Why it matters for AI, Fix, Effort.\n2. The fixes, ready to paste.\n\n## Don't\n\n- Never change the site, and never publish yourself: the app decides whether a page goes live, and asks the person unless an Admin allowed this agent to go live on its own.\n- Don't fix what the audit didn't find without saying so.\n- Never promise rankings or citations."
+    }
+  ],
+  "playbooks": [
+    {
+      "name": "start",
+      "title": "Get started",
+      "description": "Answers setup questions and walks through the open Getting started steps, with a link to each page.",
+      "filters": [],
+      "body": "# Get started\n\nThe playbook of the /start shortcut (\"Help me get started. What should I set up first?\"): what to set up next in GetCito, from where the brand stands today.\n\n## Data plan\n\nRead only these, for the chat's brand:\n\n1. `get_onboarding_progress`: the Getting started steps, done and open, in stage order.\n2. `list_competitors`, `list_topics` and `list_prompts`: how many competitors, topics and prompts the brand has.\n3. `list_connections`: whether Google Search Console and Analytics are connected for the brand.\n4. `get_plan_facts`, only when an open step depends on what the plan includes.\n5. `list_brands` only when no brand is selected, and `open_page` to link each step's page.\n\n## Questions\n\n- When the workspace has two brands or more and none is selected, ask which brand to set up first.\n- Nothing else: the progress answers the rest.\n\n## Steps\n\n1. Say where the brand stands in one line: how many steps are done, out of how many.\n2. List the open steps in stage order, five at most. For each: what it needs, why it matters for AI answers, and its page, linked with `open_page`.\n3. For anything the person connects themselves (Search Console, Analytics, the AI Traffic snippet), give the short steps they take.\n4. When every step is done, say so and point to the brand's first results instead.\n\n## Output\n\nText: the one-line status, then the open steps as a numbered list.\n\n## Next moves\n\nThe next open steps, such as \"Add 3 competitors\" or \"Connect Google Search Console\".\n\n## Don't\n\n- Never mark a Getting started step done or skip one: it completes through its own check.\n- Add competitors, topics or prompts only with the tools that do it, and the app asks the person first.",
+      "reads": [
+        "get_onboarding_progress",
+        "list_competitors",
+        "list_topics",
+        "list_prompts",
+        "list_connections",
+        "get_plan_facts",
+        "list_brands",
+        "open_page"
+      ]
+    },
+    {
+      "name": "analyze",
+      "title": "Analyze",
+      "description": "Explains what changed and why, and whether it beats the normal week-to-week swing.",
+      "filters": [],
+      "body": "# Analyze\n\nThe playbook of the /analyze shortcut (\"Analyze …\"): what changed in the brand's AI visibility, why, and whether it is more than normal swing.\n\n## Data plan\n\nRead one to three of these, the ones the request is about, for the chat's brand:\n\n1. Visibility: `get_overview_summary`, or `get_visibility_summary` and `get_visibility_trend`.\n2. Prompts: `get_prompt_performance` and `list_prompts`.\n3. Mentions: `get_mentions_summary`, and `get_mentions_perception` for how AI describes the brand.\n4. Competitors: `get_competitor_comparison`.\n5. Citations: `list_citations`.\n6. AI traffic: `get_ai_traffic_summary`, and `get_gsc_summary` or `get_ga_summary` when connected.\n7. Why one number moved: `explain_change`.\n\nUse `list_brands` only when no brand is selected, and `open_page` to link the page that shows the numbers.\n\nScope: the page's date range when the message came with one, else the last 30 days against the 30 before, on every platform the plan tracks. Give dates only for the period before, or a period the person names.\n\n## Questions\n\n- Ask for the period or the competitor only when the request names neither and the answer would change with it. Otherwise use the default scope and say so.\n\n## Steps\n\n1. Read the period and the one before it, for the sources the request is about.\n2. Lead with the change: the metric, both values, and whether it is within normal swing.\n3. Then why: the prompts, platforms, pages and competitors that moved most, with their numbers.\n4. Say what moved together and when; never that one change caused another.\n\n## Output\n\nText, with a table when it compares more than three rows: Metric or prompt, This period, Before, Change.\n\n## Next moves\n\nTwo or three, such as \"Send to Action Center\" for a finding worth acting on, or refreshing a page that lost citations.\n\n## Don't\n\n- Never present a cut list as complete, or a change within normal swing as a trend.\n- Never report a platform the plan doesn't track.",
+      "reads": [
+        "get_overview_summary",
+        "get_visibility_summary",
+        "get_visibility_trend",
+        "get_prompt_performance",
+        "list_prompts",
+        "get_mentions_summary",
+        "get_mentions_perception",
+        "get_competitor_comparison",
+        "list_citations",
+        "get_ai_traffic_summary",
+        "get_gsc_summary",
+        "get_ga_summary",
+        "explain_change",
+        "list_brands",
+        "open_page"
+      ]
+    },
+    {
+      "name": "new-report",
+      "title": "Reports",
+      "description": "Builds a one-off report on the brand and keeps it in Reports, to open, share or download.",
+      "filters": [],
+      "body": "# Reports\n\nThe playbook of the /new-report shortcut (\"Create a report on …\"): a one-off report on the brand, kept in the Reports module. The Weekly report skill is /report; this is any other report the person asks for.\n\n## Data plan\n\nRead only what the report needs, for the chat's brand:\n\n1. `get_overview_summary`, or `get_visibility_summary` and `get_visibility_trend`: visibility and its trend.\n2. `get_competitor_comparison`: share of voice against the brand's competitors.\n3. `get_mentions_summary`: mentions and sentiment.\n4. `list_citations`: the pages and domains AI cites.\n5. `get_ai_traffic_summary`, when the report is about AI traffic.\n6. `get_reports`: the reports already made, so the new one doesn't repeat one from the same period.\n\nUse `list_brands` only when no brand is selected, and `open_page` to link Reports.\n\nScope: the period the person names, else the last 30 days, with the brand's competitors and every platform the plan tracks.\n\n## Questions\n\n- When the request gives neither, ask who the report is for and which period, together in one question.\n\n## Steps\n\n1. Pick the report's template from what it is about: weekly_visibility for visibility, its trend and share of voice; executive_summary for leadership; competitor_benchmark for competitors; citation_sources for cited sources.\n2. Make it with `build_report` over the period; the app asks the person first when it should.\n3. Sum up its three most important findings in the answer, with their numbers.\n4. When no template fits (an AI traffic report, say), write the report in the answer instead, in short sections with a table, so the person keeps it with **Save to Files** or downloads it.\n\n## Output\n\nThe report in Reports, and three findings in the answer. Without a template: the report itself, in the answer.\n\n## Next moves\n\nTwo or three, such as opening the report in Reports, or the same report for the period before.\n\n## Don't\n\n- Chat doesn't email or schedule the report: the person shares or downloads it from Reports.\n- Keep it truthful: report drops as plainly as gains, and never claim one change caused another.",
+      "reads": [
+        "get_overview_summary",
+        "get_visibility_summary",
+        "get_visibility_trend",
+        "get_competitor_comparison",
+        "get_mentions_summary",
+        "list_citations",
+        "get_ai_traffic_summary",
+        "get_reports",
+        "list_brands",
+        "open_page"
+      ]
+    },
+    {
+      "name": "create",
+      "title": "Create content",
+      "description": "Writes briefs, articles, FAQ blocks, comparison pages and social posts from what AI engines ask and cite.",
+      "filters": [],
+      "body": "# Create content\n\nThe playbook of the /create shortcut (\"Create content for …\"): a piece of content written to be cited by AI engines, from the brand's prompts, fan-outs and the pages AI cites now.\n\n## Data plan\n\nRead only these, for the chat's brand and the topic or page the person names:\n\n1. `list_prompts`, `get_prompt_performance` and `list_topics`: the prompts the piece should win, and how the brand does on them.\n2. `get_fanouts` and `get_prompt_insights`: what the engines search for behind those prompts, and which matter most.\n3. `list_citations`: the pages AI cites for them now.\n4. `fetch_page` for one or two of those cited pages, and for the brand's own page when the piece updates it.\n5. `list_content_opportunities`, when the person names no topic.\n6. `list_drafts` and `get_draft`: a draft already open for the same page.\n\nUse `list_brands` only when no brand is selected, and `open_page` to link the Content Library.\n\nScope: the last 30 days, every platform the plan tracks.\n\n## Questions\n\n- Ask the format (brief, article, FAQ block, comparison page or social post), the target page and the length only when the request doesn't say and the answer changes what you write. Two questions at most, together.\n\n## Steps\n\n1. Pick the questions the piece must answer: the prompts and fan-outs with the most demand.\n2. See what the cited pages answer, and what they leave out.\n3. Write the piece answer-first: a direct answer under each heading, then detail. For an FAQ or a comparison page, add the structured data as a code block.\n4. When the person wants it kept, save it as a draft with `create_draft`; the app asks them first when it should. In an agent's run nobody is there to ask: always save it with its tool, and the app holds it for approval where the agent's mode needs it.\n\n## Output\n\nThe piece as a document, with its structured data as code when it has some.\n\n## Next moves\n\nTwo or three, such as opening it in the Content Editor, or an FAQ block for the same prompts.\n\n## Don't\n\n- Public content: no tracking numbers unless the person asks, no weak or made-up statistics, and use [placeholders] for facts, quotes and figures the person must give.\n- Never publish: going live is always the person's click.",
+      "reads": [
+        "list_prompts",
+        "get_prompt_performance",
+        "list_topics",
+        "get_fanouts",
+        "get_prompt_insights",
+        "list_citations",
+        "list_content_opportunities",
+        "fetch_page",
+        "list_drafts",
+        "get_draft",
+        "list_brands",
+        "open_page"
+      ]
+    },
+    {
+      "name": "optimize",
+      "title": "Optimize content",
+      "description": "Scores a page or draft against the pages AI cites and lists the changes that would get it cited.",
+      "filters": [],
+      "body": "# Optimize content\n\nThe playbook of the /optimize shortcut (\"Optimize this page: …\"): how one page or draft compares with what AI cites for its prompts, and the changes that would close the gap.\n\n## Data plan\n\nRead only these, for the page or draft the person names:\n\n1. `fetch_page` for the page, or `get_draft` for a draft (`list_drafts` to find it by name).\n2. `list_prompts` and `get_prompt_performance`: the tracked prompts the page should win.\n3. `list_citations` for those prompts over the last 30 days, and `fetch_page` for the one or two pages AI cites most.\n4. `get_fanouts`: what the engines search for behind those prompts.\n5. `get_site_audit_summary` and `list_site_audit_issues`: the page's latest Site Audit result, when it has one.\n\nUse `list_brands` only when no brand is selected, and `open_page` to link the Content Editor.\n\n## Questions\n\n- When no tracked prompt fits the page, ask which prompts it should win, with two to four of the closest as options.\n\n## Steps\n\n1. Score the page against the cited pages: does it answer the prompts directly, cover the fan-outs, carry structured data, and pass its audit checks?\n2. List the changes, most impact first: what to change, where, and why AI would cite it after.\n3. Write the changed passages, ready to paste, and the structured data as code.\n4. When the person wants a draft changed, use `update_draft`; for a live page, save the new version with `create_draft`. The app asks them first when it should. In an agent's run nobody is there to ask: always save it with its tool, and the app holds it for approval where the agent's mode needs it.\n\n## Output\n\nA change list: Change, Where, Why it helps AI answers, then the rewritten passages.\n\n## Next moves\n\nTwo or three, such as opening the page in the Content Editor, or generating its schema.\n\n## Don't\n\n- Never publish or change the live site: going live is always the person's click.\n- Never promise rankings or citations.",
+      "reads": [
+        "fetch_page",
+        "get_draft",
+        "list_drafts",
+        "list_citations",
+        "list_prompts",
+        "get_prompt_performance",
+        "get_fanouts",
+        "get_site_audit_summary",
+        "list_site_audit_issues",
+        "list_brands",
+        "open_page"
+      ]
+    },
+    {
+      "name": "opportunities",
+      "title": "Find opportunities",
+      "description": "Finds content gaps, prompts worth tracking, and the off-site sources AI cites instead of the brand.",
+      "filters": [],
+      "body": "# Find opportunities\n\nThe playbook of the /opportunities shortcut (\"Find content opportunities for …\"): where the brand could be cited and isn't yet, on its own site and off it.\n\n## Data plan\n\nRead only these, for the chat's brand and the topic the person names:\n\n1. `list_content_opportunities`: the prompts where the brand loses visibility, and the page that would win them.\n2. `list_citations`: the domains and pages AI cites, and which of them cite competitors but not the brand.\n3. `get_competitor_comparison`: who wins the prompts the brand loses.\n4. `get_fanouts`: searches the engines run that no tracked prompt covers.\n5. `list_prompt_suggestions` and `get_prompt_insights`: prompts worth tracking, with their demand.\n6. `get_gsc_summary`, when Search Console is connected.\n\nUse `list_brands` only when no brand is selected, and `open_page` to link Content Opportunities.\n\nScope: the last 30 days, every platform the plan tracks.\n\n## Questions\n\n- When the request doesn't say, ask whether to look at the brand's own site, off-site sources, or both.\n\n## Steps\n\n1. On the site: the opportunities with the highest score, each with the page to write or update.\n2. Off the site: the domains AI cites for competitors and not for the brand (Reddit, directories, publishers), with what each would need.\n3. Prompts to track: the fan-outs and suggestions with the most demand that aren't tracked yet.\n\n## Output\n\nA table: Opportunity, Where (site or off-site), Why (the prompts and engines), Next step.\n\n## Next moves\n\nTwo or three, such as \"Create content for #1\" or \"Track these prompts\".\n\n## Don't\n\n- Never add prompts without the tool that does it, and the app asks the person first.\n- Never promise rankings or citations.",
+      "reads": [
+        "list_content_opportunities",
+        "list_citations",
+        "get_competitor_comparison",
+        "get_fanouts",
+        "list_prompt_suggestions",
+        "get_prompt_insights",
+        "get_gsc_summary",
+        "list_brands",
+        "open_page"
+      ]
+    },
+    {
+      "name": "audit",
+      "title": "Improve with audit",
+      "description": "Reads the latest Site Audit result or runs one, then turns its issues into fixes and code.",
+      "filters": [],
+      "body": "# Improve with audit\n\nThe playbook of the /audit shortcut (\"Run an audit on …\"): a page's Site Audit issues, turned into fixes ready to apply.\n\n## Data plan\n\nRead only these, for the page or site the person names:\n\n1. `get_site_audit_summary`: the brand's recent audits, to find the page's latest.\n2. `list_site_audit_issues`: that audit's checks, passed and failed.\n3. `fetch_page` for the page, to write fixes against what is on it now.\n\nUse `list_brands` only when no brand is selected, and `open_page` to link Site Audit.\n\n## Questions\n\n- None about the audit itself. Reading an existing result uses nothing.\n\n## Steps\n\n1. When the page has an audit from the last 30 days, use it. Otherwise start one with `run_site_audit` on that one page; the app shows the person what it uses of the month's audits first.\n2. Audit the whole site only when the person says so; that card shows its cost too.\n3. Order the failed checks by what matters for AI answers: whether AI crawlers can reach the page, then direct answers, structured data, titles and descriptions, then the rest.\n4. For each: why it matters, and the fix, ready to apply: the corrected markup, text or setting as code.\n\n## Output\n\nA table of the issues (Issue, Why it matters for AI, Fix, Effort), then the fixes as code.\n\n## Next moves\n\nTwo or three, such as \"Send fixes to Action Center\" or checking again after the fix.\n\n## Don't\n\n- Never change the site or publish: the fixes are the person's to apply.\n- Don't fix what the audit didn't find without saying so.",
+      "reads": [
+        "get_site_audit_summary",
+        "list_site_audit_issues",
+        "fetch_page",
+        "list_brands",
+        "open_page"
+      ]
+    }
+  ]
+}

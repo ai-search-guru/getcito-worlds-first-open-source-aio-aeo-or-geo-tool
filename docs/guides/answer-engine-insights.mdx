@@ -1,0 +1,127 @@
+---
+title: "Answer Engine Insights"
+description: "Brand Visibility is your daily view of how AI answers treat your brand."
+---
+
+## What you see
+
+**Brand Visibility** in the sidebar opens the **Answer Engine Insights** page (`/dashboard/insights`), the main analytics hub for a brand. From top to bottom:
+
+<Steps>
+  <Step title="Header">
+    The brand's name, when the last run finished and when the next one is due. **Formulas** explains how every number on the page is calculated, **Export CSV** downloads the answers behind the page with the current filters (up to 50,000 rows), and **Reports** opens Reports. Self-hosted instances also have **Test Single Prompt** and **Run All** to start a run by hand.
+  </Step>
+  <Step title="Summary line">
+    One line with your Visibility score and its change, your rank and the gap to the brand next to you, and the platforms that moved most. The copy button puts the line on your clipboard.
+  </Step>
+  <Step title="Key metrics">
+    Nine cards. Most show their change **vs previous period** and a small daily line:
+
+    - **Visibility** — your score from 0 to 100, and your rank among the tracked brands. Click it to open the breakdown panel.
+    - **Tracked prompts** — prompts answered in the period. On plans with a limit, a bar shows how many prompt locations your workspace uses. Click it to open Prompts.
+    - **Mentions** and **Citations** — how often answers named your brand and cited your pages. They open the Mentions and Citations pages.
+    - **Net sentiment** — the positive minus the negative share of the answers that name you. It opens Mentions.
+    - **Coverage** — the share of answered prompts where you appear at least once.
+    - **Share of voice** — your mentions out of all mentions of tracked brands.
+    - **Avg. position** — where you're named in the answers that name you. Lower is better.
+    - **Citation rate** — the share of answers that cite your domain.
+
+    A rate based on fewer than 20 answers says **Low sample** and shows no change.
+  </Step>
+  <Step title="Visibility trend and Leaderboard">
+    Shown once you track competitors; until then, a card links you to adding them. The trend draws your Visibility over the range next to your competitors' lines. Admins and managers can **Pin** up to 5 competitors to keep on the chart; without pins, the strongest four are shown. Outside the 24-hour view, it also marks the days prompts were added and your Action Center goal for AI visibility, if one is set.
+
+    The **Leaderboard** ranks you against your competitors, with each brand's score, change, Coverage and share of voice. Under your row it shows the gap to the brand ahead and the platform where that brand leads you most. **Head-to-Head** opens Competitors.
+
+  </Step>
+  <Step title="By AI platform">
+    A table with each platform's Visibility, Change, Coverage, Share of voice and Avg. pos. The row with the biggest drop is highlighted. A platform with too few answers shows **Low sample** or **No runs this period** instead of numbers.
+  </Step>
+  <Step title="Why it changed">
+    The platforms, topics and prompts that moved your Visibility most, under **Gains** and **Drops**, each with its own score before → after and its effect on your overall score. A note counts the prompts added during the period, which aren't counted in the change. Click a row, or **Full breakdown**, to open the breakdown panel.
+  </Step>
+  <Step title="Topics vs competitors">
+    One row per topic, with your score and the score of each competitor on the trend, shaded from low to high. The last column shows the gap to the topic's leader, or **Lead** when you lead. Click a topic to open its page.
+  </Step>
+  <Step title="Opportunities">
+    What to track next, from your prompt suggestions. A topic has **Track N**, which tracks all its suggested prompts, and **Send action**, which opens a Growth action in the Action Center. A prompt has **Track** and **Suggest content**, which writes a content suggestion for its topic from your monthly content allowance. Tracking stops when your plan's prompt locations are full. **Track** and **Suggest content** are for admins and managers. **See all** opens **Prompts → Prompt Suggestions**.
+  </Step>
+  <Step title="Breakdown panel">
+    The Visibility card, a **Why it changed** row and **Full breakdown** open the **Visibility Breakdown** panel. It compares the selected range with the period of the same length just before it, names the prompt and platform behind the biggest gain or drop, and lists every slice under **Prompts**, **Platforms** and **Topics**. Click a prompt to open its page, where **Platform Results** shows each AI answer and the sources it cited.
+  </Step>
+</Steps>
+
+## Reading the visibility number
+
+Visibility is a score from 0 to 100, not a percentage. It blends how often AI answers mention your brand, how often they cite your site and how early they name you. Every answer counts, including the ones that leave you out. **Formulas** shows the exact formula. Competitors are scored the same way over the same answers, so their numbers are directly comparable.
+
+A few quick interpretations to anchor you:
+
+- **Under 15** — Cold start. Brand barely known to AI engines on these prompts.
+- **15–35** — Emerging presence. AI sometimes mentions you but competitors dominate.
+- **35–60** — Established. You're reliably mentioned; focus on the 1–2 platforms or topics still trailing.
+- **Over 60** — Category leader. Your job is now defending the moat against new entrants.
+
+The exact threshold depends heavily on category competitiveness. *"longest range luxury EV"* might have a clear winner at 40, while *"best CRM for small business"* is so saturated that 20 is leadership.
+
+Every change compares the selected range with the period of the same length just before it, over only the prompts answered in both periods, so adding prompts doesn't inflate it. Visibility changes are in points; Mentions and Citations change in percent. With **All** selected there is no earlier period, so no change is shown.
+
+<Tip>
+**Don't fixate on the absolute number — fixate on the change.** A brand growing from 18 → 24 in a quarter is healthier than a stagnant 50.
+</Tip>
+
+## Common workflows
+
+### Weekly review (10 min)
+
+<Steps>
+  <Step title="Check the Visibility change">
+    Set the range to **7d**. Up or down? If down, **Why it changed** shows which platforms, topics and prompts moved it.
+  </Step>
+  <Step title="Identify the trailing platform">
+    In **By AI platform**, find the platform with the lowest score or the highlighted biggest drop; that's your next investment.
+  </Step>
+  <Step title="Skim Opportunities">
+    Look at the suggested topics and prompts; track 1–3 of them.
+  </Step>
+  <Step title="Send 1 brief to writers">
+    From **Content → Opportunities**, generate a brief for the worst-performing prompt this week.
+  </Step>
+</Steps>
+
+### Investigation flow (30 min)
+
+When a metric drops dramatically:
+
+<Steps>
+  <Step title="Open the breakdown">
+    Click the Visibility card, or the dropped row in **Why it changed**. The panel names the prompt and platform behind the biggest drop.
+  </Step>
+  <Step title="Read the answers">
+    Click the prompt to open its page and read the answers under **Platform Results**. Is your brand still mentioned but named later? Or completely absent?
+  </Step>
+  <Step title="Check the competition">
+    The **Leaderboard** and **Topics vs competitors** show who leads where. A competitor surge is often the cause; **Head-to-Head** opens Competitors for a closer look.
+  </Step>
+  <Step title="Check the sources">
+    Each answer lists the sources it cited, and the **Citations** card opens the Citations page. A retracted article or a new competitor blog post is often the trigger.
+  </Step>
+  <Step title="Decide remediation">
+    Either: ship a content piece targeting the prompt (Content Optimization), or earn a placement (PR), or accept it as a one-time blip.
+  </Step>
+</Steps>
+
+## Filters and date range
+
+Under the header:
+
+- **Date Range** — **24h** (the default: the latest completed run), **7d**, **30d**, **90d**, **All** or **Custom**
+- **Topic** — narrow to one topic (shown when the brand has topics)
+- **Region** — narrow to one region your prompts run in
+- **AI Model** — narrow to one AI platform; versions of the same engine count as one
+
+Filters apply to everything on the page except **Opportunities**, which lists your stored suggestions. They're kept in the page's address, so a link you share opens with the same filters.
+
+<Card title="Continue: Topics" icon="arrow-right" href="/guides/topics">
+  Drill into topic clusters to find which themes you own and which you're losing.
+</Card>

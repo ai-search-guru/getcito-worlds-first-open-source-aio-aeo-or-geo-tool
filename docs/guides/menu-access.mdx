@@ -1,0 +1,86 @@
+---
+title: "Menu access"
+description: "Choose which left-menu sections each role and each person sees, let managers do it too, and pick what you work on."
+---
+
+**Menu access** decides which sections are on each person's left menu, so everyone sees the part of GetCito they use. A Brand & PR manager can work without Content and Audit in the way; an agency partner can see only the content work.
+
+It only hides. A section off someone's menu still opens from a link, and what their role can do there doesn't change. To change what someone can do, change their role in **Settings → Team**.
+
+## Fold a group
+
+Each titled group on the left menu, **Execution** and **Analytics**, folds under its title: click the title, and the chevron on its right turns. The menu opens with every group open; a folded group stays folded in that browser and opens by itself on one of its pages. **Chat** and **Agent Center** above the groups, and **Reports** and **Competitors** below them, have no title and don't fold. With the menu narrowed to icons, every item shows.
+
+## Who changes menus
+
+**Admins** change menus, and can let **managers** do it too: in **Settings → Menu access → Who can change menus**, switch a manager on. A manager who changes menus sees **Menu access** in Settings, and nothing else of the admins' settings. They change what each role sees and every non-admin's menu, never an admin's. Only admins choose who changes menus.
+
+A manager who becomes another role stops changing menus. Someone who leaves the organization leaves their menu behind.
+
+## Choose what each role sees
+
+**Settings → Menu access → Sections each role sees** lists the left menu's sections, by its groups, with a column for each role. Tick what a role sees; each box is saved as you click it.
+
+- **Admin** is always **Everything**.
+- **Action Center** is on everyone's menu and can't be turned off: it's where the work is.
+- **Use a set…** fills a role's column from a work area's ready-made set (below), or **Everything**. Adjust it from there.
+
+Until an admin hides something, every role sees every section.
+
+## Change one person's menu
+
+**Settings → Menu access → People** lists everyone but the admins. Each person shows:
+
+- their role;
+- the work areas they picked;
+- their menu: named after their role, like **Analyst's menu**, or **Custom: +Prompts, −Content** when it differs from their role's;
+- how many sections it keeps.
+
+**Customize** opens their sections, ticked as their role has them:
+
+- tick or untick a section to show or hide it for that person alone, even one their role hides;
+- a change from the role is marked **shown for them** or **hidden for them**;
+- each box is saved as you click it;
+- **Use Analyst's menu** (named after their role) takes their changes back.
+
+## Pick what you work on
+
+Each person can say what they work on or lead. Their menu then keeps only those areas' sections:
+
+| Work area | Sections |
+|---|---|
+| Founders & leaders | Action Center, Chat, Agent Center, Brand Visibility, Mentions, AI Referral Traffic, Reports, Competitors |
+| AEO/GEO & Audit | Action Center, Agent Center, Content, Audit, Citations, AI Referral Traffic, Reports |
+| Content | Action Center, Chat, Agent Center, Content, Prompts, Citations, Reports |
+| Brand & PR | Action Center, Chat, Agent Center, Brand Visibility, Mentions, Citations, Reports, Competitors |
+| Growth | Action Center, Chat, Agent Center, Brand Visibility, Prompts, Citations, AI Referral Traffic, Reports, Competitors |
+| Product Development | Action Center, Chat, Agent Center, Brand Visibility, Prompts, Mentions, Product Visibility, Reports |
+| Business Development | Action Center, Chat, Agent Center, Brand Visibility, Prompts, Mentions, Citations, Reports, Competitors |
+| Developers | Action Center, Agent Center, Audit, Prompts, Citations, AI Referral Traffic, Reports |
+| Analytics | Action Center, Agent Center, Brand Visibility, Prompts, Mentions, Citations, Product Visibility, AI Referral Traffic, Reports, Competitors |
+
+Pick one or more; none means every section. **Settings** is always on the menu, with your API keys and MCP.
+
+**What do you work on?** is asked once:
+
+- when you sign up, after your competitors and before you choose a plan;
+- when you join from an invitation, on your first sign-in, with the workspace's name and your first name, like **Welcome to Acme Workspace, Ada**;
+- on a self-hosted install, the first time the admin opens the dashboard.
+
+**Skip: show me everything** keeps every section. Change your answer any time in **Settings → Account → Your work areas**, which also shows your menu and why a section is off it: **Hidden by your admin** or **Not in your work areas**.
+
+## How a menu is worked out
+
+A person's menu is:
+
+1. their role's sections;
+2. changed by their own exceptions (People → Customize);
+3. narrowed to the sections of their work areas, when they picked any.
+
+Action Center always stays. Nobody takes a section off an admin's menu; only an admin's own work areas narrow it. A section added to GetCito later is on everyone's menu until someone hides it.
+
+When something is off your menu, the bottom of the sidebar says how much, as **3 sections off your menu**, with **Change** leading to your work areas.
+
+<Note>
+**Self-hosting:** menu access needs migration `00374_menu_access.sql`. Apply it before you upgrade the web app (see [Upgrading](/self-host/upgrading)). It counts everyone already in your workspace as asked, so only new and invited people see **What do you work on?**.
+</Note>

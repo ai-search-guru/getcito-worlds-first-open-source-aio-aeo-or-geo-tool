@@ -1,0 +1,24 @@
+{
+  "id": "narrative-sentiment-watch",
+  "goal": "visibility",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [
+    "brand"
+  ],
+  "skills": [
+    "features",
+    "wrongclaim"
+  ],
+  "triggers": [
+    {
+      "kind": "schedule",
+      "repeat": "TH",
+      "time": "09:00"
+    }
+  ],
+  "mode": "ask_first",
+  "connections": [],
+  "status": "ready",
+  "needs": []
+}

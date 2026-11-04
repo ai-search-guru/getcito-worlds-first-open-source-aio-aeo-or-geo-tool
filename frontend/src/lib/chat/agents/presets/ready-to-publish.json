@@ -1,0 +1,21 @@
+{
+  "id": "ready-to-publish",
+  "goal": "content",
+  "businessTypes": [],
+  "industries": [],
+  "roles": [],
+  "skills": [
+    "quality",
+    "publish"
+  ],
+  "triggers": [],
+  "mode": "auto",
+  "connections": [
+    {
+      "key": "cms",
+      "required": true
+    }
+  ],
+  "status": "ready",
+  "needs": []
+}
