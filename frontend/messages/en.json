@@ -84,7 +84,7 @@
       "ownKey": "Agent Chat, on your own AI key",
       "notCounted": "Not counted",
       "otherLimits": "Other limits this month",
-      "auditPages": "Site Audit pages",
+      "auditPages": "Website Health pages",
       "promptLocations": "Prompt locations",
       "ofLimit": "{used} of {limit}",
       "details": "See details"
@@ -431,13 +431,13 @@
         "citations": "Adding the sources they cite",
         "mentions": "Scoring mentions and sentiment",
         "audit": "Auditing the site's pages",
-        "actions": "Building the Action Center",
+        "actions": "Building the Growth Tasks",
         "content": "Finding content opportunities",
         "reports": "Preparing reports"
       },
       "usual": "This takes a few seconds the first time.",
       "slow": "This is taking longer than usual.",
-      "ready": "Ready. Opening the Action Center…",
+      "ready": "Ready. Opening the Growth Tasks…",
       "failed": "Couldn't prepare the demo. Check your connection and try again.",
       "retry": "Try again",
       "close": "Close"
@@ -515,38 +515,38 @@
   },
   "nav": {
     "overview": "Overview",
-    "chat": "Chat",
+    "chat": "GetCito Assistant",
     "chatSetUp": "Set up",
-    "agentCenter": "Agent Center",
-    "actionCenter": "Action Center",
-    "insights": "Brand Visibility",
-    "traffic": "AI Referral Traffic",
-    "prompts": "Prompts",
-    "content": "Content",
-    "audit": "Audit",
-    "competitors": "Competitors",
-    "citations": "Citations",
-    "mentions": "Mentions",
-    "shopping": "Product Visibility",
-    "reports": "Reports",
+    "agentCenter": "Agent Studio",
+    "actionCenter": "Growth Tasks",
+    "insights": "AI Visibility",
+    "traffic": "AI Traffic",
+    "prompts": "Prompt Monitor",
+    "content": "Content Studio",
+    "audit": "Website Health",
+    "competitors": "Competitor Insights",
+    "citations": "Citation Sources",
+    "mentions": "Brand Mentions",
+    "shopping": "Shopping Visibility",
+    "reports": "Report Center",
     "settings": "Settings",
-    "execution": "Execution",
-    "analytics": "Analytics",
+    "execution": "Workspace",
+    "analytics": "Performance",
     "toggleMenu": "Toggle navigation menu",
     "keepSidebarOpen": "Keep sidebar open",
     "collapseSidebar": "Collapse sidebar",
     "switchToDark": "Switch to dark mode",
     "switchToLight": "Switch to light mode",
-    "feedback": "Send feedback",
-    "trackedPrompts": "Tracked Prompts",
-    "promptSuggestions": "Prompt Suggestions",
-    "topics": "Topics",
-    "queryFanouts": "Query Fan-outs",
-    "promptsInsights": "Insights",
-    "contentOpportunities": "Opportunities",
-    "contentLibrary": "Library",
-    "contentPlan": "Plan",
-    "contentEditor": "Editor",
+    "feedback": "Feedback & Support",
+    "trackedPrompts": "Monitored Prompts",
+    "promptSuggestions": "Prompt Ideas",
+    "topics": "Topic Groups",
+    "queryFanouts": "Query Explorer",
+    "promptsInsights": "Prompt Performance",
+    "contentOpportunities": "Content Ideas",
+    "contentLibrary": "Content Library",
+    "contentPlan": "Content Plan",
+    "contentEditor": "Writing Desk",
     "toggleSubmenu": "Show or hide {label}",
     "menuOff": "{count, plural, one {# section} other {# sections}} off your menu.",
     "menuOffChange": "Change",
@@ -577,7 +577,7 @@
       "skip": "Dismiss without saying why"
     },
     "tabs": {
-      "label": "Action Center sections",
+      "label": "Growth Tasks sections",
       "review": "Needs review",
       "kpis": "KPIs",
       "actions": "Actions",
@@ -593,7 +593,7 @@
       "details": "Details",
       "runningBody": "AI assistants are answering your prompts for the first time. Actions, signals and KPIs fill in once it finishes: a few minutes, or an hour or two at busy times. You can leave this page.",
       "queuedBody": "Another analysis is running right now. Yours starts the moment a slot opens, and keeps going in the background.",
-      "link": "Follow it on Brand Visibility"
+      "link": "Follow it on AI Visibility"
     },
     "pages": {
       "actions": "What should you do now, ranked by your KPI goals.",
@@ -704,7 +704,7 @@
       "targetAria": "Target for {name}",
       "invalidTarget": "Targets must be positive; percent targets can't exceed 100.",
       "callout": {
-        "title": "This KPI framework will drive your Action Center.",
+        "title": "This KPI framework will drive your Growth Tasks.",
         "description": "Actions and recommendations are prioritized based on your KPI goals."
       },
       "cancel": "Cancel",
@@ -731,7 +731,7 @@
         "description": "Your share of brand mentions vs competitors"
       },
       "ai_referral_traffic": {
-        "name": "AI Referral Traffic",
+        "name": "AI Traffic",
         "description": "Visits arriving from AI platforms"
       },
       "positive_sentiment": {
@@ -753,7 +753,7 @@
     },
     "signalsPage": {
       "title": "Signals",
-      "subtitle": "Real-time signals from AI Search, your site, and the web. These signals drive your Action Center.",
+      "subtitle": "Real-time signals from AI Search, your site, and the web. These signals drive your Growth Tasks.",
       "cards": {
         "total": "Total Signals",
         "totalPopulation": "active in the last {days, plural, one {day} other {# days}}",
@@ -818,7 +818,7 @@
         "ai_results": "AI Results",
         "ga4": "Google Analytics",
         "gsc": "Google Search Console",
-        "site_audit": "Site Audit"
+        "site_audit": "Website Health"
       },
       "states": {
         "dropped": "Dropped",
@@ -1052,7 +1052,7 @@
           "citations": "Open Citations",
           "competitors": "Open Competitors",
           "traffic": "Open Traffic",
-          "audit": "Open Site Audit",
+          "audit": "Open Website Health",
           "insights": "Open Insights"
         }
       }
@@ -1298,7 +1298,7 @@
       },
       "crawler_blocked": {
         "title": "AI crawlers blocked on {targets}",
-        "description": "Site Audit found these pages closed to AI crawlers."
+        "description": "Website Health found these pages closed to AI crawlers."
       },
       "structured_data_issue": {
         "title": "Structured data issues on {targets}",
@@ -1306,7 +1306,7 @@
       },
       "outdated_content": {
         "title": "Outdated content on {targets}",
-        "description": "These pages fail Site Audit’s freshness checks."
+        "description": "These pages fail Website Health’s freshness checks."
       },
       "weak_entity": {
         "title": "Weak entity signals on {targets}",
@@ -1426,7 +1426,7 @@
         "delete": "Delete",
         "deleteNotAllowed": "Only admins and managers can delete actions",
         "deleteTitle": "Delete this action?",
-        "deleteConfirm": "It leaves the Action Center for everyone and won't come back on its own tomorrow.",
+        "deleteConfirm": "It leaves the Growth Tasks for everyone and won't come back on its own tomorrow.",
         "cancel": "Cancel",
         "statusChanged": "Moved to {status}",
         "deleted": "Action deleted"
@@ -1703,8 +1703,8 @@
             "searchLossAll": "Google search clicks to your site fell{when}.",
             "searchGap": "{subject} {count, plural, one {underperforms} other {underperform}} in Google search{when}.",
             "searchGapAll": "Your pages underperform in Google search{when}.",
-            "technicalIssue": "Site Audit flagged {subject}{issues}{when}.",
-            "technicalIssueAll": "Site Audit flagged your site{issues}{when}.",
+            "technicalIssue": "Website Health flagged {subject}{issues}{when}.",
+            "technicalIssueAll": "Website Health flagged your site{issues}{when}.",
             "brokenLinks": "AI visitors landed on {subject}{when}, and {count, plural, one {it doesn't} other {they don't}} exist.",
             "brokenLinksAll": "AI visitors landed on pages that don't exist{when}.",
             "uncrawledPages": "AI answers cite {subject}, and no AI search bot read {count, plural, one {it} other {them}} in the last 30 days.",
@@ -1869,7 +1869,7 @@
           "checkPassed": "Checked: done. The task is completed.",
           "checkMissing": "Checked: {missing}",
           "checkNot": {
-            "not_checkable": "This task isn't checked on its page: a Site Audit fix is checked by your next audit.",
+            "not_checkable": "This task isn't checked on its page: a Website Health fix is checked by your next audit.",
             "no_address": "This task's URL isn't a page's address. Edit it to a full address, or a path on the brand's site.",
             "no_change_text": "This task has no new text to look for on the page. Add it under Change, or check the task yourself.",
             "from_bot_logs": "This crawler fix came from your bot logs, and robots.txt can't show it's done. Mark it done once crawlers read the page.",
@@ -1924,7 +1924,7 @@
             "yourUnreadable": "Your page cited for these prompts couldn't be read: it may block readers.",
             "words": "{count, plural, one {# word} other {{words} words}}",
             "cited": "cited in {count, plural, one {# answer} other {# answers}}",
-            "note": "Read from their public pages and run through Site Audit's checks; only what the checks found is kept.",
+            "note": "Read from their public pages and run through Website Health's checks; only what the checks found is kept.",
             "unreadable": "{count, plural, one {# page} other {# pages}} couldn't be read.",
             "reasons": {
               "no_prompts": "There are no tracked prompts to read the answers of for this action.",
@@ -1935,20 +1935,20 @@
           "winning": {
             "title": "What sets your winning pages apart",
             "pattern": "— winning pages {winners} of {ofWinners}, your other pages {others} of {ofOthers}",
-            "noPattern": "Your other audited pages pass the same Site Audit checks your winning pages pass: none sets the winners apart.",
+            "noPattern": "Your other audited pages pass the same Website Health checks your winning pages pass: none sets the winners apart.",
             "winners": "{count, plural, one {Your winning page} other {Your # winning pages}}",
-            "fromAudit": "from its Site Audit",
+            "fromAudit": "from its Website Health",
             "fromRead": "read for this task",
             "words": "{count, plural, one {# word} other {{words} words}}",
-            "compared": "Compared with {count, plural, one {# other page} other {# other pages}} of yours that Site Audit checked in the last 90 days.",
+            "compared": "Compared with {count, plural, one {# other page} other {# other pages}} of yours that Website Health checked in the last 90 days.",
             "missing": "Pages of yours missing the most of it",
             "missingLine": "missing {checks}",
-            "note": "From Site Audit's checks; a winning page without a recent audit is read from its public address, and only what the checks found is kept.",
+            "note": "From Website Health's checks; a winning page without a recent audit is read from its public address, and only what the checks found is kept.",
             "unreadable": "{count, plural, one {# winning page} other {# winning pages}} couldn't be read.",
             "reasons": {
               "no_winner": "There's no winning page to compare: none of your pages is named for this action, or cited in its prompts' answers in the last two weeks.",
-              "too_few_audited": "Fewer than three of your other pages have a Site Audit from the last 90 days. Audit more of your pages to compare them with your winning ones.",
-              "winner_unreadable": "Your winning pages couldn't be read: they may block readers. A Site Audit of them works too."
+              "too_few_audited": "Fewer than three of your other pages have a Website Health from the last 90 days. Audit more of your pages to compare them with your winning ones.",
+              "winner_unreadable": "Your winning pages couldn't be read: they may block readers. A Website Health of them works too."
             }
           }
         },
@@ -2016,7 +2016,7 @@
         "noSignalsTopicOpportunity": "This action was sent from Insights' Opportunities, so it has no detection signals. Its evidence is the topic and suggested prompts on the Overview tab.",
         "noSignalsMentionReview": "This action was sent from Mentions, so it has no detection signals. Its evidence is the answers quoted on the Overview tab.",
         "noSignalsTrafficPages": "This action was sent from AI Traffic Analytics, so it has no detection signals. Its evidence is the pages and figures on the Overview tab.",
-        "noSignalsAuditPage": "This action was sent from a Site Audit report, so it has no detection signals. Its evidence is the page and the checks it fails on the Overview tab.",
+        "noSignalsAuditPage": "This action was sent from a Website Health report, so it has no detection signals. Its evidence is the page and the checks it fails on the Overview tab.",
         "noSignalsShoppingLinks": "This action comes from the catalog check after each sync, so it has no detection signals. Its evidence is the page and the products on the Overview tab.",
         "noSignalsChat": "This action was sent from Chat, so it has no detection signals. Its evidence is the finding on the Overview tab, and any added later in History.",
         "chatFinding": {
@@ -2066,7 +2066,7 @@
         },
         "auditPage": {
           "source": "Source",
-          "sourceValue": "Site Audit report",
+          "sourceValue": "Website Health report",
           "openReport": "Open the report",
           "page": "Page",
           "checks": "{count, plural, one {The check it failed when sent} other {The # checks it failed when sent}}"
@@ -2170,7 +2170,7 @@
           "doneWhen": "1 KPI saved",
           "why": [
             "KPIs turn your data into goals you can track.",
-            "Action Center shows your progress against them every week."
+            "Growth Tasks shows your progress against them every week."
           ],
           "how": [
             "Open KPIs",
@@ -2210,7 +2210,7 @@
             "3 per topic is enough to see a trend."
           ],
           "how": [
-            "Open Prompt Suggestions",
+            "Open Prompt Ideas",
             "Pick 3 prompts for each topic",
             "Add them. First answers arrive within hours"
           ]
@@ -2260,13 +2260,13 @@
           ]
         },
         "visibility": {
-          "title": "See where you stand in Brand Visibility",
+          "title": "See where you stand in AI Visibility",
           "summary": "Your share of AI answers vs competitors.",
-          "open": "Open Brand Visibility",
+          "open": "Open AI Visibility",
           "doneWhen": "Page opened",
           "why": ["Your share of AI answers vs competitors.", "The starting point for every goal."],
           "how": [
-            "Open Brand Visibility",
+            "Open AI Visibility",
             "Check your rank and the leader",
             "Note your weakest platform"
           ]
@@ -2289,7 +2289,7 @@
             "So you track what matters for revenue."
           ],
           "how": [
-            "Open Prompt Suggestions",
+            "Open Prompt Ideas",
             "Filter: From your data",
             "Track the ones that fit, 5 or more"
           ]
@@ -2326,7 +2326,7 @@
           "why": ["Suggestions are built from your prompts and searches."],
           "how": [
             "Open Content",
-            "Pick 1–3 suggestions: review them, create a brief or send them to Action Center"
+            "Pick 1–3 suggestions: review them, create a brief or send them to Growth Tasks"
           ]
         },
         "create_content": {
@@ -2359,7 +2359,7 @@
           "open": "See what’s next",
           "doneWhen": "Automatic",
           "why": ["From now on, AI turns your signals into actions here."],
-          "how": ["Keep checking Action Center each week"]
+          "how": ["Keep checking Growth Tasks each week"]
         }
       },
       "panel": {
@@ -2435,7 +2435,7 @@
       "fix_low_scores": {
         "title": "Fix {targets} with low AI readiness",
         "titleGeneric": "Fix low-scoring pages",
-        "description": "These pages score below the AI-readiness threshold in Site Audit.",
+        "description": "These pages score below the AI-readiness threshold in Website Health.",
         "goal": "Bring pages up to the standard AI engines cite."
       },
       "close_competitor_gap": {
@@ -2852,11 +2852,11 @@
         "goal": "Do the tasks, so the prompts and pages this finding names move in AI answers."
       },
       "audit_page": {
-        "title": "Fix the issues Site Audit found on {targets}",
-        "titleGeneric": "Fix the issues Site Audit found on a page",
-        "pageTitle": "Fix the issues Site Audit found on {page}",
-        "description": "Sent from Site Audit: a page and the checks it fails.",
-        "checksDescription": "Sent from Site Audit: the page fails {count, plural, one {# check} other {# checks}}. Audit it again once fixed to see them pass.",
+        "title": "Fix the issues Website Health found on {targets}",
+        "titleGeneric": "Fix the issues Website Health found on a page",
+        "pageTitle": "Fix the issues Website Health found on {page}",
+        "description": "Sent from Website Health: a page and the checks it fails.",
+        "checksDescription": "Sent from Website Health: the page fails {count, plural, one {# check} other {# checks}}. Audit it again once fixed to see them pass.",
         "goal": "Get the page to pass the checks it fails, so AI engines read and cite it."
       },
       "content_draft": {
@@ -2954,8 +2954,8 @@
       "analyze_gsc_ctr_target": "Inspect click-through on {targets}",
       "analyze_ga4_outcomes": "Inspect engagement and key events",
       "analyze_ga4_outcomes_target": "Inspect engagement and key events on {targets}",
-      "analyze_site_audit": "Review Site Audit findings",
-      "analyze_site_audit_target": "Review Site Audit findings on {targets}",
+      "analyze_site_audit": "Review Website Health findings",
+      "analyze_site_audit_target": "Review Website Health findings on {targets}",
       "analyze_winning_pages": "Find what sets your winning pages apart",
       "analyze_winning_pages_target": "Find what sets your winning pages apart, across {targets}",
       "analyze_entity_signals": "Audit entity consistency and coverage",
@@ -3097,8 +3097,8 @@
       "fix_crawler_access": "robots.txt and the page let the AI crawlers in, fetched again",
       "fix_structured_data": "The page has valid structured data (JSON-LD), fetched again",
       "fix_broken_target": "The page, or its redirect, answers when fetched again",
-      "fix_technical_issue": "A new Site Audit no longer finds the issue",
-      "validate_technical_fix": "A new Site Audit passes the checks that failed",
+      "fix_technical_issue": "A new Website Health no longer finds the issue",
+      "validate_technical_fix": "A new Website Health passes the checks that failed",
       "validate_ai_visibility": "Run again, the prompts show the brand above its baseline",
       "validate_mentions": "Run again, the prompts mention the brand more than at its baseline",
       "validate_citations": "Run again, the prompts cite the brand’s pages more than at their baseline",
@@ -3425,7 +3425,7 @@
     },
     "promptSuggestions": {
       "name": "Read prompt suggestions",
-      "step": "Read Prompt Suggestions"
+      "step": "Read Prompt Ideas"
     },
     "promptVolumes": { "name": "Read prompt volumes", "step": "Read Prompt volumes" },
     "topics": { "name": "Read topics", "step": "Read Topics" },
@@ -3448,12 +3448,12 @@
     },
     "productVisibility": { "name": "Read Product Visibility", "step": "Read Product Visibility" },
     "aiReferralTraffic": {
-      "name": "Read AI Referral Traffic",
-      "step": "Read AI Referral Traffic"
+      "name": "Read AI Traffic",
+      "step": "Read AI Traffic"
     },
-    "siteAudits": { "name": "Read Site Audits", "step": "Read Site Audit" },
-    "siteAuditIssues": { "name": "Read Site Audit issues", "step": "Read Site Audit" },
-    "actions": { "name": "Read Action Center actions", "step": "Read Action Center" },
+    "siteAudits": { "name": "Read Website Healths", "step": "Read Website Health" },
+    "siteAuditIssues": { "name": "Read Website Health issues", "step": "Read Website Health" },
+    "actions": { "name": "Read Growth Tasks actions", "step": "Read Growth Tasks" },
     "action": { "name": "Read an action", "step": "Read action" },
     "signals": { "name": "Read signals", "step": "Read Signals" },
     "actionHistory": { "name": "Read Action History", "step": "Read Action History" },
@@ -3465,11 +3465,11 @@
     "draft": { "name": "Read a draft", "step": "Read draft" },
     "reports": { "name": "Read reports", "step": "Read Reports" },
     "goToPage": { "name": "Go to a page", "step": "Opened a page" },
-    "fanouts": { "name": "Read query fan-outs", "step": "Read Query Fan-outs" },
+    "fanouts": { "name": "Read query fan-outs", "step": "Read Query Explorer" },
     "aiAnswers": { "name": "Read a prompt's AI answers", "step": "Read AI answers" },
     "promptInsights": { "name": "Read prompt insights", "step": "Read Prompts · Insights" },
-    "overviewSummary": { "name": "Read the brand overview", "step": "Read Brand Visibility" },
-    "actionCenterKpis": { "name": "Read Action Center KPIs", "step": "Read KPIs" },
+    "overviewSummary": { "name": "Read the brand overview", "step": "Read AI Visibility" },
+    "actionCenterKpis": { "name": "Read Growth Tasks KPIs", "step": "Read KPIs" },
     "onboardingProgress": {
       "name": "Read Getting started progress",
       "step": "Read Getting started"
@@ -3495,14 +3495,14 @@
     "newTopic": { "name": "Add topics", "step": "Added topic" },
     "topicName": { "name": "Rename topics", "step": "Renamed topic" },
     "trackCompetitors": { "name": "Add competitors", "step": "Added competitors" },
-    "sendToActions": { "name": "Send findings to Action Center", "step": "Sent to Action Center" },
+    "sendToActions": { "name": "Send findings to Growth Tasks", "step": "Sent to Growth Tasks" },
     "addToAction": {
-      "name": "Add findings to Action Center actions",
-      "step": "Added to an Action Center action"
+      "name": "Add findings to Growth Tasks actions",
+      "step": "Added to an Growth Tasks action"
     },
-    "attachToTask": { "name": "Attach files to Action Center tasks", "step": "Attached to a task" },
+    "attachToTask": { "name": "Attach files to Growth Tasks tasks", "step": "Attached to a task" },
     "taskReadyForReview": {
-      "name": "Set Action Center tasks to Ready for review",
+      "name": "Set Growth Tasks tasks to Ready for review",
       "step": "Set to Ready for review"
     },
     "dropCompetitor": {
@@ -3518,7 +3518,7 @@
       "step": "Took page down from your site"
     },
     "makeReport": { "name": "Make reports", "step": "Made report" },
-    "startAudit": { "name": "Start Site Audits", "step": "Started Site Audit" },
+    "startAudit": { "name": "Start Website Healths", "step": "Started Website Health" },
     "webPage": { "name": "Open web pages", "step": "Open page" },
     "whyChange": { "name": "Explain why a number changed", "step": "Read why it changed" },
     "agents": { "name": "Create and run agents", "step": "Changed an agent" },
@@ -3740,7 +3740,7 @@
       "motion": "With Reduce motion on, nothing moves.",
       "sections": {
         "avatar": "Agent avatar",
-        "avatarList": "Agent avatar in the Agent Center list",
+        "avatarList": "Agent avatar in the Agent Studio list",
         "statusPill": "Status pill",
         "approvalPill": "Approval pills",
         "steps": "Step states",
@@ -3872,7 +3872,7 @@
     "actionCard": {
       "tasks": "{count, plural, one {# task} other {# tasks}}",
       "doneWhen": "Done when: {text}",
-      "dailyLimit": "This is one of the {limit} new actions the brand gets today, so Action Center's own new actions wait until tomorrow."
+      "dailyLimit": "This is one of the {limit} new actions the brand gets today, so Growth Tasks's own new actions wait until tomorrow."
     },
     "card": {
       "noSession": "This agent ran on its own, so it asks before changing anything.",
@@ -4027,11 +4027,11 @@
     "keyFix": "Open AI Providers",
     "keyAskAdmin": "An Admin can fix it in Settings › AI Providers.",
     "tasks": {
-      "title": "{due, plural, =0 {Action Center tasks} other {Action Center tasks · # due}}",
+      "title": "{due, plural, =0 {Growth Tasks tasks} other {Growth Tasks tasks · # due}}",
       "progress": "Tasks ready",
       "ready": "{ready, number} of {total, number} ready",
       "priority": "Priority {score, number}",
-      "untitled": "An Action Center task",
+      "untitled": "An Growth Tasks task",
       "changed": "{title}: {status}",
       "status": {
         "queued": "Queued",
@@ -4039,8 +4039,8 @@
         "ready_for_review": "Ready for review",
         "done": "Done"
       },
-      "closeNote": "You close tasks in Action Center. I never mark them done.",
-      "close": "Close tasks in Action Center"
+      "closeNote": "You close tasks in Growth Tasks. I never mark them done.",
+      "close": "Close tasks in Growth Tasks"
     },
     "proposal": {
       "goal": "Goal",
@@ -4054,15 +4054,15 @@
       "showLess": "Show less"
     },
     "actionSent": {
-      "created": "Sent to Action Center · AC-{no}",
+      "created": "Sent to Growth Tasks · AC-{no}",
       "added": "Added to AC-{no}",
-      "createdLabel": "Sent to Action Center",
-      "addedLabel": "Added to an Action Center action",
-      "createdNote": "Action Center sets its Priority Score. You close its tasks there.",
+      "createdLabel": "Sent to Growth Tasks",
+      "addedLabel": "Added to an Growth Tasks action",
+      "createdNote": "Growth Tasks sets its Priority Score. You close its tasks there.",
       "addedNote": "Added as evidence. Its targets don't change.",
       "open": "Open in Actions",
-      "toastCreated": "Sent to Action Center",
-      "toastAdded": "Added to the action in Action Center"
+      "toastCreated": "Sent to Growth Tasks",
+      "toastAdded": "Added to the action in Growth Tasks"
     },
     "status": {
       "thinking": "Thinking…",
@@ -4159,7 +4159,7 @@
         "table": "Table",
         "prompt": "Prompt",
         "page": "Page",
-        "task": "Action Center task"
+        "task": "Growth Tasks task"
       }
     },
     "plus": {
@@ -4211,7 +4211,7 @@
     }
   },
   "chatPage": {
-    "sendToActionCenterPrompt": "Send this finding to Action Center as an action.",
+    "sendToActionCenterPrompt": "Send this finding to Growth Tasks as an action.",
     "you": "You",
     "deniedTitle": "I can't do this for you",
     "sendFailed": "Couldn't send that. Try again.",
@@ -4251,7 +4251,7 @@
     "unknown": "–"
   },
   "chatAnswer": {
-    "sendToActionCenter": "Send to Action Center",
+    "sendToActionCenter": "Send to Growth Tasks",
     "label": "Answer actions",
     "copy": "Copy",
     "copied": "Copied",
@@ -4300,21 +4300,21 @@
     "openEditor": "Open in Content Editor",
     "task": {
       "line": "Task: {title}",
-      "untitled": "An Action Center task",
+      "untitled": "An Growth Tasks task",
       "markDone": "Attach to task & mark done",
       "more": "More for this file",
       "attachOnly": "Attach only",
       "doneAttached": "Done · attached to task",
-      "doneInActionCenter": "Done in Action Center",
-      "markedDone": "Task marked done in Action Center",
+      "doneInActionCenter": "Done in Growth Tasks",
+      "markedDone": "Task marked done in Growth Tasks",
       "undo": "Undo",
-      "undone": "Task open again in Action Center",
+      "undone": "Task open again in Growth Tasks",
       "attached": "Attached to the task",
       "failed": {
         "not_found": "That file or task isn't there any more.",
         "forbidden": "Only an Admin or a Manager can close tasks from Chat.",
-        "closed": "Its action is closed in Action Center.",
-        "changed": "It changed in Action Center since, so nothing was undone.",
+        "closed": "Its action is closed in Growth Tasks.",
+        "changed": "It changed in Growth Tasks since, so nothing was undone.",
         "failed": "Couldn't change the task. Try again."
       }
     }
@@ -4512,7 +4512,7 @@
       "settings": "Settings",
       "usageTip": "AI usage this month",
       "files": "Files",
-      "agents": "Agent Center"
+      "agents": "Agent Studio"
     },
     "actions": {
       "more": "More for {name}",
@@ -4575,7 +4575,7 @@
         "askAnything": "Ask anything",
         "tasks": "Complete tasks",
         "tasksCount": "{count, number} due",
-        "tasksMessage": "/tasks Work through this week's Action Center tasks by priority and prepare what each one needs. I'll close the tasks.",
+        "tasksMessage": "/tasks Work through this week's Growth Tasks tasks by priority and prepare what each one needs. I'll close the tasks.",
         "winBack": "Win back citations",
         "winBackCount": "{count, plural, one {# page} other {# pages}}",
         "winBackMessage": "Win back the citations we lost on {count, plural, one {# page} other {# pages}}: refresh them against what AI cites now.",
@@ -4825,12 +4825,12 @@
       },
       "tabEmpty": "Nothing here.",
       "suggestions": {
-        "note": "Up to 7 a week, picked from what waits in your Action Center. This list shows the last 7 days and renews every 14 days.",
+        "note": "Up to 7 a week, picked from what waits in your Growth Tasks. This list shows the last 7 days and renews every 14 days.",
         "pause": "Pause daily suggestions",
-        "started": "Daily suggestions are on for you: one action a day from your Action Center, starting tomorrow morning.",
+        "started": "Daily suggestions are on for you: one action a day from your Growth Tasks, starting tomorrow morning.",
         "empty": "No daily suggestions in the last 7 days.",
         "showing": "Showing the newest {shown} of {total}.",
-        "untitled": "An action from your Action Center",
+        "untitled": "An action from your Growth Tasks",
         "brandMissing": "This brand isn't in your brand list.",
         "closed": {
           "completed": "Done",
@@ -4851,8 +4851,8 @@
         "open": "Open",
         "paused": {
           "title": "Daily suggestions are paused",
-          "body": "None was opened or used in 30 days, so we stopped picking them. Your Action Center is unchanged.",
-          "offBody": "You paused them. Your Action Center is unchanged.",
+          "body": "None was opened or used in 30 days, so we stopped picking them. Your Growth Tasks is unchanged.",
+          "offBody": "You paused them. Your Growth Tasks is unchanged.",
           "resume": "Turn back on"
         },
         "next": "Turned back on, the first suggestion arrives tomorrow morning.",
@@ -4861,7 +4861,7 @@
       "suggestion": {
         "crumb": "Daily suggestion · {date}",
         "from": "from",
-        "source": "Daily suggestion · {date} · Action Center {number}",
+        "source": "Daily suggestion · {date} · Growth Tasks {number}",
         "pickedToday": "Picked for you today · no AI cost",
         "picked": "Picked for you {date} · no AI cost",
         "tools": {
@@ -4873,18 +4873,18 @@
           "priority": "priority {score, number}",
           "waiting": "waiting {days, plural, one {# day} other {# days}}",
           "audited": "Checked the pages",
-          "auditedOn": "Site Audit, {date}"
+          "auditedOn": "Website Health, {date}"
         },
         "whyNow": "Why now: {reason}",
         "takes": "With the agent, it takes about {minutes, number} minutes.",
         "card": {
-          "title": "From your Action Center",
+          "title": "From your Growth Tasks",
           "waiting": "Waiting {days, plural, one {# day} other {# days}}",
           "tasks": "{count, plural, one {# task} other {# tasks}}",
           "unassigned": "Unassigned",
           "opened": "opened {date}",
           "open": "Open",
-          "openLabel": "Open {number} in Action Center",
+          "openLabel": "Open {number} in Growth Tasks",
           "morePages": "+{count, number} more",
           "noCost": "No extra cost to pick",
           "mode": "Mode: {mode}",
@@ -4902,12 +4902,12 @@
           "snooze": "Not now",
           "snoozeSub": "Back in a week if it's still open",
           "remove": "Remove this suggestion",
-          "removeSub": "The action stays in Action Center"
+          "removeSub": "The action stays in Growth Tasks"
         },
-        "doMessage": "Let's do {number} from my Action Center: {title}",
+        "doMessage": "Let's do {number} from my Growth Tasks: {title}",
         "pageChip": "Daily suggestion",
         "snoozed": "Not now: back in a week, if it's still open.",
-        "removed": "Removed from your Inbox. The action stays in Action Center.",
+        "removed": "Removed from your Inbox. The action stays in Growth Tasks.",
         "changeFailed": "Couldn't change this suggestion. Try again.",
         "startFailed": "Couldn't start the chat. Try again.",
         "editorFailed": "Couldn't open the Content Editor. Try again.",
@@ -4938,7 +4938,7 @@
       "failed": "Couldn't search your chats.",
       "pages": {
         "allChats": "All chats",
-        "agents": "Agent Center",
+        "agents": "Agent Studio",
         "files": "Files",
         "settings": "Settings",
         "connections": "Connections"
@@ -5156,7 +5156,7 @@
             "scope": "Chat · only you"
           },
           "dailyWork": {
-            "name": "Action Center work, writing in the Content Editor, running a Site Audit",
+            "name": "Growth Tasks work, writing in the Content Editor, running a Website Health",
             "scope": "App"
           },
           "actions": {
@@ -5547,9 +5547,9 @@
         "citations": "Citations",
         "competitors": "Competitors",
         "product_visibility": "Product Visibility",
-        "ai_traffic": "AI Referral Traffic",
-        "site_audit": "Site Audit",
-        "action_center": "Action Center",
+        "ai_traffic": "AI Traffic",
+        "site_audit": "Website Health",
+        "action_center": "Growth Tasks",
         "content": "Content",
         "reports": "Reports",
         "navigation": "Navigation",
@@ -5582,7 +5582,7 @@
       "trackCompetitorsUndo": "Removed the competitors added: {competitors}",
       "dropCompetitor": "Removed the competitor {competitor}",
       "dropCompetitorUndo": "Brought back the competitor {competitor}, without its timeline events from before",
-      "sendToActions": "Sent “{title}” to Action Center as {no}",
+      "sendToActions": "Sent “{title}” to Growth Tasks as {no}",
       "sendToActionsUndo": "Cancelled {no} “{title}”, sent from Chat",
       "addToAction": "Added a finding to {no}: {finding}",
       "addToActionUndo": "Withdrew the finding added to {no}",
@@ -5597,7 +5597,7 @@
       "takeDownFromCms": "Took the page “{title}” down from {cms}",
       "makeReport": "Made the report “{title}”",
       "makeReportUndo": "Removed the report “{title}” from Reports",
-      "startAudit": "Started Site Audit on {pages}",
+      "startAudit": "Started Website Health on {pages}",
       "scheduleJob": "Scheduled “{title}” · {when}",
       "scheduleJobUndo": "Deleted the schedule “{title}” (its past results stay)",
       "accessDenied": "Not allowed: {tool}",
@@ -5651,7 +5651,7 @@
       "monthCap": "Set an agent's monthly AI cap",
       "fullAuto": "Run an agent in Full auto",
       "engines": "Use these engines in an agent",
-      "runWithChat": "Run Chat on an Action Center action",
+      "runWithChat": "Run Chat on an Growth Tasks action",
       "goLive": "Let an agent publish and send on its own"
     },
     "refusal": {
@@ -5673,7 +5673,7 @@
       "own_key_cap": "Agents have used this month's limit on your own AI key. An Admin can raise it in Settings › AI Providers, or it renews on {date}.",
       "owner_role": "This agent's owner can't run agents any more. An Admin can take it over.",
       "action_not_found": "This action isn't available.",
-      "action_closed": "This action is closed. Reopen it in Action Center to run an agent on it.",
+      "action_closed": "This action is closed. Reopen it in Growth Tasks to run an agent on it.",
       "queue_full": "{count, plural, one {# run already waits} other {# runs already wait}} for this agent on this brand. Try again once one has started.",
       "connection_missing": "This agent needs {name}, and {brand} doesn’t have it connected. Connect it for that brand, then run the agent again.",
       "own_key_failed": "{why} An Admin can fix it in Settings › AI Providers, then run the agent again.",
@@ -5760,7 +5760,7 @@
       "manualOnly": "Manual only",
       "more": "+{count}",
       "firesWhen": {
-        "signal": "Fires when Action Center finds a matching signal",
+        "signal": "Fires when Growth Tasks finds a matching signal",
         "kpi": "Fires when the KPI crosses the threshold",
         "watch_rule": "Fires when its watch rule fires"
       },
@@ -5836,10 +5836,10 @@
       "skill": "/{skill}",
       "then": ", then ",
       "instructions": "Its instructions: {text}",
-      "started": "{trigger, select, schedule {It started on its schedule.} signal {It started because Action Center found {count, plural, one {a new signal} other {# new signals}}.} kpi {It started because a KPI changed.} watch_rule {It started because a watch rule fired.} action {It started from an Action Center action.} other {It started with Run now.}}",
+      "started": "{trigger, select, schedule {It started on its schedule.} signal {It started because Growth Tasks found {count, plural, one {a new signal} other {# new signals}}.} kpi {It started because a KPI changed.} watch_rule {It started because a watch rule fired.} action {It started from an Growth Tasks action.} other {It started with Run now.}}",
       "earlier": "{count, plural, one {One more fire came while it waited (cooldown or daily limit): it's in the scope too.} other {# more fires came while it waited (cooldown or daily limit): they're in the scope too.}}",
-      "action": "It works on one Action Center action, AC-{no} ({category}); its title and open tasks when the run was asked for are in the scope. Read it with its tasks first and keep to its targets: never add new ones. Closing tasks stays the person’s click.",
-      "background": "This run works in the background. When a question comes up, take the recommended option and list your assumptions at the top of the answer. Make the changes your task asks for by calling their tools: save drafts, send findings to Action Center, set tasks Ready for review. The app holds each change for approval where the agent's mode needs it, so never leave one out because it needs approval.",
+      "action": "It works on one Growth Tasks action, AC-{no} ({category}); its title and open tasks when the run was asked for are in the scope. Read it with its tasks first and keep to its targets: never add new ones. Closing tasks stays the person’s click.",
+      "background": "This run works in the background. When a question comes up, take the recommended option and list your assumptions at the top of the answer. Make the changes your task asks for by calling their tools: save drafts, send findings to Growth Tasks, set tasks Ready for review. The app holds each change for approval where the agent's mode needs it, so never leave one out because it needs approval.",
       "notConnected": "{name} isn’t connected for this brand. Do everything else without it, and say so in one line: “{name} isn’t connected. I can do everything else without it.”",
       "chip": {
         "agent": "Agent",
@@ -5852,7 +5852,7 @@
       }
     },
     "runWithChat": {
-      "message": "Work on the Action Center action AC-{no} ({category}): read it and its open tasks, then draft what each task needs. Keep to its targets. I close tasks myself.",
+      "message": "Work on the Growth Tasks action AC-{no} ({category}): read it and its open tasks, then draft what each task needs. Keep to its targets. I close tasks myself.",
       "chip": "Action · {title}"
     },
     "runStatus": {
@@ -5981,7 +5981,7 @@
         "archivedDetail": "Restore it on its page to change it",
         "askedCreate": "Create an agent",
         "askedEdit": "Change an agent",
-        "back": "Back to Agent Center",
+        "back": "Back to Agent Studio",
         "backToAgent": "Back to the agent"
       },
       "skill": {
@@ -6017,7 +6017,7 @@
         "notes": {
           "manual": "Run from Chat or an action",
           "schedule": "Daily, weekly, monthly",
-          "signal": "A new Action Center signal",
+          "signal": "A new Growth Tasks signal",
           "kpi": "A KPI moves past a threshold",
           "watch_rule": "WHEN · FOR · THEN"
         },
@@ -6060,7 +6060,7 @@
         "timeLabel": "Time",
         "dateLabel": "Date",
         "categoryLabel": "Signal category",
-        "signalWhen": "signal is created in Action Center",
+        "signalWhen": "signal is created in Growth Tasks",
         "kpiLabel": "KPI",
         "directionLabel": "Which way",
         "direction": {
@@ -6252,7 +6252,7 @@
     "deniedTitle": "I can't do this for you",
     "closeDenial": "Close",
     "list": {
-      "title": "Agent Center",
+      "title": "Agent Studio",
       "formula": {
         "skill": "skill",
         "mode": "mode",
@@ -6413,7 +6413,7 @@
       },
       "task-finisher": {
         "name": "Task Finisher",
-        "description": "Works through this week’s Action Center tasks by priority and prepares each one. You close the tasks."
+        "description": "Works through this week’s Growth Tasks tasks by priority and prepares each one. You close the tasks."
       },
       "weekly-report": {
         "name": "Weekly Report",
@@ -6461,7 +6461,7 @@
       },
       "ticket-loop": {
         "name": "Ticket Loop",
-        "description": "Sends Action Center tasks to Jira or Linear, follows them and adds the measured result."
+        "description": "Sends Growth Tasks tasks to Jira or Linear, follows them and adds the measured result."
       },
       "agency-reporter": {
         "name": "Agency Client Reporter",
@@ -6621,7 +6621,7 @@
         "notMetered": "—"
       },
       "notFound": "This agent isn't available. It may have been deleted, or it isn't shared with you.",
-      "backToAgents": "Back to Agent Center",
+      "backToAgents": "Back to Agent Studio",
       "loadFailed": "Couldn't load this agent.",
       "retry": "Retry",
       "goLive": {
@@ -6697,7 +6697,7 @@
       "filters": {
         "all": "All",
         "content": "Content",
-        "visibility": "Brand Visibility",
+        "visibility": "AI Visibility",
         "product": "Product Visibility",
         "technical": "Technical",
         "reports": "Reports"
@@ -6980,7 +6980,7 @@
     }
   },
   "audit": {
-    "title": "Site Audit",
+    "title": "Website Health",
     "description": "Score any page against the 48-signal AEO/GEO",
     "runAudit": "Run Audit",
     "running": "Auditing…",
@@ -7018,7 +7018,7 @@
       "otherPages": "Other pages"
     },
     "lists": {
-      "label": "Site Audit lists",
+      "label": "Website Health lists",
       "opportunities": "Opportunities",
       "pages": "Pages",
       "noPages": "No pages audited yet. Audit an opportunity or enter a URL above.",
@@ -7095,7 +7095,7 @@
       "pagesSubOther": "+ {count} on other sites",
       "coverageOf": "of {count, plural, one {# site page} other {# site pages}}",
       "coverageSub": "{never} never audited · {stale} not in {days} days",
-      "coverageTip": "Pages of your site with an audit in the last {days} days, of those GetCito keeps from your sitemap, Google Analytics and the pages AI cites (up to 500). Pages you exclude in Site Audit settings, and checkout, login and legal pages, aren't counted.",
+      "coverageTip": "Pages of your site with an audit in the last {days} days, of those GetCito keeps from your sitemap, Google Analytics and the pages AI cites (up to 500). Pages you exclude in Website Health settings, and checkout, login and legal pages, aren't counted.",
       "seeNotAudited": "See the {count} not audited →",
       "authority": "Authority · E-E-A-T",
       "authorityTip": "The Authority and E-E-A-T scores, averaged over each page's latest audit, and the signals that fail or warn on the most pages.",
@@ -7144,7 +7144,7 @@
     },
     "settings": {
       "button": "Settings",
-      "title": "Site Audit settings",
+      "title": "Website Health settings",
       "autoAudit": "Auto-audit",
       "autoAuditLabel": "Audit top-priority pages automatically",
       "autoAuditOn": "{perRun} pages on days 1, 7, 14, 21 and 28 of your billing month: {total} of your {limit} audits.",
@@ -7167,7 +7167,7 @@
       "readOnly": "Only admins and managers can change these settings.",
       "cancel": "Cancel",
       "save": "Save",
-      "saved": "Site Audit settings saved",
+      "saved": "Website Health settings saved",
       "saveFailed": "Couldn't save the settings",
       "loadFailed": "Couldn't load the settings"
     },
@@ -7231,13 +7231,13 @@
     "loadFailed": "Couldn't load this audit",
     "reaudit": "Re-run audit",
     "sendToAction": {
-      "button": "Send to Action Center",
-      "sending": "Sending to the Action Center…",
-      "sent": "Sent to the Action Center",
+      "button": "Send to Growth Tasks",
+      "sending": "Sending to the Growth Tasks…",
+      "sent": "Sent to the Growth Tasks",
       "sentDescription": "AC-{number}: fix the {count, plural, one {# check} other {# checks}} this page fails.",
-      "alreadySent": "Already in the Action Center",
+      "alreadySent": "Already in the Growth Tasks",
       "alreadySentDescription": "AC-{number} is open for this page.",
-      "failed": "Couldn't send to the Action Center",
+      "failed": "Couldn't send to the Growth Tasks",
       "nothingToFix": "This page passes its checks: nothing to send.",
       "newerAudit": "This page has a newer audit",
       "newerAuditDescription": "Send it from its latest report, so the action names the checks it fails now.",
@@ -7494,7 +7494,7 @@
       "failed": "Job failed: {reason}",
       "unknownError": "Unknown error"
     },
-    "title": "Answer Engine Insights",
+    "title": "AI Visibility",
     "description": "Monitor how your brand is represented in AI-generated answers.",
     "runPrompts": "Run Prompts",
     "runPromptsNow": "Run Prompts Now",
@@ -7655,7 +7655,7 @@
       "pinFailed": "Couldn't save the pinned competitors.",
       "promptsAdded": "{count, plural, one {# prompt} other {# prompts}} added · {date}",
       "goal": "Goal {value}",
-      "goalLegend": "Action Center goal"
+      "goalLegend": "Growth Tasks goal"
     },
     "topicMap": {
       "title": "Topics vs competitors",
@@ -7701,7 +7701,7 @@
       "trackedPartly": "Tracked {tracked} of {total}: your plan's prompt locations are full.",
       "trackFailed": "Couldn't track the suggestions.",
       "openPrompts": "Open",
-      "addingPrompts": "Adding prompts to Tracked Prompts…",
+      "addingPrompts": "Adding prompts to Monitored Prompts…",
       "empty": "No prompt suggestions yet. Generate ideas to see what to track next.",
       "unrated": "These suggestions aren't rated for fit yet. New suggestions are rated when they refresh, within a monthly allowance on your plan.",
       "noneRelevant": "No suggestion fits your brand closely enough right now. Refresh for new ideas.",
@@ -7709,12 +7709,12 @@
       "alreadyHandled": "These suggestions were already accepted or dismissed.",
       "openSuggestions": "Open suggestions",
       "sendAction": "Send action",
-      "sendActionHint": "Open a Growth action for {topic} in the Action Center",
+      "sendActionHint": "Open a Growth action for {topic} in the Growth Tasks",
       "sendNeedsTopic": "This topic isn't saved yet. Refresh suggestions to send it.",
-      "sent": "AC-{no} sent to the Action Center",
-      "alreadySent": "Already in the Action Center as AC-{no}",
+      "sent": "AC-{no} sent to the Growth Tasks",
+      "alreadySent": "Already in the Growth Tasks as AC-{no}",
       "sendStale": "These suggestions changed since the page loaded. Refresh to see the latest.",
-      "sendFailed": "Couldn't send to the Action Center.",
+      "sendFailed": "Couldn't send to the Growth Tasks.",
       "openAction": "Open",
       "suggestContent": "Suggest content",
       "suggestHint": "Write a content suggestion for this topic, steered by this prompt.",
@@ -7932,7 +7932,7 @@
         "points": "{text}: {points} of {max}",
         "total": "Together: {score} of 100",
         "marked": "Marked as a priority, so it's listed first.",
-        "planOnly": "This score ranks the Plan. The Action Center scores its tasks on its own."
+        "planOnly": "This score ranks the Plan. The Growth Tasks scores its tasks on its own."
       },
       "rowMenu": {
         "label": "Actions for {title}",
@@ -7990,7 +7990,7 @@
       },
       "assign": {
         "title": "Assign “{title}”",
-        "description": "It goes to the Action Center as a task for this teammate.",
+        "description": "It goes to the Growth Tasks as a task for this teammate.",
         "member": "Teammate",
         "pick": "Pick a teammate",
         "submit": "Assign",
@@ -8083,7 +8083,7 @@
         "all": "All",
         "editor": "Content Editor",
         "chat": "Chat",
-        "action_center": "Action Center",
+        "action_center": "Growth Tasks",
         "agent": "Agent",
         "mcp": "MCP",
         "openChat": "Open chat",
@@ -8197,7 +8197,7 @@
       },
       "deleteDialog": {
         "title": "Delete “{title}”?",
-        "description": "It leaves the Library for good, with its versions and suggestions. An Action Center task it was sent as stays. This can't be undone.",
+        "description": "It leaves the Library for good, with its versions and suggestions. An Growth Tasks task it was sent as stays. This can't be undone.",
         "cancel": "Cancel",
         "confirm": "Delete"
       },
@@ -8312,11 +8312,11 @@
         "openEditor": "Open editor",
         "pageUnread": "Couldn't read {page}: the draft starts with its title.",
         "failed": "Couldn't start the draft. Try again.",
-        "sendToTeam": "Send to Action Center",
-        "sent": "Sent to the Action Center",
+        "sendToTeam": "Send to Growth Tasks",
+        "sent": "Sent to the Growth Tasks",
         "sentDescription": "Action #{number}: the draft waits in the Library for whoever writes it.",
         "openAction": "Open",
-        "sendFailed": "The draft is in the Library, but it couldn't be sent to the Action Center.",
+        "sendFailed": "The draft is in the Library, but it couldn't be sent to the Growth Tasks.",
         "openDraft": "Open draft",
         "startAgent": "Start the agent",
         "agentErrors": {
@@ -8342,11 +8342,11 @@
         },
         "team": {
           "title": "Team",
-          "hint": "Send to Action Center"
+          "hint": "Send to Growth Tasks"
         },
         "assignTo": "Assign to",
         "assignNone": "No one yet",
-        "assignFailed": "Sent, but couldn't assign it. Assign it in the Action Center."
+        "assignFailed": "Sent, but couldn't assign it. Assign it in the Growth Tasks."
       },
       "overlap": {
         "label": "Overview",
@@ -8479,13 +8479,13 @@
       "markedReady": "Marked ready. Publish it on your site when you're ready.",
       "markedReadyAction": "Marked ready, and {count, plural, one {its task} other {its # tasks}} in Action AC-{no} {count, plural, one {is} other {are}} done. Publish it on your site when you're ready.",
       "auditEstimate": {
-        "title": "Site Audit estimate",
+        "title": "Website Health estimate",
         "free": "free",
         "score": "≈{score}",
         "outOf": "{score}/100",
         "na": "n/a",
-        "note": "From the {count, plural, one {# check} other {# checks}} Site Audit runs on the page and your site, read again as you write.",
-        "noteNoSite": "From the {count, plural, one {# check} other {# checks}} Site Audit runs on the page itself, read again as you write. Site-wide checks join once your site has a Site Audit.",
+        "note": "From the {count, plural, one {# check} other {# checks}} Website Health runs on the page and your site, read again as you write.",
+        "noteNoSite": "From the {count, plural, one {# check} other {# checks}} Website Health runs on the page itself, read again as you write. Site-wide checks join once your site has a Website Health.",
         "noteAiMissing": "The {count} checks AI reads aren't in it yet: estimates like this run about 6 points under the full audit.",
         "noteAi": "With the checks AI read at {time}.",
         "failed": "Couldn't read the estimate. It's read again as you write.",
@@ -9165,7 +9165,7 @@
         "lengthFromCited": "From the rules · a typical cited page has {count} characters (median of {pages})",
         "citedHave": "Cited pages have",
         "citedHaveCheck": "{check} ({count} of {of})",
-        "citedHaveFrom": "Site Audit's checks on the same cited pages",
+        "citedHaveFrom": "Website Health's checks on the same cited pages",
         "outline": "Outline",
         "answers": "Answers “{fanout}”",
         "keywords": "Keywords",
@@ -9408,8 +9408,8 @@
           "published": "Published {when}."
         },
         "errors": {
-          "no_webhook": "This brand has no webhook yet. Set one up in Webhook Settings on Content Opportunities.",
-          "webhook_not_subscribed": "The brand's webhook doesn't receive \"Content page sent\". Turn it on in Webhook Settings on Content Opportunities.",
+          "no_webhook": "This brand has no webhook yet. Set one up in Webhook Settings on Content Ideas.",
+          "webhook_not_subscribed": "The brand's webhook doesn't receive \"Content page sent\". Turn it on in Webhook Settings on Content Ideas.",
           "daily_limit": "This workspace has sent 200 pages in the last 24 hours. Try again later.",
           "forbidden": "Only admins and managers can send pages to the CMS.",
           "not_found": "This page isn't in the brand anymore.",
@@ -9958,7 +9958,7 @@
           "label": "Site trust",
           "score": "Site trust {score}/5",
           "missing": "Missing: {checks}",
-          "fix": "Fix in Site Audit"
+          "fix": "Fix in Website Health"
         },
         "pickAuthor": "Pick author",
         "addAuthor": "Add author",
@@ -10518,7 +10518,7 @@
         "failed": "Couldn't upload the image. Try again."
       }
     },
-    "title": "Content Opportunities",
+    "title": "Content Ideas",
     "description": "AI-powered content recommendations to improve your visibility in AI-generated answers.",
     "opportunities": "Opportunities",
     "autoGeneratedHint": "Opportunities are generated automatically as your tracking data comes in.",
@@ -10543,7 +10543,7 @@
         "draftDetail": "The Content Agent writes the page from the brief, by your rules and the page type's.",
         "draftDetailPage": "The Content Agent suggests changes to {page} from the brief, by your rules and the page type's.",
         "review": "You review it",
-        "reviewDetail": "The editor opens as it writes, with a free estimate of its Site Audit score. Nothing is published."
+        "reviewDetail": "The editor opens as it writes, with a free estimate of its Website Health score. Nothing is published."
       },
       "usage": "Uses about <b>{estimate}</b> of your {trial, select, yes {trial AI credit} other {monthly AI usage}} · {used} used so far",
       "usageSmall": "Uses under <b>1%</b> of your {trial, select, yes {trial AI credit} other {monthly AI usage}} · {used} used so far",
@@ -10656,7 +10656,7 @@
       "singleHint": "Built for one prompt",
       "action": "From {ref}",
       "actionNoRef": "From an action",
-      "actionHint": "Sent from an Action Center task"
+      "actionHint": "Sent from an Growth Tasks task"
     },
     "source": {
       "label": "Source",
@@ -10669,7 +10669,7 @@
       "system": "Suggested automatically as tracking data comes in",
       "manual": "Created with + New",
       "prompt": "Suggested from a prompt in the prompts table",
-      "action": "Sent from a task in the Action Center"
+      "action": "Sent from a task in the Growth Tasks"
     },
     "new": "New",
     "newDone": "{generated, plural, =0 {No new opportunities} one {1 opportunity created} other {# opportunities created}}{duplicates, plural, =0 {} one { · 1 duplicate skipped (not counted)} other { · # duplicates skipped (not counted)}}",
@@ -10774,7 +10774,7 @@
       "backToList": "Back to Opportunities",
       "fromTask": {
         "title": "From a task in {ref}",
-        "titleNoRef": "From an Action Center task",
+        "titleNoRef": "From an Growth Tasks task",
         "url": "URL",
         "where": "Where",
         "why": "Why",
@@ -10834,7 +10834,7 @@
       "eventRequired": "Select at least one event for this webhook.",
       "eventOpportunitySent": "Opportunity sent",
       "eventDailyPulseCreated": "Daily Pulse created",
-      "eventActionTaskSent": "Action Center task sent",
+      "eventActionTaskSent": "Growth Tasks task sent",
       "eventContentDraftSent": "Content page sent",
       "url": "Webhook URL",
       "urlPlaceholder": "https://your-n8n-instance.com/webhook/...",
@@ -10903,12 +10903,12 @@
       "third_party_article": "Third-party article",
       "backlink": "Backlink"
     },
-    "sendToActionCenter": "Send to Action Center",
+    "sendToActionCenter": "Send to Growth Tasks",
     "sendAsset": "Send",
-    "openInActionCenter": "Open in Action Center",
-    "sentToActionCenter": "Sent to the Action Center",
-    "alreadyInActionCenter": "Already in the Action Center",
-    "sendToActionCenterError": "Failed to send to the Action Center",
+    "openInActionCenter": "Open in Growth Tasks",
+    "sentToActionCenter": "Sent to the Growth Tasks",
+    "alreadyInActionCenter": "Already in the Growth Tasks",
+    "sendToActionCenterError": "Failed to send to the Growth Tasks",
     "markReviewed": "Mark as reviewed",
     "reviewedError": "Failed to mark as reviewed",
     "duplicatesMerged": "{count, plural, one {1 similar suggestion was merged into this one.} other {# similar suggestions were merged into this one.}}",
@@ -10931,7 +10931,7 @@
     "description": "Track which AI bots are crawling your website.",
     "totalCrawls": "Total Crawls",
     "uniqueBots": "Unique Bots",
-    "referralTraffic": "AI Referral Traffic",
+    "referralTraffic": "AI Traffic",
     "topPages": "Top Crawled Pages",
     "searchPlaceholder": "Search by URL or path...",
     "allPlatforms": "All platforms",
@@ -11170,7 +11170,7 @@
         "withIndex": "{count} · index {index}",
         "notReported": "not reported yet",
         "noData": "no data",
-        "actions": "{count, plural, one {# action} other {# actions}} entered the Action Center",
+        "actions": "{count, plural, one {# action} other {# actions}} entered the Growth Tasks",
         "prompts": "{count, plural, one {# prompt} other {# prompts}} added",
         "daily": "Google reports clicks by day. Pick 7 days or longer to compare them with AI visits.",
         "showWeek": "Show last 7 days",
@@ -11179,7 +11179,7 @@
         "noClicks": "No Google clicks for this range in Google Search Console.",
         "until": "Google clicks until {day}: Google reports about two days late.",
         "legend": "Each line starts at 100 on its first day with data. AI Overviews and AI Mode clicks are part of Google organic clicks and can't be separated.",
-        "markers": "Dashed amber lines mark the days actions entered the Action Center or prompts were added."
+        "markers": "Dashed amber lines mark the days actions entered the Growth Tasks or prompts were added."
       }
     },
     "platforms": {
@@ -11589,20 +11589,20 @@
       "showMore": "Show more",
       "actions": {
         "menu": "More actions for {page}",
-        "sendToActionCenter": "Send to Action Center",
-        "sending": "Sending to the Action Center…",
-        "sent": "Sent to the Action Center",
+        "sendToActionCenter": "Send to Growth Tasks",
+        "sending": "Sending to the Growth Tasks…",
+        "sent": "Sent to the Growth Tasks",
         "sentDescription": "AC-{number} · {count, plural, one {# page} other {# pages}}",
-        "alreadySent": "Already in the Action Center",
+        "alreadySent": "Already in the Growth Tasks",
         "alreadySentDescription": "AC-{number} is open with these pages.",
         "open": "Open",
-        "sendFailed": "Couldn't send to the Action Center",
+        "sendFailed": "Couldn't send to the Growth Tasks",
         "auditCited": "Audit {count, plural, one {# cited page} other {# cited pages}}",
         "auditPages": "Audit {count, plural, one {# page} other {# pages}}",
         "auditing": "Starting the audits…",
         "auditsStarted": "{count, plural, one {# audit started} other {# audits started}}",
-        "auditsStartedDescription": "They run a few at a time; results appear in Site Audit.",
-        "openAudit": "Open Site Audit",
+        "auditsStartedDescription": "They run a few at a time; results appear in Website Health.",
+        "openAudit": "Open Website Health",
         "auditsFailed": "Couldn't start the audits",
         "noneLeft": "No audits left this month",
         "overQuota": "{count, plural, one {# audit} other {# audits}}, {remaining} left this month",
@@ -11725,8 +11725,8 @@
       "addAllHandled": "These suggestions were already added or dismissed",
       "addAllFailed": "Couldn't add the suggestions",
       "limitTitle": "{count, plural, one {# suggestion couldn't be added} other {# suggestions couldn't be added}}",
-      "limitBody": "{added, plural, =0 {Your plan's prompt limit is reached.} one {# was added before your plan's prompt limit was reached.} other {# were added before your plan's prompt limit was reached.}} {plan, select, growth {Contact us to raise your limit} enterprise {Contact us to raise your limit} other {Upgrade your plan}}, or pause {count, plural, one {# prompt} other {# prompts}} in Tracked Prompts first and try again.",
-      "openTracked": "Go to Tracked Prompts",
+      "limitBody": "{added, plural, =0 {Your plan's prompt limit is reached.} one {# was added before your plan's prompt limit was reached.} other {# were added before your plan's prompt limit was reached.}} {plan, select, growth {Contact us to raise your limit} enterprise {Contact us to raise your limit} other {Upgrade your plan}}, or pause {count, plural, one {# prompt} other {# prompts}} in Monitored Prompts first and try again.",
+      "openTracked": "Go to Monitored Prompts",
       "closeLimitNote": "Close",
       "include": "Include this prompt",
       "topic": "Topic",
@@ -11736,7 +11736,7 @@
       "selectedCount": "{count} selected"
     },
     "usage": {
-      "title": "Tracked Prompts",
+      "title": "Monitored Prompts",
       "subtitle": "Every tracked prompt for this brand · edit or pause any row in place",
       "subtitleReadOnly": "Read-only overview of every tracked prompt for this brand",
       "planAndUsage": "Plan & usage",
@@ -12073,10 +12073,10 @@
       "low": "Low"
     },
     "note": {
-      "high": "Demand level <b>High</b> raises the Priority Score of Action Center actions about this prompt.",
-      "medium": "Demand level <b>Medium</b> raises the Priority Score of Action Center actions about this prompt a little.",
-      "low": "Demand level <b>Low</b> leaves the Priority Score of Action Center actions about this prompt as it is.",
-      "none": "Once a signal is read, the demand level feeds the Priority Score of Action Center actions about this prompt."
+      "high": "Demand level <b>High</b> raises the Priority Score of Growth Tasks actions about this prompt.",
+      "medium": "Demand level <b>Medium</b> raises the Priority Score of Growth Tasks actions about this prompt a little.",
+      "low": "Demand level <b>Low</b> leaves the Priority Score of Growth Tasks actions about this prompt as it is.",
+      "none": "Once a signal is read, the demand level feeds the Priority Score of Growth Tasks actions about this prompt."
     },
     "readOn": "{source} · read {date}",
     "gsc": {
@@ -12329,14 +12329,14 @@
       }
     },
     "actions": {
-      "sendToActionCenter": "Send to Action Center",
-      "sending": "Sending to the Action Center…",
-      "sent": "Sent to the Action Center",
+      "sendToActionCenter": "Send to Growth Tasks",
+      "sending": "Sending to the Growth Tasks…",
+      "sent": "Sent to the Growth Tasks",
       "sentDescription": "AC-{number} · {count, plural, one {# answer} other {# answers}}",
-      "alreadySent": "Already in the Action Center",
+      "alreadySent": "Already in the Growth Tasks",
       "alreadySentDescription": "AC-{number} is open with these answers.",
       "open": "Open",
-      "sendFailed": "Couldn't send to the Action Center",
+      "sendFailed": "Couldn't send to the Growth Tasks",
       "suggestContent": "Suggest content",
       "suggesting": "Writing a content suggestion…",
       "suggested": "Content suggestion created",
@@ -12430,7 +12430,7 @@
     }
   },
   "competitors": {
-    "title": "Competitors",
+    "title": "Competitor Insights",
     "description": "Manage competitors and compare AI visibility head-to-head.",
     "addCompetitor": "Add Competitor",
     "name": "Name",
@@ -12504,7 +12504,7 @@
       "lost": "no longer has {checks}",
       "changedWords": "its words changed",
       "noEvents": "Nothing yet: GetCito reads {competitor}'s pages cited in your answers each night, and the ones cited most again each week. Their first citations and changes show here.",
-      "note": "Pages are read for free from their public address, within a few reads a day, never from a site whose robots.txt keeps crawlers out; only what Site Audit's checks found and a summary of the words are kept, never the text.",
+      "note": "Pages are read for free from their public address, within a few reads a day, never from a site whose robots.txt keeps crawlers out; only what Website Health's checks found and a summary of the words are kept, never the text.",
       "showAll": "Show all {count}",
       "loadError": "Couldn't load the timeline. Try again in a moment."
     },
@@ -12524,7 +12524,7 @@
     "missingCompetitorWebsite": "Add a website to this brand before asking AI to suggest competitors."
   },
   "citations": {
-    "title": "Citations",
+    "title": "Citation Sources",
     "description": "Domains and URLs that AI platforms cite when mentioning you — and your competitors.",
     "kpiTotalCitations": "Total Citations",
     "kpiTotalCitationsSub": "Across {results} tracked results",
@@ -12542,7 +12542,7 @@
     "noBrandDescription": "Select or create a brand to see the citations AI platforms use when answering about it."
   },
   "shopping": {
-    "title": "Product Visibility",
+    "title": "Shopping Visibility",
     "description": "Which of your products AI recommends, why, and what it sells.",
     "why": {
       "button": "Why GetCito Product Visibility?",
@@ -12560,7 +12560,7 @@
         },
         "fix": {
           "title": "Fix it, then push",
-          "body": "Each fix goes to the Action Center. The agent rewrites the page and its schema; you approve it and send it to your CMS. Feed fields change in your feed."
+          "body": "Each fix goes to the Growth Tasks. The agent rewrites the page and its schema; you approve it and send it to your CMS. Feed fields change in your feed."
         },
         "sell": {
           "title": "See what it sells",
@@ -12743,12 +12743,12 @@
       },
       "personOnly": "A person does this one.",
       "pick": "Send {type}",
-      "send": "Send {count, plural, one {# action} other {# actions}} to Action Center",
-      "sending": "Sending to Action Center…",
-      "sent": "Sent to Action Center as #{number}",
-      "alreadySent": "Already in Action Center as #{number}",
+      "send": "Send {count, plural, one {# action} other {# actions}} to Growth Tasks",
+      "sending": "Sending to Growth Tasks…",
+      "sent": "Sent to Growth Tasks as #{number}",
+      "alreadySent": "Already in Growth Tasks as #{number}",
       "open": "Open",
-      "failed": "Couldn't send to Action Center. Try again."
+      "failed": "Couldn't send to Growth Tasks. Try again."
     },
     "recheck": {
       "title": "After action #{number}",
@@ -12824,7 +12824,7 @@
       },
       "actions": {
         "title": "Actions to get on the shelf",
-        "lead": "Grouped by type. Choose who does each one, then send them to Action Center."
+        "lead": "Grouped by type. Choose who does each one, then send them to Growth Tasks."
       },
       "shelves": {
         "title": "Where it shows",
@@ -13099,7 +13099,7 @@
       },
       "source": {
         "chat": "Chat",
-        "action_center": "Action Center",
+        "action_center": "Growth Tasks",
         "content_editor": "Content Editor"
       },
       "kind": {
@@ -13297,7 +13297,7 @@
     "aiTrafficLowSample": "Low sample",
     "aiTrafficLowSampleHint": "Fewer than 30 visits in this period or the one before, so a % change would mislead.",
     "shoppingVisibility": "Product Visibility",
-    "auditScore": "Site Audit Score",
+    "auditScore": "Website Health Score",
     "auditedOn": "Audited on",
     "shopping": {
       "sov": "Product SoV",
@@ -13412,7 +13412,7 @@
       "title": "Menu access",
       "new": "New",
       "notAllowed": "Only admins, and managers an admin lets, choose what each role sees on the menu.",
-      "note": "Hiding a section only takes it off the menu. Its pages still open from a link, and what each role can do there doesn't change. Nobody can take a section off an admin's menu (only their own work areas narrow it), and Action Center is on everyone's menu.",
+      "note": "Hiding a section only takes it off the menu. Its pages still open from a link, and what each role can do there doesn't change. Nobody can take a section off an admin's menu (only their own work areas narrow it), and Growth Tasks is on everyone's menu.",
       "rolesTitle": "Sections each role sees",
       "rolesDescription": "Pick what's on the left menu for everyone with a role. Start from a ready-made set, then adjust.",
       "section": "Section",
@@ -13509,7 +13509,7 @@
       "saveFailed": "Couldn't save that. Try again.",
       "trusted": {
         "title": "Trusted sources",
-        "description": "Sites your brand trusts, such as your industry's associations or the docs you cite. Links to them count as authority links in Site Audit and as primary sources in the Content Editor's Trust.",
+        "description": "Sites your brand trusts, such as your industry's associations or the docs you cite. Links to them count as authority links in Website Health and as primary sources in the Content Editor's Trust.",
         "count": "{count, plural, =0 {None yet} one {# site} other {# sites}}",
         "edit": "Edit",
         "label": "{brand}'s trusted sources",
@@ -13525,7 +13525,7 @@
       },
       "rules": {
         "title": "Brand rules",
-        "description": "Rules in your own words, such as topics to stay away from. Site Audit's recommendations, new opportunities and the Content Agent follow them. Scores don't change.",
+        "description": "Rules in your own words, such as topics to stay away from. Website Health's recommendations, new opportunities and the Content Agent follow them. Scores don't change.",
         "count": "{count, plural, =0 {None yet} one {# rule} other {# rules}}",
         "edit": "Edit",
         "label": "{brand}'s rules",
@@ -13621,8 +13621,8 @@
     "renewsOn": "Renews on {date}",
     "aiUsageMeter": {
       "title": "This period's AI usage",
-      "description": "Improve suggestions, the Content Editor's AI and the Action Center's task writing share your plan's monthly AI allowance.",
-      "descriptionChat": "Chat, Improve suggestions, the Content Editor's AI and the Action Center's task writing share your plan's monthly AI allowance.",
+      "description": "Improve suggestions, the Content Editor's AI and the Growth Tasks's task writing share your plan's monthly AI allowance.",
+      "descriptionChat": "Chat, Improve suggestions, the Content Editor's AI and the Growth Tasks's task writing share your plan's monthly AI allowance.",
       "used": "{percent} used",
       "resets": "Resets on {date}",
       "exhausted": "This period's AI usage is used up. AI features resume on {date}.",
@@ -13640,7 +13640,7 @@
       "features": {
         "improve": "Improve suggestions",
         "content": "Content Editor (briefs, Content Agent, quality checks)",
-        "action_center": "Action Center task writing",
+        "action_center": "Growth Tasks task writing",
         "chat": "Chat",
         "agent": "Agents",
         "schedule": "Scheduled runs",
@@ -13808,7 +13808,7 @@
       "Your own AI keys: OpenAI, Anthropic, Google, Azure or OpenRouter"
     ],
     "customPlanPointsChat": [
-      "Chat and Agent Center",
+      "Chat and Agent Studio",
       "Full auto, with agents that publish on their own"
     ],
     "planCards": {
@@ -13816,13 +13816,13 @@
         "tagline": "For small teams getting started with AI visibility monitoring and optimization.",
         "engines": "ChatGPT & Microsoft Copilot tracking",
         "extras": ["MCP & API access"],
-        "extrasChat": ["Chat and Agent Center"]
+        "extrasChat": ["Chat and Agent Studio"]
       },
       "growth": {
         "tagline": "For growing teams that want to monitor AI visibility and optimize content for AI search.",
         "engines": "ChatGPT, Perplexity, Gemini, Microsoft Copilot, Google AI Mode and Google AI Overviews tracking",
         "extras": ["Multi-region tracking", "White-label reports & exports", "Looker Studio"],
-        "extrasChat": ["Chat and Agent Center", "Full auto, with agents that publish on their own"]
+        "extrasChat": ["Chat and Agent Studio", "Full auto, with agents that publish on their own"]
       },
       "brands": "{count, plural, one {# brand} other {# brands}}",
       "unlimitedBrands": "Unlimited brands",
@@ -13833,10 +13833,10 @@
       "audits": "{count, number} site audits a month",
       "aiUsage": "{count}x AI usage",
       "aiUsageCustom": "Custom AI usage, from {count}x",
-      "aiUsageHint": "A monthly allowance for GetCito's AI features: Improve suggestions, the Content Editor's AI and the Action Center's task writing. Agent Chat runs on your own AI key. The free trial comes with a smaller allowance.",
-      "aiUsageCustomHint": "A monthly allowance for GetCito's AI features: Improve suggestions, the Content Editor's AI and the Action Center's task writing. Agent Chat runs on your own AI key. GetCito sets the amount with you.",
-      "aiUsageHintChat": "A monthly allowance for GetCito's AI features: Chat and agents, Improve suggestions, the Content Editor's AI and the Action Center's task writing. Your own AI key comes with Enterprise only. The free trial comes with a smaller allowance.",
-      "aiUsageCustomHintChat": "A monthly allowance for GetCito's AI features: Chat and agents, Improve suggestions, the Content Editor's AI and the Action Center's task writing. On Enterprise, Chat can also run on your own AI key. GetCito sets the amount with you."
+      "aiUsageHint": "A monthly allowance for GetCito's AI features: Improve suggestions, the Content Editor's AI and the Growth Tasks's task writing. Agent Chat runs on your own AI key. The free trial comes with a smaller allowance.",
+      "aiUsageCustomHint": "A monthly allowance for GetCito's AI features: Improve suggestions, the Content Editor's AI and the Growth Tasks's task writing. Agent Chat runs on your own AI key. GetCito sets the amount with you.",
+      "aiUsageHintChat": "A monthly allowance for GetCito's AI features: Chat and agents, Improve suggestions, the Content Editor's AI and the Growth Tasks's task writing. Your own AI key comes with Enterprise only. The free trial comes with a smaller allowance.",
+      "aiUsageCustomHintChat": "A monthly allowance for GetCito's AI features: Chat and agents, Improve suggestions, the Content Editor's AI and the Growth Tasks's task writing. On Enterprise, Chat can also run on your own AI key. GetCito sets the amount with you."
     },
     "contactUs": "Contact Us",
     "integrations": "Integrations",
@@ -14751,7 +14751,7 @@
     "features": {
       "basic_insights": "Basic Insights",
       "advanced_analytics": "Advanced Analytics",
-      "prompt_suggestions": "Prompt Suggestions",
+      "prompt_suggestions": "Prompt Ideas",
       "daily_monitoring": "Daily Monitoring",
       "competitor_tracking": "Competitor Tracking",
       "content_optimization": "Content Optimization",
@@ -14772,7 +14772,7 @@
     "features": {
       "title": "Everything you need for AI visibility",
       "insights": {
-        "title": "Answer Engine Insights",
+        "title": "AI Visibility",
         "description": "Track your brand mentions and citations across all major AI platforms in real time."
       },
       "content": {

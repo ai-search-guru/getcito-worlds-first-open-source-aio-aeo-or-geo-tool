@@ -19,7 +19,7 @@ _Dashboard preview with sample content; metric bars are placeholders._ [Light vi
 
 - **AI visibility:** track prompts, brand mentions, sentiment, citations, and competitors across supported answer engines.
 - **Prompt research:** organize topics, explore query fan-outs, and monitor performance over time.
-- **Action Center:** turn visibility findings into prioritized tasks with evidence and outcome tracking.
+- **Growth Tasks:** turn visibility findings into prioritized tasks with evidence and outcome tracking.
 - **Content and audits:** prepare briefs and drafts, audit websites, and publish approved content through configured integrations.
 - **Traffic and reporting:** measure AI referrals, compare competitors, and export reports.
 - **Developer access:** connect through the REST API, MCP server, webhooks, and Looker Studio connector.
@@ -147,7 +147,7 @@ curl -fsS http://localhost:8080/
 1. Open [localhost:3000/sign-up](http://localhost:3000/sign-up) and create an account.
 2. Add your brand, domain, topics, and competitors during onboarding.
 3. Add prompts, select configured answer engines, and run tracking.
-4. Review mentions and citations, then use the Action Center to plan improvements.
+4. Review mentions and citations, then use Growth Tasks to plan improvements.
 
 To query your brands from a script, create a key under **Settings → MCP & API Keys** and call the web app’s versioned API:
 
