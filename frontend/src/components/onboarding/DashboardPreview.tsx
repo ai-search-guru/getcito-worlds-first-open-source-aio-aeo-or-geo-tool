@@ -170,7 +170,7 @@ export function DashboardPreview({
             ))}
           </PreviewList>
 
-          <PreviewList title="Competitors" empty={!name}>
+          <PreviewList title={t('competitors')} empty={!name}>
             {name && <Row label={name} icon={<BrandMark name={name} domain={domain} />} strong />}
             {shownCompetitors.map((c) => (
               <Row
